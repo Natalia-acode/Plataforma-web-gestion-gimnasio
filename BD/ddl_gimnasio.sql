@@ -5,7 +5,9 @@
    Ejecutar en SSMS o con:  sqlcmd -S localhost -i ddl_gimnasio.sql
 
    Convenciones:
-     - Enumeraciones: NVARCHAR + CHECK constraint
+     - Enumeraciones: NVARCHAR + CHECK constraint; se almacena el nombre
+       de la constante del enum Java (siempre en MAYÚSCULAS), p. ej.
+       'ACTIVA', 'EN_ESPERA', 'TARJETA_CREDITO'
      - Booleanos: BIT (0/1)   ·   Fechas: DATE / TIME / DATETIME2
      - Los comentarios referencian los casos de uso (CU-XX),
        requisitos funcionales (RF) y reglas de negocio (RN)
@@ -16,6 +18,12 @@ IF DB_ID(N'GimnasioDB') IS NULL
 GO
 
 USE GimnasioDB;
+GO
+
+-- Los índices filtrados exigen estas opciones (SSMS las activa por defecto;
+-- sqlcmd usa QUOTED_IDENTIFIER OFF, por eso se fijan explícitamente aquí).
+SET QUOTED_IDENTIFIER ON;
+SET ANSI_NULLS ON;
 GO
 
 /* =====================================================================
@@ -30,19 +38,21 @@ CREATE TABLE usuario (
     telefono          NVARCHAR(20)  NULL,
     fecha_nacimiento  DATE          NULL,
     rol               NVARCHAR(20)  NOT NULL,
-    estado            NVARCHAR(20)  NOT NULL CONSTRAINT df_usuario_estado   DEFAULT N'activo',
+    estado            NVARCHAR(20)  NOT NULL CONSTRAINT df_usuario_estado   DEFAULT N'ACTIVO',
     fecha_registro    DATETIME2(0)  NOT NULL CONSTRAINT df_usuario_registro DEFAULT SYSDATETIME(),
     CONSTRAINT pk_usuario        PRIMARY KEY (id_usuario),
     CONSTRAINT uq_usuario_email  UNIQUE (email),
-    CONSTRAINT ck_usuario_rol    CHECK (rol IN (N'cliente', N'recepcionista', N'entrenador', N'administrador')),
-    CONSTRAINT ck_usuario_estado CHECK (estado IN (N'activo', N'suspendido'))
+    CONSTRAINT ck_usuario_rol    CHECK (rol IN (N'CLIENTE', N'RECEPCIONISTA', N'ENTRENADOR', N'ADMINISTRADOR')),
+    CONSTRAINT ck_usuario_estado CHECK (estado IN (N'ACTIVO', N'SUSPENDIDO'))
 );
 GO
 
 /* =====================================================================
    2. plan  (catálogo de planes del gimnasio — CU-05, CU-27)
+   NOTA: "plan" es palabra reservada de T-SQL; la tabla se referencia
+   siempre entre corchetes: [plan]
    ===================================================================== */
-CREATE TABLE plan (
+CREATE TABLE [plan] (
     id_plan        INT IDENTITY(1,1) NOT NULL,
     nombre         NVARCHAR(60)  NOT NULL,
     descripcion    NVARCHAR(255) NULL,
@@ -66,12 +76,13 @@ CREATE TABLE suscripcion (
     fecha_fin             DATE          NOT NULL,
     estado                NVARCHAR(20)  NOT NULL,
     renovacion_automatica BIT           NOT NULL CONSTRAINT df_suscripcion_renovacion DEFAULT 0,  -- RN-01: por defecto desactivada (opt-in)
+    intentos_cobro        INT           NOT NULL CONSTRAINT df_suscripcion_intentos  DEFAULT 0,   -- RN-04: reintentos de renovación usados
     fecha_cancelacion     DATETIME2(0)  NULL,
     motivo_cancelacion    NVARCHAR(255) NULL,
     CONSTRAINT pk_suscripcion           PRIMARY KEY (id_suscripcion),
     CONSTRAINT fk_suscripcion_usuario   FOREIGN KEY (id_usuario) REFERENCES usuario (id_usuario),
-    CONSTRAINT fk_suscripcion_plan      FOREIGN KEY (id_plan)    REFERENCES plan (id_plan),
-    CONSTRAINT ck_suscripcion_estado    CHECK (estado IN (N'activa', N'cancelada', N'vencida', N'suspendida')),
+    CONSTRAINT fk_suscripcion_plan      FOREIGN KEY (id_plan)    REFERENCES [plan] (id_plan),
+    CONSTRAINT ck_suscripcion_estado    CHECK (estado IN (N'ACTIVA', N'CANCELADA', N'VENCIDA', N'SUSPENDIDA')),
     CONSTRAINT ck_suscripcion_fechas    CHECK (fecha_fin >= fecha_inicio)
 );
 GO
@@ -79,7 +90,7 @@ GO
 -- RN-10: un cliente no puede tener más de una suscripción activa a la vez
 CREATE UNIQUE INDEX uq_suscripcion_activa
     ON suscripcion (id_usuario)
-    WHERE estado = N'activa';
+    WHERE estado = N'ACTIVA';
 GO
 
 -- Proceso diario de renovaciones (CU-12): buscar suscripciones por vencer
@@ -102,7 +113,7 @@ CREATE TABLE metodo_pago (
     activo         BIT           NOT NULL CONSTRAINT df_metodo_activo         DEFAULT 1,
     CONSTRAINT pk_metodo_pago        PRIMARY KEY (id_metodo),
     CONSTRAINT fk_metodo_pago_usuario FOREIGN KEY (id_usuario) REFERENCES usuario (id_usuario),
-    CONSTRAINT ck_metodo_pago_tipo    CHECK (tipo IN (N'tarjeta_credito', N'tarjeta_debito'))
+    CONSTRAINT ck_metodo_pago_tipo    CHECK (tipo IN (N'TARJETA_CREDITO', N'TARJETA_DEBITO'))
 );
 GO
 
@@ -122,8 +133,8 @@ CREATE TABLE pago (
     CONSTRAINT pk_pago             PRIMARY KEY (id_pago),
     CONSTRAINT fk_pago_suscripcion FOREIGN KEY (id_suscripcion) REFERENCES suscripcion (id_suscripcion),
     CONSTRAINT fk_pago_metodo      FOREIGN KEY (id_metodo)      REFERENCES metodo_pago (id_metodo),
-    CONSTRAINT ck_pago_tipo        CHECK (tipo   IN (N'alta', N'renovacion', N'ajuste_cambio_plan')),
-    CONSTRAINT ck_pago_estado      CHECK (estado IN (N'pendiente', N'aprobado', N'rechazado', N'reembolsado')),
+    CONSTRAINT ck_pago_tipo        CHECK (tipo   IN (N'ALTA', N'RENOVACION', N'AJUSTE_CAMBIO_PLAN')),
+    CONSTRAINT ck_pago_estado      CHECK (estado IN (N'PENDIENTE', N'APROBADO', N'RECHAZADO', N'REEMBOLSADO')),
     CONSTRAINT ck_pago_monto       CHECK (monto > 0)
 );
 GO
@@ -150,7 +161,7 @@ CREATE TABLE check_in (
     CONSTRAINT pk_check_in              PRIMARY KEY (id_checkin),
     CONSTRAINT fk_check_in_usuario      FOREIGN KEY (id_usuario)       REFERENCES usuario (id_usuario),
     CONSTRAINT fk_check_in_recepcionista FOREIGN KEY (id_recepcionista) REFERENCES usuario (id_usuario),
-    CONSTRAINT ck_check_in_metodo CHECK (metodo IN (N'qr', N'manual')),
+    CONSTRAINT ck_check_in_metodo CHECK (metodo IN (N'QR', N'MANUAL')),
     CONSTRAINT ck_check_in_salida CHECK (fecha_hora_salida IS NULL OR fecha_hora_salida >= fecha_hora_entrada)
 );
 GO
@@ -170,7 +181,7 @@ CREATE TABLE zona (
     capacidad_maxima INT          NOT NULL,
     activa           BIT          NOT NULL CONSTRAINT df_zona_activa DEFAULT 1,
     CONSTRAINT pk_zona          PRIMARY KEY (id_zona),
-    CONSTRAINT ck_zona_tipo     CHECK (tipo IN (N'pesas', N'cardio', N'sala_grupal', N'funcional')),
+    CONSTRAINT ck_zona_tipo     CHECK (tipo IN (N'PESAS', N'CARDIO', N'SALA_GRUPAL', N'FUNCIONAL')),
     CONSTRAINT ck_zona_capacidad CHECK (capacidad_maxima > 0)
 );
 GO
@@ -191,7 +202,7 @@ CREATE TABLE clase (
     CONSTRAINT pk_clase              PRIMARY KEY (id_clase),
     CONSTRAINT fk_clase_entrenador   FOREIGN KEY (id_entrenador) REFERENCES usuario (id_usuario),
     CONSTRAINT fk_clase_zona         FOREIGN KEY (id_zona)       REFERENCES zona (id_zona),
-    CONSTRAINT ck_clase_dia_semana   CHECK (dia_semana IN (N'lunes', N'martes', N'miercoles', N'jueves', N'viernes', N'sabado', N'domingo')),
+    CONSTRAINT ck_clase_dia_semana   CHECK (dia_semana IN (N'LUNES', N'MARTES', N'MIERCOLES', N'JUEVES', N'VIERNES', N'SABADO', N'DOMINGO')),
     CONSTRAINT ck_clase_horario      CHECK (hora_fin > hora_inicio),
     CONSTRAINT ck_clase_cupo         CHECK (cupo_maximo > 0)
 );
@@ -206,21 +217,21 @@ CREATE TABLE reserva_clase (
     id_usuario      INT           NOT NULL,
     fecha           DATE          NOT NULL,      -- fecha de la sesión reservada
     estado          NVARCHAR(20)  NOT NULL,
-    posicion_espera INT           NULL,          -- posición cuando estado = en_espera (RN-09)
+    posicion_espera SMALLINT      NULL,          -- posición cuando estado = EN_ESPERA (RN-09)
     fecha_reserva   DATETIME2(0)  NOT NULL CONSTRAINT df_reserva_fecha DEFAULT SYSDATETIME(),
     CONSTRAINT pk_reserva_clase       PRIMARY KEY (id_reserva),
     CONSTRAINT fk_reserva_clase       FOREIGN KEY (id_clase)   REFERENCES clase (id_clase),
     CONSTRAINT fk_reserva_usuario     FOREIGN KEY (id_usuario) REFERENCES usuario (id_usuario),
-    CONSTRAINT ck_reserva_estado      CHECK (estado IN (N'confirmada', N'en_espera', N'cancelada', N'asistio', N'no_asistio')),
-    CONSTRAINT ck_reserva_espera      CHECK ((estado = N'en_espera' AND posicion_espera IS NOT NULL)
-                                             OR (estado <> N'en_espera' AND posicion_espera IS NULL))
+    CONSTRAINT ck_reserva_estado      CHECK (estado IN (N'CONFIRMADA', N'EN_ESPERA', N'CANCELADA', N'ASISTIO', N'NO_ASISTIO')),
+    CONSTRAINT ck_reserva_espera      CHECK ((estado = N'EN_ESPERA' AND posicion_espera IS NOT NULL)
+                                             OR (estado <> N'EN_ESPERA' AND posicion_espera IS NULL))
 );
 GO
 
 -- Un cliente no puede tener dos reservas vigentes para la misma sesión (EX-2 de CU-18)
 CREATE UNIQUE INDEX uq_reserva_vigente
     ON reserva_clase (id_clase, id_usuario, fecha)
-    WHERE estado IN (N'confirmada', N'en_espera');
+    WHERE estado IN (N'CONFIRMADA', N'EN_ESPERA');
 GO
 
 CREATE INDEX ix_reserva_sesion ON reserva_clase (id_clase, fecha, estado);
@@ -240,8 +251,8 @@ CREATE TABLE turno_cola (
     hora_atencion   DATETIME2(0)  NULL,
     CONSTRAINT pk_turno_cola       PRIMARY KEY (id_turno),
     CONSTRAINT fk_turno_usuario    FOREIGN KEY (id_usuario) REFERENCES usuario (id_usuario),
-    CONSTRAINT ck_turno_tipo       CHECK (tipo   IN (N'ingreso', N'clase')),
-    CONSTRAINT ck_turno_estado     CHECK (estado IN (N'esperando', N'llamado', N'atendido', N'cancelado', N'expirado')),
+    CONSTRAINT ck_turno_tipo       CHECK (tipo   IN (N'INGRESO', N'CLASE')),
+    CONSTRAINT ck_turno_estado     CHECK (estado IN (N'ESPERANDO', N'LLAMADO', N'ATENDIDO', N'CANCELADO', N'EXPIRADO')),
     CONSTRAINT ck_turno_posicion   CHECK (posicion >= 1)
 );
 GO
@@ -249,7 +260,7 @@ GO
 -- Un cliente no puede tener más de un turno activo a la vez (EX de CU-22)
 CREATE UNIQUE INDEX uq_turno_activo
     ON turno_cola (id_usuario)
-    WHERE estado IN (N'esperando', N'llamado');
+    WHERE estado IN (N'ESPERANDO', N'LLAMADO');
 GO
 
 CREATE INDEX ix_turno_cola_espera ON turno_cola (estado, fecha_solicitud);
@@ -267,8 +278,8 @@ CREATE TABLE notificacion (
     leida           BIT           NOT NULL CONSTRAINT df_notificacion_leida DEFAULT 0,
     CONSTRAINT pk_notificacion         PRIMARY KEY (id_notificacion),
     CONSTRAINT fk_notificacion_usuario FOREIGN KEY (id_usuario) REFERENCES usuario (id_usuario),
-    CONSTRAINT ck_notificacion_tipo    CHECK (tipo IN (N'recordatorio_cobro', N'resultado_cobro', N'confirmacion_reserva',
-                                                       N'turno_proximo', N'cancelacion', N'aforo'))
+    CONSTRAINT ck_notificacion_tipo    CHECK (tipo IN (N'RECORDATORIO_COBRO', N'RESULTADO_COBRO', N'CONFIRMACION_RESERVA',
+                                                       N'TURNO_PROXIMO', N'CANCELACION', N'AFORO', N'CUENTA'))
 );
 GO
 
@@ -348,25 +359,25 @@ VALUES
     (150, 50, 80, 10, 60, 3, '05:00', '23:00');
 GO
 
-INSERT INTO plan (nombre, descripcion, precio, duracion_dias) VALUES
+INSERT INTO [plan] (nombre, descripcion, precio, duracion_dias) VALUES
     (N'Básico Mensual', N'Acceso a zona de pesas y cardio en todo el horario',            29.90,  30),
     (N'Full Mensual',   N'Acceso total + clases grupales ilimitadas',                     39.90,  30),
     (N'Full Anual',     N'Acceso total + clases grupales, 12 meses con descuento',       399.00, 365);
 GO
 
 INSERT INTO zona (nombre, tipo, capacidad_maxima) VALUES
-    (N'Zona de pesas',   N'pesas',       60),
-    (N'Zona cardio',     N'cardio',      40),
-    (N'Sala grupal 1',   N'sala_grupal', 25),
-    (N'Sala funcional',  N'funcional',   25);
+    (N'Zona de pesas',   N'PESAS',       60),
+    (N'Zona cardio',     N'CARDIO',      40),
+    (N'Sala grupal 1',   N'SALA_GRUPAL', 25),
+    (N'Sala funcional',  N'FUNCIONAL',   25);
 GO
 
--- Usuario administrador inicial.
--- IMPORTANTE: reemplazar por un hash bcrypt real generado con BCryptPasswordEncoder
--- (Spring Security) antes de cualquier despliegue.
+-- Usuario administrador inicial:
+--   correo: admin@gimnasio.local   ·   contraseña: Admin123!
+-- El hash bcrypt corresponde a esa contraseña; cambiarla en producción.
 INSERT INTO usuario (nombre, apellidos, email, password_hash, rol) VALUES
     (N'Admin', N'Gimnasio', N'admin@gimnasio.local',
-     '$2a$10$REEMPLAZAR_POR_HASH_BCRYPT_GENERADO', N'administrador');
+     '$2a$10$UF.vRNvZzu0GZqm1YEsEyuGAoiMzc90jAD5yB.7muooRLTGnV7n1y', N'ADMINISTRADOR');
 GO
 
 PRINT N'Base de datos GimnasioDB creada correctamente (13 tablas, 2 vistas, datos iniciales).';

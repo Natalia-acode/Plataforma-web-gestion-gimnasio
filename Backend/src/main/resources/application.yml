@@ -1,0 +1,52 @@
+spring:
+  application:
+    name: gestion-gimnasio-backend
+
+  # ============================================================
+  # Base de datos — Microsoft SQL Server (BD/ddl_gimnasio.sql)
+  # ============================================================
+  datasource:
+    url: jdbc:sqlserver://localhost:1433;databaseName=GimnasioDB;encrypt=true;trustServerCertificate=true
+    username: ${DB_USER:sa}
+    password: ${DB_PASSWORD:CambiarEstaClave123}
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+
+  jpa:
+    hibernate:
+      # El esquema lo crea el script BD/ddl_gimnasio.sql (fuente de verdad).
+      # validate = arranca solo si las entidades coinciden con la base real.
+      ddl-auto: none
+    open-in-view: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.SQLServerDialect
+        # 'plan' es palabra reservada de T-SQL: Hibernate debe citar los
+        # identificadores para poder consultar la tabla plan sin ambigüedad.
+        globally_quoted_identifiers: true
+
+  jackson:
+    time-zone: America/Bogota
+    default-property-inclusion: non_null
+
+server:
+  port: 8080
+
+# ============================================================
+# JWT — cambiar el secreto en producción (variable de entorno)
+# ============================================================
+gimnasio:
+  jwt:
+    secret: ${JWT_SECRET:gimnasio-clave-jwt-desarrollo-2026-cambiar-en-produccion-0123456789}
+    expiration-ms: 28800000   # 8 horas
+  cors:
+    allowed-origins: http://localhost:5173
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+
+logging:
+  level:
+    com.gimnasio: DEBUG

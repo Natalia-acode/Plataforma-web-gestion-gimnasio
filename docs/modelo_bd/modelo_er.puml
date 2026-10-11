@@ -36,6 +36,7 @@ entity suscripcion {
   * fecha_fin : DATE
   * estado : NVARCHAR(20) <<CHECK>>
   * renovacion_automatica : BIT
+  * intentos_cobro : INT
   fecha_cancelacion : DATETIME2 <<NULL>>
   motivo_cancelacion : NVARCHAR(255) <<NULL>>
 }
