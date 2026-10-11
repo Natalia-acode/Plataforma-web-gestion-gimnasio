@@ -1,0 +1,51 @@
+@startuml CU-02_Membresias_y_Pagos
+title Casos de Uso — Módulo 2: Membresías y Pagos
+left to right direction
+skinparam packageStyle rectangle
+
+actor "Visitante" as visitante
+actor "Cliente" as cliente
+actor "Planificador\n(proceso programado)" as scheduler <<sistema>>
+actor "Pasarela de\nPago" as pasarela <<externo>>
+actor "Servicio de\nNotificaciones" as notificaciones <<externo>>
+
+rectangle "Módulo de Membresías y Pagos" {
+  usecase "CU-05\nConsultar planes y precios" as CU05
+  usecase "CU-06\nContratar suscripción" as CU06
+  usecase "CU-07\nCambiar de plan" as CU07
+  usecase "CU-08\nCancelar suscripción" as CU08
+  usecase "CU-09\nGestionar renovación automática" as CU09
+  usecase "CU-10\nGestionar métodos de pago" as CU10
+  usecase "CU-11\nConsultar historial de pagos y facturas" as CU11
+  usecase "CU-12\nProcesar renovación automática" as CU12
+}
+
+visitante --> CU05
+cliente --> CU05
+cliente --> CU06
+cliente --> CU07
+cliente --> CU08
+cliente --> CU09
+cliente --> CU10
+cliente --> CU11
+scheduler --> CU12
+
+CU06 ..> CU10 : <<include>>
+CU06 ..> pasarela : procesa pago inicial
+CU12 ..> pasarela : ejecuta cobros
+CU12 ..> notificaciones : recordatorio / resultado de cobro
+CU08 ..> notificaciones : confirmación de cancelación
+CU09 ..> notificaciones : confirmación de cambio
+
+note bottom of CU08
+  Cancelación en línea, sin trámites presenciales.
+  Efectiva al final del período pagado (RN-02).
+  Resuelve el problema de cobros sin control.
+end note
+
+note bottom of CU12
+  Solo cobra suscripciones con renovación
+  autorizada y vigente (RN-01).
+  Reintentos según RN-04.
+end note
+@enduml

@@ -1,0 +1,215 @@
+@startuml Modelo_ER_Gestion_Gimnasio
+title Modelo Entidad-Relación — Base de Datos del Sistema de Gestión de Gimnasio
+' Motor: Microsoft SQL Server (2019+)
+' Script DDL completo: BD/ddl_gimnasio.sql
+
+entity usuario {
+  * id_usuario : INT <<PK, IDENTITY>>
+  --
+  * nombre : NVARCHAR(80)
+  * apellidos : NVARCHAR(80)
+  * email : NVARCHAR(120) <<UQ>>
+  * password_hash : VARCHAR(255)
+  telefono : NVARCHAR(20)
+  fecha_nacimiento : DATE
+  * rol : NVARCHAR(20) <<CHECK>>
+  * estado : NVARCHAR(20) <<CHECK>>
+  * fecha_registro : DATETIME2
+}
+
+entity plan {
+  * id_plan : INT <<PK, IDENTITY>>
+  --
+  * nombre : NVARCHAR(60)
+  descripcion : NVARCHAR(255)
+  * precio : DECIMAL(10,2)
+  * duracion_dias : INT
+  * activo : BIT
+}
+
+entity suscripcion {
+  * id_suscripcion : INT <<PK, IDENTITY>>
+  --
+  * id_usuario : INT <<FK>>
+  * id_plan : INT <<FK>>
+  * fecha_inicio : DATE
+  * fecha_fin : DATE
+  * estado : NVARCHAR(20) <<CHECK>>
+  * renovacion_automatica : BIT
+  fecha_cancelacion : DATETIME2 <<NULL>>
+  motivo_cancelacion : NVARCHAR(255) <<NULL>>
+}
+
+entity metodo_pago {
+  * id_metodo : INT <<PK, IDENTITY>>
+  --
+  * id_usuario : INT <<FK>>
+  * tipo : NVARCHAR(20) <<CHECK>>
+  * ultimos_cuatro : NCHAR(4)
+  titular : NVARCHAR(120)
+  * token_pasarela : VARCHAR(255)
+  * predeterminado : BIT
+  * activo : BIT
+}
+
+entity pago {
+  * id_pago : INT <<PK, IDENTITY>>
+  --
+  * id_suscripcion : INT <<FK>>
+  id_metodo : INT <<FK / NULL para efectivo>>
+  * monto : DECIMAL(10,2)
+  * fecha_pago : DATETIME2
+  * tipo : NVARCHAR(20) <<CHECK>>
+  * estado : NVARCHAR(20) <<CHECK>>
+  numero_factura : NVARCHAR(30) <<UQ filtrado>>
+  id_transaccion_pasarela : VARCHAR(100)
+}
+
+entity check_in {
+  * id_checkin : INT <<PK, IDENTITY>>
+  --
+  * id_usuario : INT <<FK>>
+  id_recepcionista : INT <<FK / NULL si fue con QR>>
+  * fecha_hora_entrada : DATETIME2
+  fecha_hora_salida : DATETIME2 <<NULL>>
+  * metodo : NVARCHAR(10) <<CHECK>>
+}
+
+entity zona {
+  * id_zona : INT <<PK, IDENTITY>>
+  --
+  * nombre : NVARCHAR(60)
+  * tipo : NVARCHAR(20) <<CHECK>>
+  * capacidad_maxima : INT
+  * activa : BIT
+}
+
+entity clase {
+  * id_clase : INT <<PK, IDENTITY>>
+  --
+  * id_entrenador : INT <<FK>>
+  * id_zona : INT <<FK>>
+  * nombre : NVARCHAR(80)
+  * dia_semana : NVARCHAR(10) <<CHECK>>
+  * hora_inicio : TIME
+  * hora_fin : TIME
+  * cupo_maximo : INT
+  * activa : BIT
+}
+
+entity reserva_clase {
+  * id_reserva : INT <<PK, IDENTITY>>
+  --
+  * id_clase : INT <<FK>>
+  * id_usuario : INT <<FK>>
+  * fecha : DATE
+  * estado : NVARCHAR(20) <<CHECK>>
+  posicion_espera : INT <<NULL>>
+  * fecha_reserva : DATETIME2
+}
+
+entity turno_cola {
+  * id_turno : INT <<PK, IDENTITY>>
+  --
+  * id_usuario : INT <<FK>>
+  * tipo : NVARCHAR(10) <<CHECK>>
+  * fecha_solicitud : DATETIME2
+  * posicion : INT
+  * estado : NVARCHAR(20) <<CHECK>>
+  hora_llamado : DATETIME2 <<NULL>>
+  hora_atencion : DATETIME2 <<NULL>>
+}
+
+entity notificacion {
+  * id_notificacion : INT <<PK, IDENTITY>>
+  --
+  * id_usuario : INT <<FK>>
+  * tipo : NVARCHAR(30) <<CHECK>>
+  * mensaje : NVARCHAR(255)
+  * fecha_envio : DATETIME2
+  * leida : BIT
+}
+
+entity registro_aforo {
+  * id_registro : INT <<PK, IDENTITY>>
+  --
+  * fecha : DATE <<UQ(fecha,hora)>>
+  * hora : TINYINT <<UQ(fecha,hora)>>
+  * ocupacion_promedio : INT
+  * ocupacion_maxima : INT
+  * total_ingresos : INT
+}
+
+entity configuracion {
+  * id_config : INT <<PK, IDENTITY>>
+  --
+  * capacidad_maxima : INT
+  * umbral_medio : TINYINT <<%>>
+  * umbral_alto : TINYINT <<%>>
+  * ventana_turno_min : INT
+  * tiempo_rotacion_min : INT
+  * reintentos_cobro : INT
+  * horario_apertura : TIME
+  * horario_cierre : TIME
+}
+
+' ============================================================
+' Relaciones
+' ============================================================
+
+usuario ||--o{ suscripcion : "contrata (RN-10: una activa)"
+plan ||--o{ suscripcion : "define"
+usuario ||--o{ metodo_pago : "registra"
+suscripcion ||--o{ pago : "genera"
+metodo_pago |o--o{ pago : "se cobra con"
+usuario ||--o{ check_in : "accede"
+usuario |o--o{ check_in : "registra acceso manual"
+zona ||--o{ clase : "aloja"
+usuario ||--o{ clase : "dicta (entrenador)"
+clase ||--o{ reserva_clase : "tiene"
+usuario ||--o{ reserva_clase : "reserva"
+usuario ||--o{ turno_cola : "solicita"
+usuario ||--o{ notificacion : "recibe"
+
+' ============================================================
+' Notas
+' ============================================================
+
+note top of usuario
+  Tipos de Microsoft SQL Server 2019+:
+  - Enumeraciones: NVARCHAR(20/30) + CHECK constraint
+    (rol, estado, tipo, metodo, dia_semana, etc.)
+  - Booleanos: BIT · Fechas/hora: DATE, TIME, DATETIME2
+  El script DDL completo está en BD/ddl_gimnasio.sql
+end note
+
+note right of reserva_clase
+  Resuelve la relación N:M entre
+  usuario (cliente) y clase.
+  El estado en_espera implementa
+  la lista de espera (RN-09).
+end note
+
+note right of registro_aforo
+  Tabla de analítica: snapshot horario
+  generado por el Planificador a partir
+  de check_in. Alimenta el mapa de calor
+  de afluencia (CU-16).
+end note
+
+note bottom of configuracion
+  Fila única administrada por el
+  Administrador (CU-17): capacidad,
+  umbrales del semáforo y parámetros
+  de la cola virtual (RN-06, RN-08).
+end note
+
+note bottom of suscripcion
+  renovacion_automatica = 1 solo con
+  consentimiento explícito (RN-01).
+  Cancelar (CU-08): estado = cancelada,
+  efectiva en fecha_fin (RN-02).
+  Índice único filtrado garantiza una
+  sola suscripción activa por cliente.
+end note
+@enduml

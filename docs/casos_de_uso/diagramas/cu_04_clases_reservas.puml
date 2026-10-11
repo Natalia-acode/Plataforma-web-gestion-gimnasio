@@ -1,0 +1,31 @@
+@startuml CU-04_Clases_y_Reservas
+title Casos de Uso — Módulo 4: Clases y Reservas
+left to right direction
+skinparam packageStyle rectangle
+
+actor "Cliente" as cliente
+actor "Entrenador" as entrenador
+actor "Administrador" as admin
+actor "Servicio de\nNotificaciones" as notificaciones <<externo>>
+
+rectangle "Módulo de Clases y Reservas" {
+  usecase "CU-18\nReservar clase grupal\n(incluye lista de espera)" as CU18
+  usecase "CU-19\nCancelar reserva de clase" as CU19
+  usecase "CU-20\nPasar lista de asistencia" as CU20
+  usecase "CU-21\nGestionar clases y horarios" as CU21
+}
+
+cliente --> CU18
+cliente --> CU19
+entrenador --> CU20
+admin --> CU21
+
+CU18 ..> notificaciones : confirmación y promoción\nde lista de espera
+CU19 ..> notificaciones : cancelación registrada
+
+note bottom of CU18
+  Si la clase está llena, el cliente puede ingresar
+  a la lista de espera y es promovido automáticamente
+  al liberarse un cupo (RN-09).
+end note
+@enduml

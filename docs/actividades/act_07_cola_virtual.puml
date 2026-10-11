@@ -1,0 +1,52 @@
+@startuml ACT-07_Cola_Virtual
+title Actividad — Cola Virtual: Turno, Espera y Llamado (CU-22 a CU-25)
+
+|Cliente|
+start
+:Solicitar "Entrar a la cola" (aforo lleno\no clase sin cupo);
+
+|Sistema|
+:Validar membresía activa y\nausencia de turno previo;
+:Crear turno (tipo: ingreso o clase);
+:Calcular posición y estimación de espera\n(rotación promedio configurada);
+
+|Servicio de Notificaciones|
+:Confirmar el turno y enviar\nsu posición inicial;
+
+repeat
+  |Cliente|
+  :Consultar posición y tiempo de espera\n(CU-23, actualización automática);
+  |Sistema|
+  :Actualizar la cola ante cada movimiento;
+repeat while (¿Sigue esperando y no fue llamado?) is (sí) not (no)
+
+|Sistema|
+if (¿El cliente canceló su turno? (CU-24)) then (sí)
+  :Marcar turno como cancelado;
+  :Recalcular posiciones y estimaciones;
+  stop
+else (no)
+  :Recepción o sistema llama\nal siguiente turno (CU-25);
+  |Servicio de Notificaciones|
+  :Notificar "es tu turno"\n(ventana de presentación, RN-08);
+  |Cliente|
+  if (¿Se presenta dentro de la ventana?) then (sí)
+    |Recepcionista|
+    :Marcar turno como atendido;
+    :Registrar el check-in;
+    stop
+  else (no)
+    |Sistema|
+    :Expirar el turno;
+    :Avanzar la cola y recalcular estimaciones;
+    stop
+  endif
+endif
+
+legend right
+  Resuelve el problema de las colas: el cliente
+  espera de forma remota y ordenada, sabe cuánto
+  falta y recibe aviso automático. Si no se
+  presenta en la ventana, pierde el turno (RN-08).
+endlegend
+@enduml

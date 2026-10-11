@@ -1,0 +1,34 @@
+@startuml CU-05_Cola_Virtual
+title Casos de Uso — Módulo 5: Cola Virtual
+left to right direction
+skinparam packageStyle rectangle
+
+actor "Cliente" as cliente
+actor "Recepcionista" as recepcionista
+actor "Planificador\n(proceso programado)" as scheduler <<sistema>>
+actor "Servicio de\nNotificaciones" as notificaciones <<externo>>
+
+rectangle "Módulo de Cola Virtual" {
+  usecase "CU-22\nSolicitar turno en cola virtual" as CU22
+  usecase "CU-23\nConsultar posición y tiempo\nde espera del turno" as CU23
+  usecase "CU-24\nCancelar turno en cola" as CU24
+  usecase "CU-25\nGestionar cola y llamar\nsiguiente turno" as CU25
+}
+
+cliente --> CU22
+cliente --> CU23
+cliente --> CU24
+recepcionista --> CU25
+scheduler --> CU25 : expira turnos no atendidos
+
+CU22 ..> CU23 : <<include>>
+CU22 ..> notificaciones : confirmación de turno
+CU25 ..> notificaciones : aviso "es tu turno"
+
+note bottom of CU22
+  Se habilita cuando el aforo está completo o
+  la clase no tiene cupo. El turno expira si el
+  cliente no se presenta en la ventana otorgada (RN-08).
+  Resuelve el problema de las colas.
+end note
+@enduml

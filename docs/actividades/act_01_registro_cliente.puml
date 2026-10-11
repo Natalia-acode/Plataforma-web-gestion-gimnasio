@@ -1,0 +1,31 @@
+@startuml ACT-01_Registro_de_Cliente
+title Actividad — Registro de Cliente (CU-01)
+
+|Visitante|
+start
+:Acceder a "Crear cuenta";
+:Aceptar términos, condiciones\ny política de datos;
+
+|Sistema|
+repeat
+  |Visitante|
+  :Completar formulario (nombre, correo,\nteléfono, contraseña);
+  |Sistema|
+  :Validar formato y unicidad del correo;
+repeat while (¿Errores de validación?) is (sí) not (no)
+
+:Crear cuenta con rol Cliente\ny estado activo;
+
+|Servicio de Notificaciones|
+:Enviar correo de bienvenida;
+
+|Sistema|
+:Confirmar registro y ofrecer\nconsultar planes (CU-05);
+stop
+
+legend right
+  Si el correo ya está registrado, el sistema
+  ofrece iniciar sesión (CU-02) o recuperar
+  contraseña (CU-03).
+endlegend
+@enduml

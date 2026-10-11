@@ -1,0 +1,53 @@
+@startuml ACT-04_Renovacion_Automatica
+title Actividad — Proceso Programado de Renovación Automática (CU-12)
+
+|Planificador|
+start
+:Proceso diario: identificar cobros\nque vencen en 7 días y en 1 día;
+
+|Servicio de Notificaciones|
+:Enviar recordatorios (monto, fecha\ny enlace directo para cancelar, RN-03);
+
+|Planificador|
+:Identificar suscripciones que vencen hoy\ncon renovación automática autorizada (RN-01);
+
+|Pasarela de Pago|
+:Cobrar con el método de pago predeterminado;
+
+|Planificador|
+:Registrar resultado del cobro;
+
+if (¿Cobro aprobado?) then (sí)
+  :Extender fecha_fin y emitir factura;
+  |Servicio de Notificaciones|
+  :Notificar renovación exitosa;
+  |Planificador|
+  stop
+else (no)
+  :Notificar el fallo con enlace para\nactualizar el método de pago (CU-10);
+  :Programar reintentos (RN-04: +1, +3 y +7 días);
+  repeat
+    |Planificador|
+    :Esperar fecha del siguiente reintento;
+    |Pasarela de Pago|
+    :Reintentar cobro;
+    |Planificador|
+    :Registrar resultado del reintento;
+  repeat while (¿Rechazado y quedan reintentos?) is (sí) not (no)
+  if (¿Cobro aprobado en el último intento?) then (sí)
+    :Extender fecha_fin, emitir factura\ny notificar el éxito;
+    stop
+  else (no)
+    :Suspender la suscripción\ny notificar al cliente;
+    stop
+  endif
+endif
+
+legend right
+  Solo se cobra a suscripciones con renovación
+  AUTORIZADA por el cliente (opt-in). Desactivar
+  la renovación (CU-09) detiene todo cobro futuro.
+  Suscripciones sin renovación pasan a "vencida"
+  y se notifica para renovar manualmente (FA-1).
+endlegend
+@enduml

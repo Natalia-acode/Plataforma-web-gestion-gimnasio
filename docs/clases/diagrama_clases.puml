@@ -1,0 +1,362 @@
+@startuml Diagrama_Clases_Conceptual
+title Diagrama de Clases — Modelo de Dominio del Sistema de Gestión de Gimnasio
+skinparam classAttributeIconSize 0
+
+' ============================================================
+' Paquete: Usuarios (jerarquía de roles)
+' ============================================================
+
+package "Usuarios" {
+
+  abstract class Usuario {
+    - idUsuario : Long
+    - nombre : String
+    - apellidos : String
+    - email : String
+    - passwordHash : String
+    - telefono : String
+    - fechaNacimiento : Date
+    - estado : EstadoUsuario
+    --
+    + iniciarSesion(email, contrasena) : Sesion
+    + cerrarSesion() : void
+    + recuperarContrasena() : void
+    + actualizarPerfil(datos) : void
+  }
+
+  class Cliente {
+    - fechaRegistro : Date
+    --
+    + contratarPlan(plan, metodo, renovacionAuto) : Suscripcion
+    + cambiarPlan(nuevoPlan) : void
+    + cancelarSuscripcion(motivo) : void
+    + activarRenovacionAutomatica(activo) : void
+    + consultarHistorialPagos() : List
+    + realizarCheckIn() : CheckIn
+    + reservarClase(clase, fecha) : ReservaClase
+    + solicitarTurnoCola(tipo) : TurnoCola
+    + consultarOcupacion() : Ocupacion
+    + consultarAfluencia(filtros) : Afluencia
+  }
+
+  class Entrenador {
+    - especialidad : String
+    --
+    + consultarHorario() : List
+    + pasarLista(clase, asistencias) : void
+  }
+
+  class Recepcionista {
+    --
+    + registrarAccesoManual(cliente) : CheckIn
+    + registrarSalida(checkIn) : void
+    + venderMembresia(cliente, plan, medioPago) : Suscripcion
+    + gestionarCola() : List
+    + llamarSiguienteTurno() : TurnoCola
+    + marcarTurnoAtendido(turno) : void
+  }
+
+  class Administrador {
+    --
+    + gestionarUsuarios() : void
+    + gestionarPlanes() : void
+    + gestionarClases() : void
+    + gestionarZonas() : void
+    + configurarAforo(parametros) : void
+    + consultarReportes(periodo) : Reporte
+  }
+}
+
+Usuario <|-- Cliente
+Usuario <|-- Entrenador
+Usuario <|-- Recepcionista
+Usuario <|-- Administrador
+
+' ============================================================
+' Paquete: Membresías y Pagos
+' ============================================================
+
+package "Membresías y Pagos" {
+
+  class Plan {
+    - idPlan : Long
+    - nombre : String
+    - descripcion : String
+    - precio : BigDecimal
+    - duracionDias : int
+    - activo : boolean
+    --
+    + calcularPrecioProrrateado(diasRestantes) : BigDecimal
+  }
+
+  class Suscripcion {
+    - idSuscripcion : Long
+    - fechaInicio : Date
+    - fechaFin : Date
+    - estado : EstadoSuscripcion
+    - renovacionAutomatica : boolean
+    - fechaCancelacion : DateTime
+    - motivoCancelacion : String
+    --
+    + esVigente(ahora) : boolean
+    + cancelar(motivo) : void
+    + activarRenovacion(activo) : void
+    + cambiarPlan(nuevoPlan) : void
+    + renovar(metodo) : Pago
+  }
+
+  class Pago {
+    - idPago : Long
+    - monto : BigDecimal
+    - fechaPago : DateTime
+    - tipo : TipoPago
+    - estado : EstadoPago
+    - numeroFactura : String
+    - idTransaccion : String
+    --
+    + emitirFactura() : Factura
+    + reembolsar() : void
+  }
+
+  class MetodoPago {
+    - idMetodo : Long
+    - tipo : TipoTarjeta
+    - ultimosCuatro : String
+    - titular : String
+    - tokenPasarela : String
+    - predeterminado : boolean
+    - activo : boolean
+    --
+    + tokenizar(datosTarjeta) : void
+    + marcarPredeterminado() : void
+    + eliminar() : void
+  }
+}
+
+Cliente "1" --> "0..*" Suscripcion : tiene
+Plan "1" --> "0..*" Suscripcion : "es contratado en"
+Suscripcion "1" *-- "0..*" Pago : genera
+MetodoPago "1" --> "0..*" Pago : "cobra con"
+Cliente "1" --> "0..*" MetodoPago : registra
+
+' ============================================================
+' Paquete: Acceso y Aforo
+' ============================================================
+
+package "Acceso y Aforo" {
+
+  class CheckIn {
+    - idCheckIn : Long
+    - fechaHoraEntrada : DateTime
+    - fechaHoraSalida : DateTime
+    - metodo : MetodoAcceso
+    --
+    + registrarSalida() : void
+    + duracion() : Duration
+  }
+
+  class Zona {
+    - idZona : Long
+    - nombre : String
+    - tipo : TipoZona
+    - capacidadMaxima : int
+    - activa : boolean
+    --
+    + ocupacionActual() : int
+    + estaLlena() : boolean
+  }
+
+  class RegistroAforo {
+    - idRegistro : Long
+    - fecha : Date
+    - hora : int
+    - ocupacionPromedio : int
+    - ocupacionMaxima : int
+    - totalIngresos : int
+    --
+    + generarSnapshot(checkIns) : RegistroAforo
+    + franjaMenorAfluencia(dia) : Franja
+  }
+
+  class ConfiguracionGimnasio {
+    - capacidadMaxima : int
+    - umbralMedio : int
+    - umbralAlto : int
+    - ventanaTurnoMin : int
+    - tiempoRotacionMin : int
+    - reintentosCobro : int
+    --
+    + actualizar(parametros) : void
+    + semaforo(ocupacion) : Semaforo
+  }
+}
+
+Cliente "1" --> "0..*" CheckIn : realiza
+Recepcionista "1" --> "0..*" CheckIn : registra
+Zona "1" --> "0..*" Clase : aloja
+RegistroAforo ..> CheckIn : "se genera a partir de"
+CheckIn ..> ConfiguracionGimnasio : "valida aforo"
+ConfiguracionGimnasio ..> RegistroAforo : configura umbrales
+
+' ============================================================
+' Paquete: Clases Grupales
+' ============================================================
+
+package "Clases Grupales" {
+
+  class Clase {
+    - idClase : Long
+    - nombre : String
+    - diaSemana : String
+    - horaInicio : Time
+    - horaFin : Time
+    - cupoMaximo : int
+    - activa : boolean
+    --
+    + cuposLibres(fecha) : int
+    + hayDisponibilidad(fecha) : boolean
+  }
+
+  class ReservaClase {
+    - idReserva : Long
+    - fecha : Date
+    - estado : EstadoReserva
+    - posicionEspera : int
+    --
+    + confirmar() : void
+    + cancelar() : void
+    + registrarAsistencia(asistio) : void
+    + promoverDesdeEspera() : void
+  }
+}
+
+Entrenador "1" --> "0..*" Clase : dicta
+Clase "1" *-- "0..*" ReservaClase : programa
+Cliente "1" --> "0..*" ReservaClase : reserva
+
+' ============================================================
+' Paquete: Cola Virtual
+' ============================================================
+
+package "ColaVirtual" {
+
+  class TurnoCola {
+    - idTurno : Long
+    - tipo : TipoTurno
+    - fechaSolicitud : DateTime
+    - posicion : int
+    - estado : EstadoTurno
+    - horaLlamado : DateTime
+    - horaAtencion : DateTime
+    --
+    + calcularEsperaEstimada(rotacionMin) : int
+    + llamar() : void
+    + marcarAtendido() : void
+    + expirar() : void
+    + cancelar() : void
+  }
+}
+
+Cliente "1" --> "0..*" TurnoCola : solicita
+Recepcionista "1" --> "0..*" TurnoCola : gestiona
+TurnoCola ..> ConfiguracionGimnasio : "usa ventana y rotación"
+
+' ============================================================
+' Paquete: Notificaciones
+' ============================================================
+
+package "Notificaciones" {
+
+  class Notificacion {
+    - idNotificacion : Long
+    - tipo : TipoNotificacion
+    - mensaje : String
+    - fechaEnvio : DateTime
+    - leida : boolean
+    --
+    + enviar() : void
+    + marcarLeida() : void
+  }
+}
+
+Usuario "1" --> "0..*" Notificacion : recibe
+
+' ============================================================
+' Enumeraciones
+' ============================================================
+
+package "Enumeraciones" {
+
+  enum EstadoUsuario {
+    ACTIVO
+    SUSPENDIDO
+  }
+
+  enum EstadoSuscripcion {
+    ACTIVA
+    CANCELADA
+    VENCIDA
+    SUSPENDIDA
+  }
+
+  enum EstadoPago {
+    PENDIENTE
+    APROBADO
+    RECHAZADO
+    REEMBOLSADO
+  }
+
+  enum EstadoReserva {
+    CONFIRMADA
+    EN_ESPERA
+    CANCELADA
+    ASISTIO
+    NO_ASISTIO
+  }
+
+  enum EstadoTurno {
+    ESPERANDO
+    LLAMADO
+    ATENDIDO
+    CANCELADO
+    EXPIRADO
+  }
+
+  enum TipoNotificacion {
+    RECORDATORIO_COBRO
+    RESULTADO_COBRO
+    CONFIRMACION_RESERVA
+    TURNO_PROXIMO
+    CANCELACION
+    AFORO
+  }
+}
+
+Usuario ..> EstadoUsuario
+Suscripcion ..> EstadoSuscripcion
+Pago ..> EstadoPago
+ReservaClase ..> EstadoReserva
+TurnoCola ..> EstadoTurno
+Notificacion ..> TipoNotificacion
+
+' ============================================================
+' Notas de trazabilidad con los problemas del proyecto
+' ============================================================
+
+note right of Suscripcion
+  cancelar() y activarRenovacion() dan al cliente
+  control total en línea sobre sus cobros.
+  Resuelve el problema de plataformas que no
+  permiten cancelar (CU-08, CU-09).
+end note
+
+note right of RegistroAforo
+  Base del mapa de calor por día y hora.
+  Resuelve la saturación horaria (CU-16).
+end note
+
+note right of TurnoCola
+  Turno remoto con posición, estimación
+  y aviso automático. Resuelve las colas (CU-22 a CU-25).
+end note
+@enduml

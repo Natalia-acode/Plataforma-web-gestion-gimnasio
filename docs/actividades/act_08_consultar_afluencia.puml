@@ -1,0 +1,38 @@
+@startuml ACT-08_Consultar_Afluencia
+title Actividad — Consultar Horarios de Mayor y Menor Afluencia (CU-16)
+
+|Cliente|
+start
+:Abrir la sección "Afluencia";
+
+|Sistema|
+:Obtener ocupación actual (check-ins activos);
+:Obtener histórico agregado\n(registro_aforo, últimas 4-8 semanas);
+:Calcular promedios por día de la semana y hora;
+:Construir el mapa de calor de afluencia;
+
+if (¿Hay datos históricos suficientes? (≥ 2 semanas)) then (sí)
+  :Mostrar mapa de calor día × hora;
+  :Destacar franjas de menor afluencia;
+  :Sugerir "la mejor hora para venir hoy";
+else (no)
+  :Mostrar aviso de historial insuficiente\ny los datos disponibles;
+endif
+
+|Cliente|
+if (¿Desea filtrar por zona?) then (sí)
+  :Seleccionar zona (pesas, cardio, salas);
+  |Sistema|
+  :Recalcular mapa de calor para la zona;
+  |Cliente|
+else (no)
+endif
+:Elegir su horario de visita;
+stop
+
+legend right
+  Resuelve la saturación horaria: el cliente elige
+  las franjas menos concurridas y distribuye su
+  visita, descongestionando las horas pico.
+endlegend
+@enduml

@@ -1,0 +1,503 @@
+@startuml Diagrama_Clases_Diseno_Spring
+title Diagrama de Clases de Diseño — Backend Spring Boot (React · Spring Boot · SQL Server)
+skinparam classAttributeIconSize 0
+
+' ============================================================
+' Capa Web — API REST (Spring MVC + Spring Security JWT)
+' ============================================================
+
+package "capa web — API REST" {
+
+  class AuthController {
+    + registro(dto)
+    + login(dto) : JWT
+    + recuperarContrasena(email)
+  }
+
+  class PlanController {
+    + listarPlanes() : List~PlanDTO~
+  }
+
+  class SuscripcionController {
+    + contratar(dto)
+    + cambiarPlan(id, dto)
+    + cancelar(id, motivo)
+    + gestionarRenovacion(id, activo)
+  }
+
+  class PagoController {
+    + listarPagos() : List~PagoDTO~
+    + descargarFactura(pagoId)
+    + registrarMetodoPago(dto)
+    + eliminarMetodoPago(id)
+  }
+
+  class CheckInController {
+    + checkInQR(qr)
+    + checkOut(usuarioId)
+  }
+
+  class AforoController {
+    + consultarOcupacion() : OcupacionDTO
+    + consultarAfluencia(filtros) : AfluenciaDTO
+  }
+
+  class ClaseController {
+    + listarClases(filtros)
+    + reservar(claseId, fecha)
+    + cancelarReserva(reservaId)
+    + pasarLista(claseId, asistencias)
+  }
+
+  class ColaController {
+    + solicitarTurno(tipo)
+    + consultarTurno() : TurnoDTO
+    + cancelarTurno()
+    + gestionarCola() : List~TurnoDTO~
+    + llamarSiguiente()
+  }
+
+  class UsuarioController {
+    + listarUsuarios(filtros)
+    + crearStaff(dto)
+    + suspender(id)
+    + asignarRol(id, rol)
+    + configurarAforo(parametros)
+    + gestionarZonas(dto)
+  }
+
+  class ReporteController {
+    + consultarReportes(periodo) : ReporteDTO
+    + exportar(periodo, formato)
+  }
+}
+
+' ============================================================
+' Capa de Servicio — lógica de negocio
+' ============================================================
+
+package "capa de servicio — negocio" {
+
+  class AuthService {
+    - passwordEncoder : BCryptPasswordEncoder
+    + registrar(dto) : Usuario
+    + autenticar(email, contrasena) : JWT
+    + recuperarContrasena(email)
+  }
+
+  class SuscripcionService {
+    + contratar(clienteId, planId, metodoId, renovacionAuto) : Suscripcion
+    + cambiarPlan(suscId, planId)
+    + cancelar(suscId, motivo)
+    + setRenovacionAutomatica(suscId, activo)
+    + obtenerPorVencer(dias) : List~Suscripcion~
+  }
+
+  class PagoService {
+    + procesarCobro(susc, metodo, tipo) : Pago
+    + reintentar(pagoId)
+    + emitirFactura(pago) : Factura
+  }
+
+  class PasarelaPagoClient <<Gateway>> {
+    + tokenizarTarjeta(datos) : Token
+    + cobrar(token, monto) : Transaccion
+    + reembolsar(txId)
+  }
+
+  class NotificacionService {
+    + enviar(usuarioId, tipo, mensaje)
+    + enviarRecordatorioCobro(susc)
+  }
+
+  class CheckInService {
+    + registrarEntrada(usuarioId, metodo) : CheckIn
+    + registrarSalida(checkInId)
+    + validarAcceso(usuarioId) : boolean
+  }
+
+  class AforoService {
+    + ocupacionActual() : int
+    + estadoSemaforo() : Semaforo
+    + afluenciaPorDiaHora() : List~Franja~
+    + configurar(parametros)
+    + generarSnapshot()
+  }
+
+  class ReservaService {
+    + reservar(usuarioId, claseId, fecha) : ReservaClase
+    + cancelar(reservaId)
+    + promoverListaEspera(claseId, fecha)
+  }
+
+  class ColaService {
+    + solicitarTurno(usuarioId, tipo) : TurnoCola
+    + estimarEspera() : int
+    + llamarSiguiente() : TurnoCola
+    + marcarAtendido(turnoId)
+    + expirarVencidos()
+    + cancelar(turnoId)
+  }
+
+  class ClaseService {
+    + listar(filtros) : List~Clase~
+    + crear(dto) : Clase
+    + desactivar(id)
+  }
+
+  class UsuarioService {
+    + listar(filtros)
+    + crearStaff(dto)
+    + suspender(id)
+    + asignarRol(id, rol)
+    + gestionarZonas(dto)
+  }
+
+  class ReporteService {
+    + ingresos(periodo) : Reporte
+    + ocupacion(periodo) : Reporte
+    + membresiasActivas() : Reporte
+  }
+}
+
+' ============================================================
+' Capa de Persistencia — Spring Data JPA
+' Un repositorio JpaRepository<T, ID> por entidad (se muestran
+' los representativos, con métodos de consulta clave)
+' ============================================================
+
+package "capa de persistencia — Spring Data JPA" {
+
+  interface UsuarioRepository {
+    + findByEmail(email) : Optional~Usuario~
+  }
+
+  interface SuscripcionRepository {
+    + findByEstadoAndFechaFinLessThanEqual(estado, fecha)
+    + findByEstadoAndRenovacionAutomaticaTrue(estado)
+  }
+
+  interface PagoRepository {
+    + findBySuscripcionIdOrderByFechaPagoDesc(id)
+  }
+
+  interface CheckInRepository {
+    + countByFechaHoraSalidaIsNull() : long
+    + findByFechaHoraEntradaBetween(desde, hasta)
+  }
+
+  interface ReservaClaseRepository {
+    + countByClaseIdAndFechaAndEstado(claseId, fecha, estado) : long
+    + findFirstByClaseIdAndFechaAndEstadoOrderByPosicionEspera(claseId, fecha, estado)
+  }
+
+  interface TurnoColaRepository {
+    + findFirstByEstadoOrderByFechaSolicitud(estado)
+    + findByEstadoOrderByFechaSolicitudAsc(estado)
+  }
+
+  interface RegistroAforoRepository {
+    + findByFechaBetween(desde, hasta)
+  }
+}
+
+' ============================================================
+' Capa de Entidades — JPA (mapea el modelo ER de SQL Server)
+' ============================================================
+
+package "entidades — JPA" {
+
+  abstract class Usuario {
+    - idUsuario : Long
+    - nombre : String
+    - apellidos : String
+    - email : String
+    - passwordHash : String
+    - telefono : String
+    - fechaNacimiento : LocalDate
+    - rol : Rol
+    - estado : EstadoUsuario
+    --
+    + estaActivo() : boolean
+  }
+
+  class Cliente
+  class Entrenador {
+    - especialidad : String
+  }
+  class Recepcionista
+  class Administrador
+
+  class Plan {
+    - idPlan : Long
+    - nombre : String
+    - precio : BigDecimal
+    - duracionDias : int
+    - activo : boolean
+  }
+
+  class Suscripcion {
+    - idSuscripcion : Long
+    - fechaInicio : LocalDate
+    - fechaFin : LocalDate
+    - estado : EstadoSuscripcion
+    - renovacionAutomatica : boolean
+    - fechaCancelacion : LocalDateTime
+    - motivoCancelacion : String
+    --
+    + esVigente() : boolean
+    + cancelar(motivo)
+  }
+
+  class MetodoPago {
+    - idMetodo : Long
+    - tipo : String
+    - ultimosCuatro : String
+    - tokenPasarela : String
+    - predeterminado : boolean
+    - activo : boolean
+  }
+
+  class Pago {
+    - idPago : Long
+    - monto : BigDecimal
+    - fechaPago : LocalDateTime
+    - tipo : String
+    - estado : EstadoPago
+    - numeroFactura : String
+    - idTransaccion : String
+  }
+
+  class CheckIn {
+    - idCheckIn : Long
+    - fechaHoraEntrada : LocalDateTime
+    - fechaHoraSalida : LocalDateTime
+    - metodo : String
+  }
+
+  class Zona {
+    - idZona : Long
+    - nombre : String
+    - tipo : String
+    - capacidadMaxima : int
+    - activa : boolean
+  }
+
+  class Clase {
+    - idClase : Long
+    - nombre : String
+    - diaSemana : String
+    - horaInicio : LocalTime
+    - horaFin : LocalTime
+    - cupoMaximo : int
+    - activa : boolean
+  }
+
+  class ReservaClase {
+    - idReserva : Long
+    - fecha : LocalDate
+    - estado : EstadoReserva
+    - posicionEspera : Integer
+  }
+
+  class TurnoCola {
+    - idTurno : Long
+    - tipo : String
+    - fechaSolicitud : LocalDateTime
+    - posicion : int
+    - estado : EstadoTurno
+    - horaLlamado : LocalDateTime
+    - horaAtencion : LocalDateTime
+  }
+
+  class Notificacion {
+    - idNotificacion : Long
+    - tipo : String
+    - mensaje : String
+    - fechaEnvio : LocalDateTime
+    - leida : boolean
+  }
+
+  class RegistroAforo {
+    - idRegistro : Long
+    - fecha : LocalDate
+    - hora : int
+    - ocupacionPromedio : int
+    - ocupacionMaxima : int
+    - totalIngresos : int
+  }
+
+  class ConfiguracionGimnasio {
+    - idConfig : Long
+    - capacidadMaxima : int
+    - umbralMedio : int
+    - umbralAlto : int
+    - ventanaTurnoMin : int
+    - tiempoRotacionMin : int
+    - reintentosCobro : int
+  }
+}
+
+' ============================================================
+' Procesos programados — Spring @Scheduled
+' ============================================================
+
+package "programado — @Scheduled" {
+
+  class RenovacionScheduler {
+    + recordatoriosCobro()
+    + ejecutarCobros()
+  }
+
+  class OperacionScheduler {
+    + expirarTurnosVencidos()
+    + generarSnapshotAforo()
+    + cierreJornada()
+  }
+}
+
+note bottom of OperacionScheduler
+  RenovacionScheduler: proceso diario de recordatorios
+  de cobro (RN-03) y cobros autorizados (CU-12).
+  OperacionScheduler: expiración de turnos cada minuto
+  (RN-08), snapshot de aforo cada hora (CU-16) y cierre
+  de jornada al final del día (RN-11).
+end note
+
+' ============================================================
+' Enumeraciones Java
+' ============================================================
+
+package "enumeraciones" {
+
+  enum Rol {
+    CLIENTE
+    RECEPCIONISTA
+    ENTRENADOR
+    ADMINISTRADOR
+  }
+
+  enum EstadoUsuario {
+    ACTIVO
+    SUSPENDIDO
+  }
+
+  enum EstadoSuscripcion {
+    ACTIVA
+    CANCELADA
+    VENCIDA
+    SUSPENDIDA
+  }
+
+  enum EstadoPago {
+    PENDIENTE
+    APROBADO
+    RECHAZADO
+    REEMBOLSADO
+  }
+
+  enum EstadoReserva {
+    CONFIRMADA
+    EN_ESPERA
+    CANCELADA
+    ASISTIO
+    NO_ASISTIO
+  }
+
+  enum EstadoTurno {
+    ESPERANDO
+    LLAMADO
+    ATENDIDO
+    CANCELADO
+    EXPIRADO
+  }
+}
+
+' ============================================================
+' Herencia y relaciones principales
+' ============================================================
+
+Usuario <|-- Cliente
+Usuario <|-- Entrenador
+Usuario <|-- Recepcionista
+Usuario <|-- Administrador
+
+Cliente "1" --> "0..*" Suscripcion : contrata
+Plan "1" --> "0..*" Suscripcion : define
+Suscripcion "1" *-- "0..*" Pago : genera
+MetodoPago "1" --> "0..*" Pago : cobra con
+Cliente "1" --> "0..*" MetodoPago : registra
+Cliente "1" --> "0..*" CheckIn : realiza
+Entrenador "1" --> "0..*" Clase : dicta
+Zona "1" --> "0..*" Clase : aloja
+Clase "1" *-- "0..*" ReservaClase : programa
+Cliente "1" --> "0..*" ReservaClase : reserva
+Cliente "1" --> "0..*" TurnoCola : solicita
+Usuario "1" --> "0..*" Notificacion : recibe
+
+Suscripcion --> EstadoSuscripcion
+Pago --> EstadoPago
+ReservaClase --> EstadoReserva
+TurnoCola --> EstadoTurno
+Usuario --> Rol
+
+' ============================================================
+' Dependencias entre capas (flujo de una petición REST)
+' ============================================================
+
+AuthController --> AuthService
+SuscripcionController --> SuscripcionService
+PagoController --> PagoService
+CheckInController --> CheckInService
+AforoController --> AforoService
+ClaseController --> ReservaService
+ColaController --> ColaService
+UsuarioController --> UsuarioService
+ReporteController --> ReporteService
+
+AuthService --> UsuarioRepository
+SuscripcionService --> SuscripcionRepository
+SuscripcionService ..> PagoService : "cobra alta o ajuste"
+PagoService --> PasarelaPagoClient
+PagoService --> PagoRepository
+CheckInService --> CheckInRepository
+CheckInService --> AforoService : "consulta ocupación"
+AforoService --> RegistroAforoRepository
+ReservaService --> ReservaClaseRepository
+ColaService --> TurnoColaRepository
+UsuarioService ..> NotificacionService
+
+RenovacionScheduler --> SuscripcionService
+OperacionScheduler --> ColaService : expira turnos
+OperacionScheduler --> AforoService : snapshot y cierre
+
+' ============================================================
+' Notas
+' ============================================================
+
+note bottom of SuscripcionController
+  Cancelación 100% en línea (CU-08):
+  DELETE /api/suscripciones/{id}.
+  Resuelve el problema de plataformas
+  que no permiten cancelar.
+end note
+
+note bottom of ColaService
+  Cola virtual (CU-22 a CU-25): posición,
+  estimación de espera y expiración de
+  turnos no atendidos (RN-08).
+end note
+
+note bottom of AforoService
+  Aforo en tiempo real (CU-15) y mapa de
+  calor por día y hora (CU-16) a partir de
+  check_in y registro_aforo.
+end note
+
+legend right
+  Convención REST: /api/{recurso}, JSON, autenticación JWT (Spring Security).
+  Los DTO (PlanDTO, PagoDTO, OcupacionDTO, TurnoDTO, ...) transportan datos
+  entre la capa web y la de servicio, evitando exponer las entidades JPA.
+  La capa de entidades mapea 1:1 el modelo ER (BD/ddl_gimnasio.sql).
+endlegend
+@enduml

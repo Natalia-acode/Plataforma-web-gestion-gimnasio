@@ -1,0 +1,38 @@
+@startuml CU-03_Acceso_y_Aforo
+title Casos de Uso — Módulo 3: Acceso y Aforo
+left to right direction
+skinparam packageStyle rectangle
+
+actor "Cliente" as cliente
+actor "Recepcionista" as recepcionista
+actor "Administrador" as admin
+
+rectangle "Módulo de Acceso y Aforo" {
+  usecase "CU-13\nRealizar check-in con QR" as CU13
+  usecase "CU-14\nRegistrar acceso manual y check-out" as CU14
+  usecase "CU-15\nConsultar ocupación en tiempo real" as CU15
+  usecase "CU-16\nConsultar horarios de mayor\ny menor afluencia" as CU16
+  usecase "CU-17\nConfigurar capacidad\ny umbrales de aforo" as CU17
+}
+
+cliente --> CU13
+recepcionista --> CU14
+cliente --> CU15
+recepcionista --> CU15
+admin --> CU15
+cliente --> CU16
+admin --> CU17
+
+CU13 ..> CU15 : actualiza ocupación
+
+note bottom of CU13
+  Si el aforo está completo, el sistema deniega
+  el ingreso y ofrece la cola virtual (CU-22).
+end note
+
+note bottom of CU16
+  Mapa de calor por día y hora, generado a partir
+  del histórico de check-ins. Resuelve el problema
+  de saturación horaria.
+end note
+@enduml

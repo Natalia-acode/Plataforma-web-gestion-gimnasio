@@ -1,0 +1,37 @@
+@startuml ACT-03_Cancelar_Suscripcion
+title Actividad — Cancelar Suscripción en Línea (CU-08)
+
+|Cliente|
+start
+:Abrir "Mi membresía" → "Cancelar suscripción";
+
+|Sistema|
+:Mostrar resumen: fin del período pagado,\npróximo cobro y servicios que perderá;
+:Informar política: sin costo, efectiva al\nfinal del período, acceso hasta fecha_fin (RN-02);
+
+|Cliente|
+:Indicar motivo de cancelación (opcional);
+:Confirmar cancelación\n(segunda confirmación explícita);
+
+|Sistema|
+if (¿El cliente confirmó?) then (sí)
+  :Desactivar renovación automática;
+  :Marcar suscripción como "cancelada\n(vigente hasta fecha_fin)";
+  :Registrar la acción en auditoría (RNF-07);
+  |Servicio de Notificaciones|
+  :Enviar confirmación con la\nfecha de corte del acceso;
+  |Cliente|
+  :Conservar acceso hasta fecha_fin,\nsin cargos posteriores;
+  stop
+else (no)
+  :Abortar operación sin cambios (FA-1);
+  stop
+endif
+
+legend right
+  Flujo estrella del proyecto: resuelve el
+  problema de plataformas que NO permiten
+  cancelar en línea ni detener los cobros.
+  Accesible en máximo 3 clics (RNF-05).
+endlegend
+@enduml

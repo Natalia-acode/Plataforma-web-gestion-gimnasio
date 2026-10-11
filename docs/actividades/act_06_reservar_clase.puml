@@ -1,0 +1,40 @@
+@startuml ACT-06_Reservar_Clase
+title Actividad — Reservar Clase Grupal con Lista de Espera (CU-18)
+
+|Cliente|
+start
+:Abrir calendario de clases;
+:Filtrar y seleccionar clase y fecha;
+
+|Sistema|
+if (¿Membresía vigente? (RN-05)) then (sí)
+  :Verificar cupo disponible para la sesión;
+  if (¿Hay cupo?) then (sí)
+    :Confirmar reserva (estado confirmada);
+    :Descontar cupo de la sesión;
+    |Servicio de Notificaciones|
+    :Enviar confirmación y recordatorio\nprevio a la clase;
+    stop
+  else (no)
+    |Sistema|
+    :Ofrecer lista de espera (RN-09);
+    |Cliente|
+    if (¿Acepta entrar a la lista de espera?) then (sí)
+      |Sistema|
+      :Registrar reserva en estado "en espera"\ncon su posición;
+      stop
+    else (no)
+      stop
+    endif
+  endif
+else (no)
+  :Bloquear la reserva y ofrecer\nrenovar la membresía (CU-06);
+  stop
+endif
+
+legend right
+  Cuando un cliente cancela su reserva (CU-19),
+  el sistema promueve automáticamente al primero
+  de la lista de espera y lo notifica (RN-09).
+endlegend
+@enduml

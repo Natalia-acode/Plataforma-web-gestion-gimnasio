@@ -1,0 +1,38 @@
+@startuml ACT-05_CheckIn_QR_Aforo
+title Actividad — Check-in con QR y Actualización de Aforo (CU-13)
+
+|Cliente|
+start
+:Mostrar código QR desde la web/app\n(o escanearlo en el lector de la entrada);
+
+|Sistema|
+:Validar QR y estado de la membresía;
+
+if (¿Membresía activa? (RN-05)) then (sí)
+  :Consultar ocupación actual\n(check-ins activos, RN-11);
+  if (¿Aforo disponible? (RN-06)) then (sí)
+    :Registrar entrada (check_in, método QR);
+    :Actualizar ocupación en tiempo real;
+    :Mostrar aforo actual y zonas\nde menor concurrencia;
+    stop
+  else (no)
+    :Denegar el ingreso y ofrecer\nla cola virtual (CU-22);
+    |Cliente|
+    if (¿Acepta entrar a la cola?) then (sí)
+      :Solicitar turno en cola virtual (CU-22);
+      stop
+    else (no)
+      stop
+    endif
+  endif
+else (no)
+  :Denegar el ingreso e informar el estado\n(renovar en línea o pasar a recepción);
+  stop
+endif
+
+legend right
+  El check-out (manual o automático al cierre
+  de jornada, RN-11) mantiene la ocupación exacta.
+  Este registro alimenta el mapa de calor (CU-16).
+endlegend
+@enduml

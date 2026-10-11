@@ -1,0 +1,34 @@
+@startuml CU-06_Administracion_y_Reportes
+title Casos de Uso — Módulo 6: Administración y Reportes
+left to right direction
+skinparam packageStyle rectangle
+
+actor "Administrador" as admin
+actor "Recepcionista" as recepcionista
+actor "Pasarela de\nPago" as pasarela <<externo>>
+
+rectangle "Módulo de Administración y Reportes" {
+  usecase "CU-26\nGestionar usuarios y roles" as CU26
+  usecase "CU-27\nGestionar planes y precios" as CU27
+  usecase "CU-28\nGestionar zonas y salas" as CU28
+  usecase "CU-29\nConsultar reportes y estadísticas" as CU29
+  usecase "CU-30\nVender membresía presencial" as CU30
+  usecase "CU-10\nGestionar métodos de pago\n(definido en Módulo 2)" as CU10
+}
+
+admin --> CU26
+admin --> CU27
+admin --> CU28
+admin --> CU29
+recepcionista --> CU30
+
+CU26 ..> CU27 : «extend» (gestión delegada)
+CU30 ..> CU10 : <<include>>
+CU30 ..> pasarela : cobro con tarjeta
+CU27 ..> CU29 : alimenta reportes de ingresos
+
+note bottom of CU30
+  Permite pago en efectivo o con tarjeta
+  para clientes que asisten presencialmente.
+end note
+@enduml

@@ -1,0 +1,40 @@
+@startuml CU-01_Cuenta_y_Seguridad
+title Casos de Uso — Módulo 1: Cuenta y Seguridad
+left to right direction
+skinparam packageStyle rectangle
+
+actor "Visitante" as visitante
+actor "Cliente" as cliente
+actor "Recepcionista" as recepcionista
+actor "Entrenador" as entrenador
+actor "Administrador" as admin
+actor "Servicio de\nNotificaciones" as notificaciones <<externo>>
+
+rectangle "Módulo de Cuenta y Seguridad" {
+  usecase "CU-01\nRegistrarse en la plataforma" as CU01
+  usecase "CU-02\nIniciar sesión" as CU02
+  usecase "CU-03\nRecuperar contraseña" as CU03
+  usecase "CU-04\nGestionar perfil" as CU04
+}
+
+visitante --> CU01
+visitante --> CU02
+visitante --> CU03
+cliente --> CU02
+recepcionista --> CU02
+entrenador --> CU02
+admin --> CU02
+
+cliente --> CU04
+entrenador --> CU04
+recepcionista --> CU04
+admin --> CU04
+
+CU01 ..> notificaciones : correo de bienvenida
+CU03 ..> notificaciones : envía enlace de recuperación
+
+note bottom of CU01
+  Al registrarse, el sistema crea la cuenta
+  con rol Cliente en estado activo.
+end note
+@enduml

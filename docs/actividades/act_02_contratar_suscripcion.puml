@@ -1,0 +1,47 @@
+@startuml ACT-02_Contratar_Suscripcion
+title Actividad — Contratar Suscripción con Consentimiento Explícito (CU-06)
+
+|Cliente|
+start
+:Seleccionar plan del catálogo;
+
+|Sistema|
+:Mostrar resumen: monto, fecha de inicio,\nvencimiento y próximo cobro;
+
+if (¿Tiene método de pago registrado?) then (sí)
+  |Cliente|
+  :Seleccionar método de pago;
+else (no)
+  |Cliente|
+  :Registrar método de pago (CU-10)\n(datos capturados por la pasarela);
+endif
+
+|Sistema|
+:Preguntar por la renovación automática\n(por defecto DESACTIVADA, opt-in explícito);
+
+|Cliente|
+:Confirmar contratación;
+
+|Pasarela de Pago|
+:Procesar cobro inicial;
+
+|Sistema|
+if (¿Pago aprobado?) then (sí)
+  :Registrar pago y activar suscripción\n(fecha_fin = inicio + duración);
+  :Emitir factura;
+  |Servicio de Notificaciones|
+  :Notificar confirmación indicando\npróximo cobro y cómo cancelar;
+  |Sistema|
+  :Mostrar membresía activa;
+  stop
+else (no)
+  :Mostrar motivo del rechazo y ofrecer\nreintentar con otro método (EX-1);
+  stop
+endif
+
+legend right
+  El cliente SIEMPRE ve monto y fecha del próximo
+  cobro antes de confirmar, y la renovación solo
+  se activa con su consentimiento (RN-01).
+endlegend
+@enduml
