@@ -1,0 +1,2617 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "API — Sistema de Gestión de Gimnasio",
+    "description": "API REST del sistema de gestión de gimnasio. Autenticación JWT (Spring Security); convención /api/{recurso} con JSON.",
+    "version": "0.1.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Generated server url"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/api/usuarios/{id}/suspender": {
+      "put": {
+        "tags": [
+          "Usuarios"
+        ],
+        "operationId": "suspender",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsuarioResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/usuarios/{id}/rol": {
+      "put": {
+        "tags": [
+          "Usuarios"
+        ],
+        "operationId": "asignarRol",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "rol",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsuarioResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/usuarios/{id}/reactivar": {
+      "put": {
+        "tags": [
+          "Usuarios"
+        ],
+        "operationId": "reactivar",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsuarioResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/usuarios/notificaciones/{id}/leida": {
+      "put": {
+        "tags": [
+          "Usuarios"
+        ],
+        "operationId": "marcarLeida",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/suscripciones/{id}/renovacion": {
+      "put": {
+        "tags": [
+          "Suscripciones"
+        ],
+        "operationId": "renovacion",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RenovacionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuscripcionResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/planes/{id}": {
+      "get": {
+        "tags": [
+          "Planes"
+        ],
+        "operationId": "obtener",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Planes"
+        ],
+        "operationId": "actualizar",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlanRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Planes"
+        ],
+        "operationId": "desactivar",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/pagos/metodos/{id}/predeterminado": {
+      "put": {
+        "tags": [
+          "Pagos"
+        ],
+        "operationId": "predeterminar",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/MetodoPagoResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/aforo/configuracion": {
+      "get": {
+        "tags": [
+          "Aforo y afluencia"
+        ],
+        "operationId": "configuracion",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConfiguracionResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Aforo y afluencia"
+        ],
+        "operationId": "actualizarConfiguracion",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AforoConfigRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConfiguracionResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/suscripciones": {
+      "post": {
+        "tags": [
+          "Suscripciones"
+        ],
+        "operationId": "contratar",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContratarSuscripcionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuscripcionResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/suscripciones/{id}/cancelar": {
+      "post": {
+        "tags": [
+          "Suscripciones"
+        ],
+        "operationId": "cancelar",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CancelarSuscripcionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuscripcionResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/suscripciones/{id}/cambiar-plan": {
+      "post": {
+        "tags": [
+          "Suscripciones"
+        ],
+        "operationId": "cambiarPlan",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CambiarPlanRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuscripcionResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/planes": {
+      "get": {
+        "tags": [
+          "Planes"
+        ],
+        "operationId": "listar",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PlanResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Planes"
+        ],
+        "operationId": "crear",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlanRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/pagos/metodos": {
+      "get": {
+        "tags": [
+          "Pagos"
+        ],
+        "operationId": "misMetodos",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MetodoPagoResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Pagos"
+        ],
+        "operationId": "registrarMetodo",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MetodoPagoRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/MetodoPagoResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cola/turno": {
+      "post": {
+        "tags": [
+          "Cola virtual"
+        ],
+        "operationId": "solicitar",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TurnoRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/TurnoResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Cola virtual"
+        ],
+        "operationId": "cancelar_1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/TurnoResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cola/gestion/{turnoId}/atendido": {
+      "post": {
+        "tags": [
+          "Cola virtual"
+        ],
+        "operationId": "atendido",
+        "parameters": [
+          {
+            "name": "turnoId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/TurnoResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cola/gestion/llamar-siguiente": {
+      "post": {
+        "tags": [
+          "Cola virtual"
+        ],
+        "operationId": "llamarSiguiente",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/TurnoResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/clases": {
+      "get": {
+        "tags": [
+          "Clases y reservas"
+        ],
+        "operationId": "listar_1",
+        "parameters": [
+          {
+            "name": "dia",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ClaseResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Clases y reservas"
+        ],
+        "operationId": "crear_1",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClaseRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClaseResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/clases/{id}/reservas": {
+      "post": {
+        "tags": [
+          "Clases y reservas"
+        ],
+        "operationId": "reservar",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReservaRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReservaResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/clases/reservas/{reservaId}/asistencia": {
+      "post": {
+        "tags": [
+          "Clases y reservas"
+        ],
+        "operationId": "marcarAsistencia",
+        "parameters": [
+          {
+            "name": "reservaId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "asistio",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReservaResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/checkin/{usuarioId}/salida": {
+      "post": {
+        "tags": [
+          "Check-in"
+        ],
+        "operationId": "checkOut",
+        "parameters": [
+          {
+            "name": "usuarioId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CheckInResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/checkin/qr": {
+      "post": {
+        "tags": [
+          "Check-in"
+        ],
+        "operationId": "checkInQr",
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CheckInResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/checkin/manual": {
+      "post": {
+        "tags": [
+          "Check-in"
+        ],
+        "operationId": "checkInManual",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CheckInManualRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CheckInResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/staff": {
+      "post": {
+        "tags": [
+          "Autenticación"
+        ],
+        "operationId": "crearStaff",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StaffRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsuarioResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/registro": {
+      "post": {
+        "tags": [
+          "Autenticación"
+        ],
+        "operationId": "registro",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegistroRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/recuperar-contrasena": {
+      "post": {
+        "tags": [
+          "Autenticación"
+        ],
+        "operationId": "recuperarContrasena",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecuperarContrasenaRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Accepted"
+          }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "tags": [
+          "Autenticación"
+        ],
+        "operationId": "login",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/usuarios": {
+      "get": {
+        "tags": [
+          "Usuarios"
+        ],
+        "operationId": "listar_2",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UsuarioResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/usuarios/{id}": {
+      "get": {
+        "tags": [
+          "Usuarios"
+        ],
+        "operationId": "obtener_1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsuarioResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/usuarios/notificaciones/mias": {
+      "get": {
+        "tags": [
+          "Usuarios"
+        ],
+        "operationId": "misNotificaciones",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NotificacionResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/suscripciones/{id}": {
+      "get": {
+        "tags": [
+          "Suscripciones"
+        ],
+        "operationId": "obtener_2",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuscripcionResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Suscripciones"
+        ],
+        "operationId": "cancelarAlias",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuscripcionResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/suscripciones/mis": {
+      "get": {
+        "tags": [
+          "Suscripciones"
+        ],
+        "operationId": "misSuscripciones",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SuscripcionResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/suscripciones/activa": {
+      "get": {
+        "tags": [
+          "Suscripciones"
+        ],
+        "operationId": "activa",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuscripcionResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reportes": {
+      "get": {
+        "tags": [
+          "Reportes"
+        ],
+        "operationId": "generar",
+        "parameters": [
+          {
+            "name": "desde",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "hasta",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReporteResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reportes/exportar": {
+      "get": {
+        "tags": [
+          "Reportes"
+        ],
+        "operationId": "exportar",
+        "parameters": [
+          {
+            "name": "desde",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "hasta",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/planes/todos": {
+      "get": {
+        "tags": [
+          "Planes"
+        ],
+        "operationId": "listarTodos",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PlanResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/pagos/{id}/factura": {
+      "get": {
+        "tags": [
+          "Pagos"
+        ],
+        "operationId": "factura",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagoResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/pagos/historial": {
+      "get": {
+        "tags": [
+          "Pagos"
+        ],
+        "operationId": "historial",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PagoResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cola/turno/mi": {
+      "get": {
+        "tags": [
+          "Cola virtual"
+        ],
+        "operationId": "miTurno",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/TurnoResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cola/gestion/cola": {
+      "get": {
+        "tags": [
+          "Cola virtual"
+        ],
+        "operationId": "cola",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TurnoResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/clases/{id}": {
+      "get": {
+        "tags": [
+          "Clases y reservas"
+        ],
+        "operationId": "obtener_3",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClaseResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Clases y reservas"
+        ],
+        "operationId": "desactivar_1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClaseResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/clases/{id}/asistentes": {
+      "get": {
+        "tags": [
+          "Clases y reservas"
+        ],
+        "operationId": "asistentes",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "fecha",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReservaResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/clases/reservas/mias": {
+      "get": {
+        "tags": [
+          "Clases y reservas"
+        ],
+        "operationId": "misReservas",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReservaResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/checkin/hoy": {
+      "get": {
+        "tags": [
+          "Check-in"
+        ],
+        "operationId": "hoy",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CheckInResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/checkin/dentro": {
+      "get": {
+        "tags": [
+          "Check-in"
+        ],
+        "operationId": "dentro",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CheckInResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/perfil": {
+      "get": {
+        "tags": [
+          "Autenticación"
+        ],
+        "operationId": "perfil",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsuarioResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/aforo/zonas": {
+      "get": {
+        "tags": [
+          "Aforo y afluencia"
+        ],
+        "operationId": "zonas",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ZonaResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/aforo/ocupacion": {
+      "get": {
+        "tags": [
+          "Aforo y afluencia"
+        ],
+        "operationId": "ocupacion",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AforoResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/aforo/afluencia": {
+      "get": {
+        "tags": [
+          "Aforo y afluencia"
+        ],
+        "operationId": "afluencia",
+        "parameters": [
+          {
+            "name": "horaDesde",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 5
+            }
+          },
+          {
+            "name": "horaHasta",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 22
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AfluenciaResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/usuarios/notificaciones/{id}": {
+      "delete": {
+        "tags": [
+          "Usuarios"
+        ],
+        "operationId": "descartar",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NotificacionResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/pagos/metodos/{id}": {
+      "delete": {
+        "tags": [
+          "Pagos"
+        ],
+        "operationId": "eliminarMetodo",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
+    "/api/clases/reservas/{reservaId}": {
+      "delete": {
+        "tags": [
+          "Clases y reservas"
+        ],
+        "operationId": "cancelarReserva",
+        "parameters": [
+          {
+            "name": "reservaId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReservaResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "UsuarioResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "nombre": {
+            "type": "string"
+          },
+          "apellidos": {
+            "type": "string"
+          },
+          "nombreCompleto": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "telefono": {
+            "type": "string"
+          },
+          "fechaNacimiento": {
+            "type": "string",
+            "format": "date"
+          },
+          "rol": {
+            "type": "string",
+            "enum": [
+              "CLIENTE",
+              "RECEPCIONISTA",
+              "ENTRENADOR",
+              "ADMINISTRADOR"
+            ]
+          },
+          "estado": {
+            "type": "string"
+          },
+          "fechaRegistro": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "RenovacionRequest": {
+        "type": "object",
+        "properties": {
+          "activa": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "activa"
+        ]
+      },
+      "SuscripcionResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "planId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "planNombre": {
+            "type": "string"
+          },
+          "precio": {
+            "type": "number"
+          },
+          "fechaInicio": {
+            "type": "string",
+            "format": "date"
+          },
+          "fechaFin": {
+            "type": "string",
+            "format": "date"
+          },
+          "estado": {
+            "type": "string"
+          },
+          "renovacionAutomatica": {
+            "type": "boolean"
+          },
+          "intentosCobro": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fechaCancelacion": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "motivoCancelacion": {
+            "type": "string"
+          },
+          "usuarioId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "usuarioNombre": {
+            "type": "string"
+          }
+        }
+      },
+      "PlanRequest": {
+        "type": "object",
+        "properties": {
+          "nombre": {
+            "type": "string",
+            "maxLength": 60,
+            "minLength": 0
+          },
+          "descripcion": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 0
+          },
+          "precio": {
+            "type": "number",
+            "minimum": 0.01
+          },
+          "duracionDias": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "activo": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "duracionDias",
+          "nombre",
+          "precio"
+        ]
+      },
+      "PlanResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "nombre": {
+            "type": "string"
+          },
+          "descripcion": {
+            "type": "string"
+          },
+          "precio": {
+            "type": "number"
+          },
+          "duracionDias": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "activo": {
+            "type": "boolean"
+          }
+        }
+      },
+      "MetodoPagoResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "tipo": {
+            "type": "string"
+          },
+          "ultimosCuatro": {
+            "type": "string"
+          },
+          "titular": {
+            "type": "string"
+          },
+          "predeterminado": {
+            "type": "boolean"
+          },
+          "activo": {
+            "type": "boolean"
+          }
+        }
+      },
+      "AforoConfigRequest": {
+        "type": "object",
+        "properties": {
+          "capacidadMaxima": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "umbralMedio": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "umbralAlto": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ventanaTurnoMin": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "tiempoRotacionMin": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "reintentosCobro": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "ConfiguracionResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "capacidadMaxima": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "umbralMedio": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "umbralAlto": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ventanaTurnoMin": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "tiempoRotacionMin": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "reintentosCobro": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "horarioApertura": {
+            "type": "string"
+          },
+          "horarioCierre": {
+            "type": "string"
+          }
+        }
+      },
+      "ContratarSuscripcionRequest": {
+        "type": "object",
+        "properties": {
+          "idPlan": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "idMetodo": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "renovacionAutomatica": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "idPlan"
+        ]
+      },
+      "CancelarSuscripcionRequest": {
+        "type": "object",
+        "properties": {
+          "motivo": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 0
+          }
+        }
+      },
+      "CambiarPlanRequest": {
+        "type": "object",
+        "properties": {
+          "idPlan": {
+            "type": "integer",
+            "format": "int64"
+          }
+        },
+        "required": [
+          "idPlan"
+        ]
+      },
+      "MetodoPagoRequest": {
+        "type": "object",
+        "properties": {
+          "tipo": {
+            "type": "string",
+            "minLength": 1
+          },
+          "numeroTarjeta": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\d{13,19}"
+          },
+          "titular": {
+            "type": "string",
+            "maxLength": 120,
+            "minLength": 0
+          },
+          "predeterminado": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "numeroTarjeta",
+          "tipo",
+          "titular"
+        ]
+      },
+      "TurnoRequest": {
+        "type": "object",
+        "properties": {
+          "tipo": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "tipo"
+        ]
+      },
+      "TurnoResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "tipo": {
+            "type": "string"
+          },
+          "estado": {
+            "type": "string"
+          },
+          "posicion": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fechaSolicitud": {
+            "type": "string"
+          },
+          "horaLLamado": {
+            "type": "string"
+          },
+          "personasDelante": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "esperaEstimadaMin": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "esMiTurno": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ClaseRequest": {
+        "type": "object",
+        "properties": {
+          "nombre": {
+            "type": "string",
+            "minLength": 1
+          },
+          "diaSemana": {
+            "type": "string",
+            "minLength": 1
+          },
+          "horaInicio": {
+            "type": "string",
+            "minLength": 1
+          },
+          "horaFin": {
+            "type": "string",
+            "minLength": 1
+          },
+          "cupoMaximo": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idEntrenador": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "idZona": {
+            "type": "integer",
+            "format": "int64"
+          }
+        },
+        "required": [
+          "cupoMaximo",
+          "diaSemana",
+          "horaFin",
+          "horaInicio",
+          "idEntrenador",
+          "idZona",
+          "nombre"
+        ]
+      },
+      "ClaseResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "nombre": {
+            "type": "string"
+          },
+          "diaSemana": {
+            "type": "string"
+          },
+          "horaInicio": {
+            "type": "string"
+          },
+          "horaFin": {
+            "type": "string"
+          },
+          "cupoMaximo": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "activa": {
+            "type": "boolean"
+          },
+          "entrenadorId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "entrenadorNombre": {
+            "type": "string"
+          },
+          "zonaId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "zonaNombre": {
+            "type": "string"
+          },
+          "reservasConfirmadas": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "cuposDisponibles": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "ReservaRequest": {
+        "type": "object",
+        "properties": {
+          "idClase": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "fecha": {
+            "type": "string",
+            "format": "date"
+          }
+        },
+        "required": [
+          "fecha",
+          "idClase"
+        ]
+      },
+      "ReservaResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "claseId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "claseNombre": {
+            "type": "string"
+          },
+          "diaSemana": {
+            "type": "string"
+          },
+          "horaInicio": {
+            "type": "string"
+          },
+          "fecha": {
+            "type": "string"
+          },
+          "estado": {
+            "type": "string"
+          },
+          "posicionEspera": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "CheckInResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "usuarioId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "usuarioNombre": {
+            "type": "string"
+          },
+          "fechaHoraEntrada": {
+            "type": "string"
+          },
+          "fechaHoraSalida": {
+            "type": "string"
+          },
+          "metodo": {
+            "type": "string"
+          }
+        }
+      },
+      "CheckInManualRequest": {
+        "type": "object",
+        "properties": {
+          "idUsuario": {
+            "type": "integer",
+            "format": "int64"
+          }
+        },
+        "required": [
+          "idUsuario"
+        ]
+      },
+      "StaffRequest": {
+        "type": "object",
+        "properties": {
+          "nombre": {
+            "type": "string",
+            "maxLength": 80,
+            "minLength": 0
+          },
+          "apellidos": {
+            "type": "string",
+            "maxLength": 80,
+            "minLength": 0
+          },
+          "email": {
+            "type": "string",
+            "maxLength": 120,
+            "minLength": 0
+          },
+          "contrasena": {
+            "type": "string",
+            "maxLength": 72,
+            "minLength": 8
+          },
+          "rol": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "apellidos",
+          "contrasena",
+          "email",
+          "nombre",
+          "rol"
+        ]
+      },
+      "RegistroRequest": {
+        "type": "object",
+        "properties": {
+          "nombre": {
+            "type": "string",
+            "maxLength": 80,
+            "minLength": 0
+          },
+          "apellidos": {
+            "type": "string",
+            "maxLength": 80,
+            "minLength": 0
+          },
+          "email": {
+            "type": "string",
+            "maxLength": 120,
+            "minLength": 0
+          },
+          "contrasena": {
+            "type": "string",
+            "maxLength": 72,
+            "minLength": 8
+          },
+          "telefono": {
+            "type": "string",
+            "maxLength": 20,
+            "minLength": 0
+          },
+          "fechaNacimiento": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "apellidos",
+          "contrasena",
+          "email",
+          "nombre"
+        ]
+      },
+      "LoginResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string"
+          },
+          "usuario": {
+            "$ref": "#/components/schemas/UsuarioResponse"
+          }
+        }
+      },
+      "RecuperarContrasenaRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "email"
+        ]
+      },
+      "LoginRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "minLength": 1
+          },
+          "contrasena": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "contrasena",
+          "email"
+        ]
+      },
+      "NotificacionResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "tipo": {
+            "type": "string"
+          },
+          "mensaje": {
+            "type": "string"
+          },
+          "fechaEnvio": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "leida": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PagoResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "suscripcionId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "planNombre": {
+            "type": "string"
+          },
+          "monto": {
+            "type": "number"
+          },
+          "fechaPago": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "tipo": {
+            "type": "string"
+          },
+          "estado": {
+            "type": "string"
+          },
+          "numeroFactura": {
+            "type": "string"
+          },
+          "idTransaccionPasarela": {
+            "type": "string"
+          },
+          "metodoResumen": {
+            "type": "string"
+          },
+          "mensajeError": {
+            "type": "string"
+          }
+        }
+      },
+      "ReporteResponse": {
+        "type": "object",
+        "properties": {
+          "desde": {
+            "type": "string"
+          },
+          "hasta": {
+            "type": "string"
+          },
+          "totalIngresos": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "ingresosTotales": {
+            "type": "number"
+          },
+          "checkIns": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "suscripcionesNuevas": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "suscripcionesCanceladas": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "reservasTomadas": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "inasistencias": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "pagosDelPeriodo": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PagoResponse"
+            }
+          }
+        }
+      },
+      "ZonaResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "nombre": {
+            "type": "string"
+          },
+          "tipo": {
+            "type": "string"
+          },
+          "capacidadMaxima": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "AforoResponse": {
+        "type": "object",
+        "properties": {
+          "personasDentro": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "capacidadMaxima": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "porcentajeOcupacion": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nivel": {
+            "type": "string"
+          },
+          "recomendacion": {
+            "type": "string"
+          }
+        }
+      },
+      "AfluenciaResponse": {
+        "type": "object",
+        "properties": {
+          "celdas": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CeldaAfluencia"
+            }
+          },
+          "horaMasConcurrida": {
+            "$ref": "#/components/schemas/CeldaAfluencia"
+          },
+          "horaMenosConcurrida": {
+            "$ref": "#/components/schemas/CeldaAfluencia"
+          }
+        }
+      },
+      "CeldaAfluencia": {
+        "type": "object",
+        "properties": {
+          "diaSemana": {
+            "type": "string"
+          },
+          "diaIndice": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hora": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ocupacionPromedio": {
+            "type": "number",
+            "format": "double"
+          },
+          "ocupacionMaxima": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "name": "bearerAuth",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
