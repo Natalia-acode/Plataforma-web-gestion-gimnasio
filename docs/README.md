@@ -24,22 +24,6 @@ Documentación de análisis y diseño del sistema, en formato PlantUML + Markdow
 | [actividades/](actividades/) | 8 diagramas de actividad de los procesos clave |
 | [imagenes/](imagenes/) | Las 18 imágenes PNG ya renderizadas, listas para pegar en el informe |
 
-## Cómo renderizar los diagramas (.puml)
-
-Opción recomendada en IntelliJ IDEA:
-
-1. `File > Settings > Plugins` → instalar **PlantUML Integration** (gratis, de Eugene Steinberg).
-2. Abrir cualquier archivo `.puml` → se previsualiza automáticamente en el panel derecho.
-3. Para exportar imagen para el informe: clic derecho en el archivo → `PlantUML > Export to PNG` (o SVG para mejor calidad).
-
-Alternativas:
-- **Online**: https://www.plantuml.com/plantuml → pegar el contenido del archivo.
-- **VS Code**: extensión `jebbs.plantuml`.
-- **CLI**: `java -jar plantuml.jar -tpng -o docs/imagenes docs/**/*.puml` (con `plantuml.jar` descargado de las releases oficiales de GitHub).
-
-> Las imágenes en `docs/imagenes/` ya están generadas y validadas; vuelve a ejecutar el comando CLI (o exporta desde IntelliJ) cada vez que modifiques un `.puml`.
-
-> Nota: los archivos usan UTF-8; los acentos, `ñ` y `¿` se renderizan correctamente.
 
 ## Convenciones
 
