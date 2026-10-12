@@ -1,18 +1,6 @@
-import { NavLink, Outlet, useNavigate } from 'react-router-dom'
+import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom'
+import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap'
 import { useAuth } from '../auth/AuthContext.jsx'
-
-const ICONOS = {
-  inicio: '🏠',
-  clases: '📅',
-  cola: '⏳',
-  planes: '🏋️',
-  suscripciones: '💳',
-  pagos: '🧾',
-  recepcion: '🛎️',
-  colaGestion: '📋',
-  usuarios: '👥',
-  reportes: '📊',
-}
 
 export default function Layout() {
   const { usuario, esCliente, esStaff, esAdministrador, logout } = useAuth()
@@ -24,77 +12,95 @@ export default function Layout() {
   }
 
   return (
-    <div className="layout">
-      <aside className="sidebar">
-        <div className="marca">
-          <span className="marca-logo">💪</span>
-          <div>
-            <strong>Gimnasio</strong>
-            <small>Gestión integral</small>
-          </div>
-        </div>
+    <div className="d-flex flex-column min-vh-100 bg-body-tertiary">
+      <Navbar bg="dark" data-bs-theme="dark" expand="lg" className="shadow-sm">
+        <Container fluid="xl">
+          <Navbar.Brand as={Link} to="/" className="fw-bold">
+            💪 Gimnasio
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="menu-principal" />
+          <Navbar.Collapse id="menu-principal">
+            <Nav className="me-auto">
+              <NavLink to="/" end className="nav-link">
+                <i className="bi bi-house-door me-1" aria-hidden="true" />
+                Inicio
+              </NavLink>
+              <NavLink to="/clases" className="nav-link">
+                <i className="bi bi-calendar3 me-1" aria-hidden="true" />
+                Clases
+              </NavLink>
+              {esCliente && (
+                <>
+                  <NavLink to="/cola" className="nav-link">
+                    <i className="bi bi-hourglass-split me-1" aria-hidden="true" />
+                    Cola virtual
+                  </NavLink>
+                  <NavLink to="/planes" className="nav-link">
+                    <i className="bi bi-card-list me-1" aria-hidden="true" />
+                    Planes
+                  </NavLink>
+                  <NavLink to="/suscripcion" className="nav-link">
+                    <i className="bi bi-credit-card me-1" aria-hidden="true" />
+                    Mi suscripción
+                  </NavLink>
+                  <NavLink to="/pagos" className="nav-link">
+                    <i className="bi bi-receipt me-1" aria-hidden="true" />
+                    Pagos
+                  </NavLink>
+                </>
+              )}
+              {esStaff && (
+                <>
+                  <NavLink to="/recepcion" className="nav-link">
+                    <i className="bi bi-person-badge me-1" aria-hidden="true" />
+                    Recepción
+                  </NavLink>
+                  <NavLink to="/cola-gestion" className="nav-link">
+                    <i className="bi bi-list-check me-1" aria-hidden="true" />
+                    Cola (staff)
+                  </NavLink>
+                </>
+              )}
+              {esAdministrador && (
+                <>
+                  <NavLink to="/usuarios" className="nav-link">
+                    <i className="bi bi-people me-1" aria-hidden="true" />
+                    Usuarios
+                  </NavLink>
+                  <NavLink to="/reportes" className="nav-link">
+                    <i className="bi bi-bar-chart me-1" aria-hidden="true" />
+                    Reportes
+                  </NavLink>
+                </>
+              )}
+            </Nav>
+            <NavDropdown
+              align="end"
+              id="menu-usuario"
+              title={
+                <span>
+                  <i className="bi bi-person-circle me-1" aria-hidden="true" />
+                  {usuario?.nombreCompleto}
+                </span>
+              }
+            >
+              <NavDropdown.Header>
+                {usuario?.nombreCompleto}
+                <div className="text-secondary small">{usuario?.rol?.toLowerCase()}</div>
+              </NavDropdown.Header>
+              <NavDropdown.Divider />
+              <NavDropdown.Item onClick={cerrarSesion}>
+                <i className="bi bi-box-arrow-right me-2" aria-hidden="true" />
+                Cerrar sesión
+              </NavDropdown.Item>
+            </NavDropdown>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
 
-        <nav>
-          <NavLink to="/" end>
-            <span>{ICONOS.inicio}</span> Inicio
-          </NavLink>
-          <NavLink to="/clases">
-            <span>{ICONOS.clases}</span> Clases
-          </NavLink>
-
-          {esCliente && (
-            <>
-              <NavLink to="/cola">
-                <span>{ICONOS.cola}</span> Cola virtual
-              </NavLink>
-              <NavLink to="/planes">
-                <span>{ICONOS.planes}</span> Planes
-              </NavLink>
-              <NavLink to="/suscripcion">
-                <span>{ICONOS.suscripciones}</span> Mi suscripción
-              </NavLink>
-              <NavLink to="/pagos">
-                <span>{ICONOS.pagos}</span> Pagos
-              </NavLink>
-            </>
-          )}
-
-          {esStaff && (
-            <NavLink to="/recepcion">
-              <span>{ICONOS.recepcion}</span> Recepción
-            </NavLink>
-          )}
-          {esStaff && (
-            <NavLink to="/cola-gestion">
-              <span>{ICONOS.colaGestion}</span> Cola (staff)
-            </NavLink>
-          )}
-          {esAdministrador && (
-            <>
-              <NavLink to="/usuarios">
-                <span>{ICONOS.usuarios}</span> Usuarios
-              </NavLink>
-              <NavLink to="/reportes">
-                <span>{ICONOS.reportes}</span> Reportes
-              </NavLink>
-            </>
-          )}
-        </nav>
-
-        <div className="sesion">
-          <div className="sesion-datos">
-            <strong>{usuario?.nombreCompleto}</strong>
-            <small>{usuario?.rol?.toLowerCase()}</small>
-          </div>
-          <button className="boton secundario" onClick={cerrarSesion}>
-            Salir
-          </button>
-        </div>
-      </aside>
-
-      <main className="contenido">
+      <Container fluid="xl" className="py-4 flex-grow-1">
         <Outlet />
-      </main>
+      </Container>
     </div>
   )
 }

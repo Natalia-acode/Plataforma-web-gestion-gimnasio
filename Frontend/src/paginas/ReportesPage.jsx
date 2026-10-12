@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Button, Card, Col, Form, Row, Table } from 'react-bootstrap'
 import { reportesApi } from '../api/endpoints.js'
 import { getToken } from '../api/client.js'
 import {
@@ -6,6 +7,7 @@ import {
   Cargando,
   Mensaje,
   Etiqueta,
+  EncabezadoPagina,
   etiquetaEstado,
   formatearMoneda,
   formatearFechaHora,
@@ -58,33 +60,52 @@ export default function ReportesPage() {
     URL.revokeObjectURL(enlace.href)
   }
 
+  const kpis = reporte
+    ? [
+        {
+          valor: formatearMoneda(reporte.ingresosTotales),
+          etiqueta: `Ingresos aprobados (${reporte.totalIngresos} pagos)`,
+        },
+        { valor: reporte.checkIns, etiqueta: 'Ingresos al gimnasio' },
+        { valor: reporte.suscripcionesNuevas, etiqueta: 'Suscripciones nuevas' },
+        { valor: reporte.suscripcionesCanceladas, etiqueta: 'Suscripciones canceladas' },
+        { valor: reporte.reservasTomadas, etiqueta: 'Reservas de clase' },
+        { valor: reporte.inasistencias, etiqueta: 'Inasistencias a clase' },
+      ]
+    : []
+
   return (
     <div>
-      <div className="encabezado-pagina">
-        <div>
-          <h1>Reportes</h1>
-          <p>Ingresos, ocupación y uso de clases en el periodo seleccionado.</p>
-        </div>
-        <button className="boton secundario" onClick={exportar}>
+      <EncabezadoPagina
+        titulo="Reportes"
+        subtitulo="Ingresos, ocupación y uso de clases en el periodo seleccionado."
+      >
+        <Button variant="outline-secondary" onClick={exportar}>
           Exportar pagos (CSV)
-        </button>
-      </div>
+        </Button>
+      </EncabezadoPagina>
 
       <Mensaje tipo="error">{error}</Mensaje>
 
-      <Tarjeta titulo="Periodo">
-        <div className="fila-botones">
-          <label style={{ marginBottom: 0 }}>
-            Desde
-            <input type="date" value={desde} onChange={(e) => setDesde(e.target.value)} />
-          </label>
-          <label style={{ marginBottom: 0 }}>
-            Hasta
-            <input type="date" value={hasta} onChange={(e) => setHasta(e.target.value)} />
-          </label>
-          <button className="boton" onClick={() => cargar()}>
-            Generar reporte
-          </button>
+      <Tarjeta titulo="Periodo" className="mb-4">
+        <div className="d-flex flex-wrap align-items-end gap-3">
+          <Form.Group controlId="reporteDesde" className="mb-0">
+            <Form.Label className="mb-1">Desde</Form.Label>
+            <Form.Control
+              type="date"
+              value={desde}
+              onChange={(e) => setDesde(e.target.value)}
+            />
+          </Form.Group>
+          <Form.Group controlId="reporteHasta" className="mb-0">
+            <Form.Label className="mb-1">Hasta</Form.Label>
+            <Form.Control
+              type="date"
+              value={hasta}
+              onChange={(e) => setHasta(e.target.value)}
+            />
+          </Form.Group>
+          <Button onClick={() => cargar()}>Generar reporte</Button>
         </div>
       </Tarjeta>
 
@@ -93,38 +114,24 @@ export default function ReportesPage() {
       ) : (
         reporte && (
           <>
-            <div className="grid-3">
-              <div className="kpi">
-                <strong>{formatearMoneda(reporte.ingresosTotales)}</strong>
-                <span>Ingresos aprobados ({reporte.totalIngresos} pagos)</span>
-              </div>
-              <div className="kpi">
-                <strong>{reporte.checkIns}</strong>
-                <span>Ingresos al gimnasio</span>
-              </div>
-              <div className="kpi">
-                <strong>{reporte.suscripcionesNuevas}</strong>
-                <span>Suscripciones nuevas</span>
-              </div>
-              <div className="kpi">
-                <strong>{reporte.suscripcionesCanceladas}</strong>
-                <span>Suscripciones canceladas</span>
-              </div>
-              <div className="kpi">
-                <strong>{reporte.reservasTomadas}</strong>
-                <span>Reservas de clase</span>
-              </div>
-              <div className="kpi">
-                <strong>{reporte.inasistencias}</strong>
-                <span>Inasistencias a clase</span>
-              </div>
-            </div>
+            <Row className="g-3 mb-4">
+              {kpis.map((kpi) => (
+                <Col md={6} lg={4} key={kpi.etiqueta}>
+                  <Card className="text-center shadow-sm h-100">
+                    <Card.Body>
+                      <div className="fs-3 fw-bold">{kpi.valor}</div>
+                      <div className="text-secondary">{kpi.etiqueta}</div>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              ))}
+            </Row>
 
             <Tarjeta titulo="Pagos del periodo">
               {reporte.pagosDelPeriodo.length === 0 ? (
-                <p className="apagado">No hubo pagos en el periodo.</p>
+                <p className="text-secondary mb-0">No hubo pagos en el periodo.</p>
               ) : (
-                <table className="tabla">
+                <Table hover responsive className="align-middle mb-0">
                   <thead>
                     <tr>
                       <th>Fecha</th>
@@ -149,7 +156,7 @@ export default function ReportesPage() {
                       </tr>
                     ))}
                   </tbody>
-                </table>
+                </Table>
               )}
             </Tarjeta>
           </>

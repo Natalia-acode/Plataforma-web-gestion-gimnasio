@@ -1,13 +1,9 @@
 @startuml Arquitectura_Sistema
-title Arquitectura del Sistema — React (SPA) · Spring Boot · SQL Server
+title Arquitectura del Sistema — Spring Boot (Java) · SQL Server
 skinparam componentStyle rectangle
 
 actor "Cliente" as cliente
 actor "Recepción · Entrenador\n· Administración" as staff
-
-package "Frontend — React SPA" {
-  component "Aplicación web React\n(React Router · Axios)\nMódulos: Cliente · Recepción\n· Entrenador · Administración" as spa
-}
 
 package "Backend — Spring Boot" {
   component "API REST\n(Spring MVC + Spring Security JWT)" as api
@@ -21,9 +17,8 @@ database "SQL Server\nGimnasioDB" as db
 cloud "Pasarela de Pago\n(API REST · tokenización)" as pasarela
 cloud "Servicio de Notificaciones\n(SMTP / push)" as notif
 
-cliente --> spa
-staff --> spa
-spa --> api : "HTTPS · JSON + JWT"
+cliente --> api : "HTTPS · JSON + JWT"
+staff --> api : "HTTPS · JSON + JWT"
 api --> servicios
 scheduler --> servicios
 servicios --> datos
@@ -32,7 +27,6 @@ servicios --> pasarela : "tokenización y cobros"
 servicios --> notif : "correos y avisos"
 
 legend right
-  Frontend: React (SPA responsive) — consume la API REST.
   Backend: Spring Boot (Java) — capas controller / service / repository.
   Base de datos: Microsoft SQL Server (DDL: BD/ddl_gimnasio.sql).
   Seguridad: JWT + BCrypt; tarjetas tokenizadas por la pasarela (PCI delegado, RNF-02).

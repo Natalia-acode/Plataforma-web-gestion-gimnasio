@@ -1,8 +1,15 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { Badge, Button, Col, ListGroup, Row, Table } from 'react-bootstrap'
 import { useAuth } from '../auth/AuthContext.jsx'
 import { aforoApi, clasesApi, suscripcionesApi, usuariosApi } from '../api/endpoints.js'
-import { Tarjeta, Cargando, Mensaje, formatearMoneda } from '../componentes/comunes.jsx'
+import {
+  Tarjeta,
+  Cargando,
+  Mensaje,
+  EncabezadoPagina,
+  formatearMoneda,
+} from '../componentes/comunes.jsx'
 import SemaforoAforo from '../componentes/SemaforoAforo.jsx'
 import MapaCalor from '../componentes/MapaCalor.jsx'
 
@@ -70,89 +77,93 @@ export default function DashboardPage() {
 
   return (
     <div>
-      <div className="encabezado-pagina">
-        <div>
-          <h1>Hola, {usuario?.nombre}</h1>
-          <p>
-            {new Date().toLocaleDateString('es-CO', {
-              weekday: 'long',
-              day: 'numeric',
-              month: 'long',
-            })}
-          </p>
-        </div>
-        <Link className="boton secundario" to="/clases">
+      <EncabezadoPagina
+        titulo={`Hola, ${usuario?.nombre}`}
+        subtitulo={new Date().toLocaleDateString('es-CO', {
+          weekday: 'long',
+          day: 'numeric',
+          month: 'long',
+        })}
+      >
+        <Button as={Link} to="/clases" variant="outline-secondary">
           Ver clases de hoy
-        </Link>
-      </div>
+        </Button>
+      </EncabezadoPagina>
 
       <Mensaje tipo="error">{error}</Mensaje>
 
-      <div className="grid-2">
-        <Tarjeta titulo="Ocupación en tiempo real">
-          <SemaforoAforo ocupacion={ocupacion} />
-          <p className="apagado" style={{ fontSize: '0.8rem', marginBottom: 0 }}>
-            Se actualiza automáticamente cada 30 segundos.
-          </p>
-        </Tarjeta>
+      <Row className="g-4 mb-4">
+        <Col lg={6}>
+          <Tarjeta titulo="Ocupación en tiempo real" className="h-100">
+            <SemaforoAforo ocupacion={ocupacion} />
+            <p className="text-secondary small mb-0">
+              Se actualiza automáticamente cada 30 segundos.
+            </p>
+          </Tarjeta>
+        </Col>
 
         {esCliente && (
-          <Tarjeta
-            titulo="Mi suscripción"
-            extra={
-              <Link className="boton pequeno secundario" to="/suscripcion">
-                Gestionar
-              </Link>
-            }
-          >
-            {suscripcion ? (
-              <>
-                <h3>{suscripcion.planNombre}</h3>
-                <p className="apagado">
-                  Vigente hasta {suscripcion.fechaFin} ·{' '}
-                  {formatearMoneda(suscripcion.precio)} por periodo
+          <Col lg={6}>
+            <Tarjeta
+              titulo="Mi suscripción"
+              className="h-100"
+              extra={
+                <Button as={Link} to="/suscripcion" size="sm" variant="outline-secondary">
+                  Gestionar
+                </Button>
+              }
+            >
+              {suscripcion ? (
+                <>
+                  <h3 className="h5">{suscripcion.planNombre}</h3>
+                  <p className="text-secondary mb-2">
+                    Vigente hasta {suscripcion.fechaFin} ·{' '}
+                    {formatearMoneda(suscripcion.precio)} por periodo
+                  </p>
+                  <p className="mb-0">
+                    Renovación automática:{' '}
+                    <Badge bg={suscripcion.renovacionAutomatica ? 'success' : 'secondary'}>
+                      {suscripcion.renovacionAutomatica ? 'activada' : 'desactivada'}
+                    </Badge>
+                  </p>
+                </>
+              ) : (
+                <p className="text-secondary mb-0">
+                  Aún no tienes una suscripción activa.{' '}
+                  <Link to="/planes">Explora los planes disponibles</Link>.
                 </p>
-                <p>
-                  Renovación automática:{' '}
-                  <strong>{suscripcion.renovacionAutomatica ? 'activada' : 'desactivada'}</strong>
-                </p>
-              </>
-            ) : (
-              <p className="apagado">
-                Aún no tienes una suscripción activa.{' '}
-                <Link to="/planes">Explora los planes disponibles</Link>.
-              </p>
-            )}
-          </Tarjeta>
+              )}
+            </Tarjeta>
+          </Col>
         )}
-      </div>
+      </Row>
 
       {esCliente && notificaciones.length > 0 && (
-        <Tarjeta titulo="Avisos recientes">
-          <ul className="lista-simple">
+        <Tarjeta titulo="Avisos recientes" className="mb-4">
+          <ListGroup variant="flush">
             {notificaciones.map((n) => (
-              <li key={n.id} className="notificacion-no-leida">
-                <span>{n.mensaje}</span>
-                <button
-                  className="boton pequeno secundario"
-                  onClick={() => marcarLeida(n.id)}
-                >
+              <ListGroup.Item
+                key={n.id}
+                className="d-flex justify-content-between align-items-center px-0 notificacion-no-leida"
+              >
+                <span className="me-3">{n.mensaje}</span>
+                <Button size="sm" variant="outline-secondary" onClick={() => marcarLeida(n.id)}>
                   Visto
-                </button>
-              </li>
+                </Button>
+              </ListGroup.Item>
             ))}
-          </ul>
+          </ListGroup>
         </Tarjeta>
       )}
 
-      <Tarjeta titulo="Mapa de calor de afluencia">
-        <p className="apagado">
+      <Tarjeta titulo="Mapa de calor de afluencia" className="mb-4">
+        <p className="text-secondary">
           Consulta las franjas menos concurridas antes de venir: verde claro = poca gente, verde
           intenso = más gente.
         </p>
         {afluencia ? <MapaCalor celdas={afluencia.celdas} /> : <Cargando />}
         {afluencia?.horaMenosConcurrida && (
-          <p className="mensaje info">
+          <p className="alert alert-info">
             Sugerencia: la franja más tranquila suele ser{' '}
             <strong>
               {afluencia.horaMenosConcurrida.diaSemana} a las{' '}
@@ -169,9 +180,9 @@ export default function DashboardPage() {
 
       <Tarjeta titulo="Clases de hoy">
         {clasesHoy.length === 0 ? (
-          <p className="apagado">No hay clases programadas para hoy.</p>
+          <p className="text-secondary mb-0">No hay clases programadas para hoy.</p>
         ) : (
-          <table className="tabla">
+          <Table hover responsive className="align-middle mb-0">
             <thead>
               <tr>
                 <th>Clase</th>
@@ -192,15 +203,15 @@ export default function DashboardPage() {
                   <td>
                     {clase.cuposDisponibles} de {clase.cupoMaximo}
                   </td>
-                  <td>
-                    <Link className="boton pequeno" to="/clases">
+                  <td className="text-end">
+                    <Button as={Link} to="/clases" size="sm">
                       Reservar
-                    </Link>
+                    </Button>
                   </td>
                 </tr>
               ))}
             </tbody>
-          </table>
+          </Table>
         )}
       </Tarjeta>
     </div>

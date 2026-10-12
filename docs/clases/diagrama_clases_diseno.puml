@@ -1,5 +1,5 @@
 @startuml Diagrama_Clases_Diseno_Spring
-title Diagrama de Clases de Diseño — Backend Spring Boot (React · Spring Boot · SQL Server)
+title Diagrama de Clases de Diseño — Backend Spring Boot (Java · SQL Server)
 skinparam classAttributeIconSize 0
 
 ' ============================================================

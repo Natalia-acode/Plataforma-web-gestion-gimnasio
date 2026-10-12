@@ -1,6 +1,14 @@
 import { useEffect, useState } from 'react'
+import { Button, Col, Form, Row, Table } from 'react-bootstrap'
 import { usuariosApi } from '../api/endpoints.js'
-import { Tarjeta, Cargando, Mensaje, Etiqueta, etiquetaEstado } from '../componentes/comunes.jsx'
+import {
+  Tarjeta,
+  Cargando,
+  Mensaje,
+  Etiqueta,
+  EncabezadoPagina,
+  etiquetaEstado,
+} from '../componentes/comunes.jsx'
 
 const ROLES = ['CLIENTE', 'RECEPCIONISTA', 'ENTRENADOR', 'ADMINISTRADOR']
 
@@ -87,76 +95,82 @@ export default function UsuariosPage() {
 
   return (
     <div>
-      <div className="encabezado-pagina">
-        <div>
-          <h1>Usuarios</h1>
-          <p>Administra cuentas, roles y suspensiones del personal y de los clientes.</p>
-        </div>
-      </div>
+      <EncabezadoPagina
+        titulo="Usuarios"
+        subtitulo="Administra cuentas, roles y suspensiones del personal y de los clientes."
+      />
 
       <Mensaje tipo="error">{error}</Mensaje>
       <Mensaje tipo="exito">{exito}</Mensaje>
 
-      <Tarjeta titulo="Crear cuenta de personal">
-        <form onSubmit={crearStaff} className="grid-2">
-          <div>
-            <label>
-              Nombre
-              <input
-                value={nuevoStaff.nombre}
-                onChange={(e) => setNuevoStaff({ ...nuevoStaff, nombre: e.target.value })}
-                required
-              />
-            </label>
-            <label>
-              Apellidos
-              <input
-                value={nuevoStaff.apellidos}
-                onChange={(e) => setNuevoStaff({ ...nuevoStaff, apellidos: e.target.value })}
-                required
-              />
-            </label>
-          </div>
-          <div>
-            <label>
-              Correo
-              <input
-                type="email"
-                value={nuevoStaff.email}
-                onChange={(e) => setNuevoStaff({ ...nuevoStaff, email: e.target.value })}
-                required
-              />
-            </label>
-            <label>
-              Contraseña temporal
-              <input
-                type="password"
-                minLength={8}
-                value={nuevoStaff.contrasena}
-                onChange={(e) => setNuevoStaff({ ...nuevoStaff, contrasena: e.target.value })}
-                required
-              />
-            </label>
-            <label>
-              Rol
-              <select
-                value={nuevoStaff.rol}
-                onChange={(e) => setNuevoStaff({ ...nuevoStaff, rol: e.target.value })}
-              >
-                <option value="recepcionista">Recepcionista</option>
-                <option value="entrenador">Entrenador</option>
-                <option value="administrador">Administrador</option>
-              </select>
-            </label>
-          </div>
-          <div style={{ gridColumn: '1 / -1' }}>
-            <button className="boton">Crear cuenta</button>
-          </div>
-        </form>
+      <Tarjeta titulo="Crear cuenta de personal" className="mb-4">
+        <Form onSubmit={crearStaff}>
+          <Row className="g-3">
+            <Col md={6}>
+              <Form.Group controlId="staffNombre">
+                <Form.Label>Nombre</Form.Label>
+                <Form.Control
+                  value={nuevoStaff.nombre}
+                  onChange={(e) => setNuevoStaff({ ...nuevoStaff, nombre: e.target.value })}
+                  required
+                />
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <Form.Group controlId="staffApellidos">
+                <Form.Label>Apellidos</Form.Label>
+                <Form.Control
+                  value={nuevoStaff.apellidos}
+                  onChange={(e) => setNuevoStaff({ ...nuevoStaff, apellidos: e.target.value })}
+                  required
+                />
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <Form.Group controlId="staffEmail">
+                <Form.Label>Correo</Form.Label>
+                <Form.Control
+                  type="email"
+                  value={nuevoStaff.email}
+                  onChange={(e) => setNuevoStaff({ ...nuevoStaff, email: e.target.value })}
+                  required
+                />
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <Form.Group controlId="staffContrasena">
+                <Form.Label>Contraseña temporal</Form.Label>
+                <Form.Control
+                  type="password"
+                  minLength={8}
+                  value={nuevoStaff.contrasena}
+                  onChange={(e) => setNuevoStaff({ ...nuevoStaff, contrasena: e.target.value })}
+                  required
+                />
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <Form.Group controlId="staffRol">
+                <Form.Label>Rol</Form.Label>
+                <Form.Select
+                  value={nuevoStaff.rol}
+                  onChange={(e) => setNuevoStaff({ ...nuevoStaff, rol: e.target.value })}
+                >
+                  <option value="recepcionista">Recepcionista</option>
+                  <option value="entrenador">Entrenador</option>
+                  <option value="administrador">Administrador</option>
+                </Form.Select>
+              </Form.Group>
+            </Col>
+          </Row>
+          <Button type="submit" className="mt-3">
+            Crear cuenta
+          </Button>
+        </Form>
       </Tarjeta>
 
       <Tarjeta titulo={`Listado de usuarios (${usuarios.length})`}>
-        <table className="tabla">
+        <Table hover responsive className="align-middle mb-0">
           <thead>
             <tr>
               <th>Nombre</th>
@@ -172,36 +186,37 @@ export default function UsuariosPage() {
                 <td>{usuario.nombreCompleto}</td>
                 <td>{usuario.email}</td>
                 <td>
-                  <select
+                  <Form.Select
+                    size="sm"
+                    style={{ width: 'auto' }}
                     value={usuario.rol}
                     onChange={(e) => cambiarRol(usuario, e.target.value)}
-                    style={{ width: 'auto' }}
                   >
                     {ROLES.map((rol) => (
                       <option key={rol} value={rol}>
                         {rol.toLowerCase()}
                       </option>
                     ))}
-                  </select>
+                  </Form.Select>
                 </td>
                 <td>
                   <Etiqueta color={etiquetaEstado(usuario.estado)}>{usuario.estado}</Etiqueta>
                 </td>
                 <td>
                   {usuario.estado === 'activo' ? (
-                    <button className="boton pequeno peligro" onClick={() => suspender(usuario)}>
+                    <Button size="sm" variant="danger" onClick={() => suspender(usuario)}>
                       Suspender
-                    </button>
+                    </Button>
                   ) : (
-                    <button className="boton pequeno" onClick={() => reactivar(usuario)}>
+                    <Button size="sm" onClick={() => reactivar(usuario)}>
                       Reactivar
-                    </button>
+                    </Button>
                   )}
                 </td>
               </tr>
             ))}
           </tbody>
-        </table>
+        </Table>
       </Tarjeta>
     </div>
   )

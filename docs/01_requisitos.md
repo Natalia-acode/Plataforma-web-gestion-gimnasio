@@ -217,7 +217,6 @@ Desarrollar un sistema web de gestión de gimnasio que otorgue al usuario **cont
 
 | Capa | Tecnología | Notas |
 |---|---|---|
-| Frontend | **React** (SPA responsive) | Consumo de la API REST (JSON), rutas por rol, sesión con JWT |
 | Backend | **Spring Boot** (Java) | Spring MVC (REST), Spring Security (JWT + BCrypt), Spring Data JPA |
 | Base de datos | **Microsoft SQL Server** (2019+) | Script DDL: `BD/ddl_gimnasio.sql` (13 tablas, índices y vistas) |
 | Procesos automáticos | Spring `@Scheduled` | Recordatorios y cobros de renovación (CU-12), expiración de turnos (RN-08), snapshots de aforo (CU-16) |

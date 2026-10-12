@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
+import { Button, Col, Row } from 'react-bootstrap'
 import { colaApi } from '../api/endpoints.js'
-import { Tarjeta, Mensaje, Etiqueta } from '../componentes/comunes.jsx'
+import { Tarjeta, Mensaje, Etiqueta, EncabezadoPagina } from '../componentes/comunes.jsx'
 
 export default function ColaPage() {
   const [turno, setTurno] = useState(null)
@@ -51,72 +52,75 @@ export default function ColaPage() {
 
   return (
     <div>
-      <div className="encabezado-pagina">
-        <div>
-          <h1>Cola virtual</h1>
-          <p>
-            Sin filas físicas: pide tu turno desde el móvil y llega justo cuando te llamemos.
-          </p>
-        </div>
-      </div>
+      <EncabezadoPagina
+        titulo="Cola virtual"
+        subtitulo="Sin filas físicas: pide tu turno desde el móvil y llega justo cuando te llamemos."
+      />
 
       <Mensaje tipo="error">{error}</Mensaje>
       <Mensaje tipo="exito">{exito}</Mensaje>
 
-      <div className="grid-2">
-        <Tarjeta titulo="Mi turno">
-          {cargando ? (
-            <p className="cargando">Consultando…</p>
-          ) : turno ? (
-            <div className={`turno-destacado ${turno.estado === 'llamado' ? 'llamado' : ''}`}>
-              <div className="numero">#{turno.posicion}</div>
-              <Etiqueta color={turno.estado === 'llamado' ? 'amarillo' : 'azul'}>
-                {turno.estado}
-              </Etiqueta>
-              {turno.estado === 'llamado' ? (
-                <p style={{ marginTop: 12 }}>
-                  ¡Es tu turno! Preséntate en recepción dentro de la ventana indicada.
+      <Row className="g-4">
+        <Col lg={6}>
+          <Tarjeta titulo="Mi turno" className="h-100">
+            {cargando ? (
+              <p className="text-secondary mb-0">Consultando…</p>
+            ) : turno ? (
+              <div
+                className={`text-center p-4 rounded ${
+                  turno.estado === 'llamado' ? 'bg-warning-subtle' : 'bg-primary-subtle'
+                }`}
+              >
+                <div className="display-4 fw-bold">#{turno.posicion}</div>
+                <Etiqueta color={turno.estado === 'llamado' ? 'amarillo' : 'azul'}>
+                  {turno.estado}
+                </Etiqueta>
+                {turno.estado === 'llamado' ? (
+                  <p className="mt-3 mb-1">
+                    ¡Es tu turno! Preséntate en recepción dentro de la ventana indicada.
+                  </p>
+                ) : (
+                  <p className="mt-3 mb-1">
+                    Personas delante: <strong>{turno.personasDelante}</strong> · Espera estimada:{' '}
+                    <strong>{turno.esperaEstimadaMin} min</strong>
+                  </p>
+                )}
+                <p className="text-secondary small">
+                  Tipo: {turno.tipo} · solicitado{' '}
+                  {new Date(turno.fechaSolicitud).toLocaleTimeString('es-CO')}
                 </p>
-              ) : (
-                <p style={{ marginTop: 12 }}>
-                  Personas delante: <strong>{turno.personasDelante}</strong> · Espera estimada:{' '}
-                  <strong>{turno.esperaEstimadaMin} min</strong>
-                </p>
-              )}
-              <p className="apagado" style={{ fontSize: '0.8rem' }}>
-                Tipo: {turno.tipo} · solicitado {new Date(turno.fechaSolicitud).toLocaleTimeString('es-CO')}
-              </p>
-              <button className="boton peligro pequeno" onClick={cancelar}>
-                Cancelar mi turno
-              </button>
-            </div>
-          ) : (
-            <div>
-              <p className="apagado">No tienes un turno activo.</p>
-              <div className="fila-botones">
-                <button className="boton" onClick={() => solicitar('ingreso')}>
-                  Turno para ingreso
-                </button>
-                <button className="boton azul" onClick={() => solicitar('clase')}>
-                  Turno para clase
-                </button>
+                <Button size="sm" variant="danger" onClick={cancelar}>
+                  Cancelar mi turno
+                </Button>
               </div>
-            </div>
-          )}
-        </Tarjeta>
+            ) : (
+              <div>
+                <p className="text-secondary">No tienes un turno activo.</p>
+                <div className="d-flex flex-wrap gap-2">
+                  <Button onClick={() => solicitar('ingreso')}>Turno para ingreso</Button>
+                  <Button variant="info" onClick={() => solicitar('clase')}>
+                    Turno para clase
+                  </Button>
+                </div>
+              </div>
+            )}
+          </Tarjeta>
+        </Col>
 
-        <Tarjeta titulo="¿Cómo funciona?">
-          <ul>
-            <li>Solicita tu turno virtual sin acercarte a la recepción.</li>
-            <li>Consulta tu posición y el tiempo estimado de espera en tiempo real.</li>
-            <li>Recibirás una notificación cuando sea tu turno (ventana de 10 minutos).</li>
-            <li>Si no puedes asistir, cancela tu turno y libera el lugar para otra persona.</li>
-          </ul>
-          <p className="apagado" style={{ fontSize: '0.83rem' }}>
-            Un turno no atendido dentro de la ventana expira automáticamente y la fila avanza.
-          </p>
-        </Tarjeta>
-      </div>
+        <Col lg={6}>
+          <Tarjeta titulo="¿Cómo funciona?" className="h-100">
+            <ul className="mb-2">
+              <li>Solicita tu turno virtual sin acercarte a la recepción.</li>
+              <li>Consulta tu posición y el tiempo estimado de espera en tiempo real.</li>
+              <li>Recibirás una notificación cuando sea tu turno (ventana de 10 minutos).</li>
+              <li>Si no puedes asistir, cancela tu turno y libera el lugar para otra persona.</li>
+            </ul>
+            <p className="text-secondary small mb-0">
+              Un turno no atendido dentro de la ventana expira automáticamente y la fila avanza.
+            </p>
+          </Tarjeta>
+        </Col>
+      </Row>
     </div>
   )
 }

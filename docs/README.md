@@ -1,7 +1,7 @@
 # Documentación — Sistema de Gestión de Gimnasio
 
 Documentación de análisis y diseño del sistema, en formato PlantUML + Markdown.
-**Stack:** React (SPA) · Spring Boot (Java) · Microsoft SQL Server.
+**Stack:** Spring Boot (Java) · Microsoft SQL Server.
 
 ## Problemas que resuelve el sistema
 
@@ -18,7 +18,7 @@ Documentación de análisis y diseño del sistema, en formato PlantUML + Markdow
 | [casos_de_uso/diagramas/](casos_de_uso/diagramas/) | 6 diagramas de casos de uso, uno por módulo |
 | [modelo_bd/modelo_er.puml](modelo_bd/modelo_er.puml) | Modelo Entidad-Relación de la base de datos (13 entidades, tipos SQL Server) |
 | [../BD/ddl_gimnasio.sql](../BD/ddl_gimnasio.sql) | Script DDL completo para SQL Server (tablas, constraints, índices, vistas y datos iniciales) |
-| [arquitectura/arquitectura_sistema.puml](arquitectura/arquitectura_sistema.puml) | Arquitectura del sistema: React → API REST Spring Boot → SQL Server |
+| [arquitectura/arquitectura_sistema.puml](arquitectura/arquitectura_sistema.puml) | Arquitectura del sistema: API REST Spring Boot → SQL Server |
 | [clases/diagrama_clases.puml](clases/diagrama_clases.puml) | Diagrama de clases conceptual (modelo de dominio, fase de análisis) |
 | [clases/diagrama_clases_diseno.puml](clases/diagrama_clases_diseno.puml) | Diagrama de clases de diseño con las capas Spring Boot (controller/service/repository/entity) |
 | [actividades/](actividades/) | 8 diagramas de actividad de los procesos clave |

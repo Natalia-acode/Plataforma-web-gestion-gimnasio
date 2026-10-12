@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { Badge, Button, Form, Table } from 'react-bootstrap'
 import { planesApi, suscripcionesApi } from '../api/endpoints.js'
 import {
   Tarjeta,
   Cargando,
   Mensaje,
   Etiqueta,
+  EncabezadoPagina,
   etiquetaEstado,
   formatearMoneda,
   formatearFechaHora,
@@ -88,106 +90,107 @@ export default function SuscripcionPage() {
 
   return (
     <div>
-      <div className="encabezado-pagina">
-        <div>
-          <h1>Mi suscripción</h1>
-          <p>Administra tu plan, tu renovación automática y tu cancelación: todo desde aquí.</p>
-        </div>
-      </div>
+      <EncabezadoPagina
+        titulo="Mi suscripción"
+        subtitulo="Administra tu plan, tu renovación automática y tu cancelación: todo desde aquí."
+      />
 
       <Mensaje tipo="error">{error}</Mensaje>
       <Mensaje tipo="exito">{exito}</Mensaje>
 
       {!activa ? (
-        <Tarjeta titulo="Sin suscripción activa">
-          <p className="apagado">
+        <Tarjeta titulo="Sin suscripción activa" className="mb-4">
+          <p className="text-secondary mb-0">
             No tienes un plan activo en este momento. <Link to="/planes">Ver planes disponibles</Link>
           </p>
         </Tarjeta>
       ) : (
         <Tarjeta
           titulo={activa.planNombre}
+          className="mb-4"
           extra={<Etiqueta color={etiquetaEstado(activa.estado)}>{activa.estado}</Etiqueta>}
         >
-          <p className="apagado">
+          <p className="text-secondary">
             Vigencia: {activa.fechaInicio} → {activa.fechaFin} · {formatearMoneda(activa.precio)} por
             periodo
           </p>
 
-          <div className="fila-botones" style={{ marginTop: 12 }}>
-            <button className="boton secundario" onClick={alternarRenovacion}>
+          <div className="d-flex flex-wrap align-items-center gap-3 mt-3">
+            <Button variant="outline-secondary" onClick={alternarRenovacion}>
               {activa.renovacionAutomatica
                 ? 'Desactivar renovación automática'
                 : 'Activar renovación automática'}
-            </button>
-            <strong>
+            </Button>
+            <span>
               Renovación automática:{' '}
-              <Etiqueta color={activa.renovacionAutomatica ? 'verde' : 'gris'}>
+              <Badge bg={activa.renovacionAutomatica ? 'success' : 'secondary'}>
                 {activa.renovacionAutomatica ? 'activada' : 'desactivada'}
-              </Etiqueta>
-            </strong>
+              </Badge>
+            </span>
           </div>
-          <p className="apagado" style={{ fontSize: '0.85rem' }}>
+          <p className="text-secondary small mt-2">
             {activa.renovacionAutomatica
               ? 'Se cobrará automáticamente al vencer. Puedes desactivarla cuando quieras, sin llamadas ni trámites.'
               : 'Al vencer no se cobrará nada; podrás renovar manualmente cuando lo desees.'}
           </p>
 
-          <hr style={{ borderColor: 'var(--borde)', margin: '18px 0' }} />
+          <hr />
 
-          <h2>Cambiar de plan</h2>
-          <div className="fila-botones">
+          <h2 className="h5">Cambiar de plan</h2>
+          <div className="d-flex flex-wrap gap-2">
             {planes
               .filter((plan) => plan.id !== activa.planId)
               .map((plan) => (
-                <button
+                <Button
                   key={plan.id}
-                  className="boton secundario pequeno"
+                  size="sm"
+                  variant="outline-secondary"
                   onClick={() => cambiarPlan(plan.id)}
                 >
                   {plan.nombre} — {formatearMoneda(plan.precio)}
-                </button>
+                </Button>
               ))}
           </div>
 
-          <hr style={{ borderColor: 'var(--borde)', margin: '18px 0' }} />
+          <hr />
 
-          <h2>Cancelar suscripción</h2>
-          <p className="apagado">
+          <h2 className="h5">Cancelar suscripción</h2>
+          <p className="text-secondary">
             La cancelación es inmediata y en línea: conservas el acceso hasta {activa.fechaFin} y no
             se realizarán más cobros.
           </p>
           {confirmando === activa.id ? (
             <div>
-              <label>
-                Motivo (opcional)
-                <textarea
+              <Form.Group className="mb-3" controlId="motivoCancelacion" style={{ maxWidth: 480 }}>
+                <Form.Label>Motivo (opcional)</Form.Label>
+                <Form.Control
+                  as="textarea"
                   rows={2}
                   value={motivo}
                   onChange={(e) => setMotivo(e.target.value)}
                   placeholder="¿Por qué cancelas? Tu respuesta nos ayuda a mejorar"
                 />
-              </label>
-              <div className="fila-botones">
-                <button className="boton peligro" onClick={cancelar}>
+              </Form.Group>
+              <div className="d-flex gap-2">
+                <Button variant="danger" onClick={cancelar}>
                   Confirmar cancelación
-                </button>
-                <button className="boton secundario" onClick={() => setConfirmando(null)}>
+                </Button>
+                <Button variant="outline-secondary" onClick={() => setConfirmando(null)}>
                   Volver
-                </button>
+                </Button>
               </div>
             </div>
           ) : (
-            <button className="boton peligro" onClick={() => setConfirmando(activa.id)}>
+            <Button variant="danger" onClick={() => setConfirmando(activa.id)}>
               Quiero cancelar mi plan
-            </button>
+            </Button>
           )}
         </Tarjeta>
       )}
 
       {suscripciones.length > 0 && (
         <Tarjeta titulo="Historial de suscripciones">
-          <table className="tabla">
+          <Table hover responsive className="align-middle mb-0">
             <thead>
               <tr>
                 <th>Plan</th>
@@ -212,7 +215,7 @@ export default function SuscripcionPage() {
                 </tr>
               ))}
             </tbody>
-          </table>
+          </Table>
         </Tarjeta>
       )}
     </div>

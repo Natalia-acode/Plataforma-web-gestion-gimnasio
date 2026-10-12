@@ -1,6 +1,13 @@
 import { useEffect, useState } from 'react'
+import { Button, Col, Form, Row, Table } from 'react-bootstrap'
 import { aforoApi, checkinApi, colaApi } from '../api/endpoints.js'
-import { Tarjeta, Mensaje, Cargando, formatearFechaHora } from '../componentes/comunes.jsx'
+import {
+  Tarjeta,
+  Mensaje,
+  Cargando,
+  EncabezadoPagina,
+  formatearFechaHora,
+} from '../componentes/comunes.jsx'
 import SemaforoAforo from '../componentes/SemaforoAforo.jsx'
 
 export default function RecepcionPage() {
@@ -67,104 +74,114 @@ export default function RecepcionPage() {
 
   return (
     <div>
-      <div className="encabezado-pagina">
-        <div>
-          <h1>Recepción</h1>
-          <p>Registra ingresos y salidas, y monitorea la ocupación del gimnasio en vivo.</p>
-        </div>
-      </div>
+      <EncabezadoPagina
+        titulo="Recepción"
+        subtitulo="Registra ingresos y salidas, y monitorea la ocupación del gimnasio en vivo."
+      />
 
       <Mensaje tipo="error">{error}</Mensaje>
       <Mensaje tipo="exito">{exito}</Mensaje>
 
-      <div className="grid-2">
-        <Tarjeta titulo="Ocupación actual">
-          <SemaforoAforo ocupacion={ocupacion} />
-        </Tarjeta>
+      <Row className="g-4 mb-4">
+        <Col lg={6}>
+          <Tarjeta titulo="Ocupación actual" className="h-100">
+            <SemaforoAforo ocupacion={ocupacion} />
+          </Tarjeta>
+        </Col>
 
-        <Tarjeta titulo="Registrar ingreso manual">
-          <form onSubmit={entradaManual}>
-            <label>
-              ID del usuario
-              <input
-                type="number"
-                min="1"
-                value={idManual}
-                onChange={(e) => setIdManual(e.target.value)}
-                placeholder="Ej. 4"
-                required
-              />
-            </label>
-            <button className="boton">Registrar entrada</button>
-          </form>
-          <p className="apagado" style={{ fontSize: '0.83rem' }}>
-            El sistema valida que la suscripción esté activa y vigente antes de permitir el ingreso.
-          </p>
-        </Tarjeta>
-      </div>
+        <Col lg={6}>
+          <Tarjeta titulo="Registrar ingreso manual" className="h-100">
+            <Form onSubmit={entradaManual}>
+              <Form.Group className="mb-3" controlId="idUsuarioManual" style={{ maxWidth: 280 }}>
+                <Form.Label>ID del usuario</Form.Label>
+                <Form.Control
+                  type="number"
+                  min="1"
+                  value={idManual}
+                  onChange={(e) => setIdManual(e.target.value)}
+                  placeholder="Ej. 4"
+                  required
+                />
+              </Form.Group>
+              <Button type="submit">Registrar entrada</Button>
+            </Form>
+            <p className="text-secondary small mt-3 mb-0">
+              El sistema valida que la suscripción esté activa y vigente antes de permitir el
+              ingreso.
+            </p>
+          </Tarjeta>
+        </Col>
+      </Row>
 
-      <div className="grid-2">
-        <Tarjeta titulo={`Personas dentro (${dentro.length})`}>
-          {dentro.length === 0 ? (
-            <p className="apagado">No hay personas registradas dentro.</p>
-          ) : (
-            <table className="tabla">
-              <thead>
-                <tr>
-                  <th>Persona</th>
-                  <th>Entrada</th>
-                  <th>Método</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {dentro.map((registro) => (
-                  <tr key={registro.id}>
-                    <td>{registro.usuarioNombre}</td>
-                    <td>{formatearFechaHora(registro.fechaHoraEntrada)}</td>
-                    <td>{registro.metodo}</td>
-                    <td>
-                      <button
-                        className="boton pequeno secundario"
-                        onClick={() => registrarSalida(registro.usuarioId, registro.usuarioNombre)}
-                      >
-                        Registrar salida
-                      </button>
-                    </td>
+      <Row className="g-4">
+        <Col lg={7}>
+          <Tarjeta titulo={`Personas dentro (${dentro.length})`} className="h-100">
+            {dentro.length === 0 ? (
+              <p className="text-secondary mb-0">No hay personas registradas dentro.</p>
+            ) : (
+              <Table hover responsive className="align-middle mb-0">
+                <thead>
+                  <tr>
+                    <th>Persona</th>
+                    <th>Entrada</th>
+                    <th>Método</th>
+                    <th></th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-        </Tarjeta>
+                </thead>
+                <tbody>
+                  {dentro.map((registro) => (
+                    <tr key={registro.id}>
+                      <td>{registro.usuarioNombre}</td>
+                      <td>{formatearFechaHora(registro.fechaHoraEntrada)}</td>
+                      <td>{registro.metodo}</td>
+                      <td className="text-end">
+                        <Button
+                          size="sm"
+                          variant="outline-secondary"
+                          onClick={() =>
+                            registrarSalida(registro.usuarioId, registro.usuarioNombre)
+                          }
+                        >
+                          Registrar salida
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            )}
+          </Tarjeta>
+        </Col>
 
-        <Tarjeta titulo={`Cola virtual (${cola.length})`}>
-          {cola.length === 0 ? (
-            <p className="apagado">No hay turnos activos en la cola.</p>
-          ) : (
-            <table className="tabla">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Persona</th>
-                  <th>Tipo</th>
-                  <th>Estado</th>
-                </tr>
-              </thead>
-              <tbody>
-                {cola.map((turno) => (
-                  <tr key={turno.id}>
-                    <td>{turno.posicion}</td>
-                    <td>Turno {turno.id}</td>
-                    <td>{turno.tipo}</td>
-                    <td>{turno.estado}</td>
+        <Col lg={5}>
+          <Tarjeta titulo={`Cola virtual (${cola.length})`} className="h-100">
+            {cola.length === 0 ? (
+              <p className="text-secondary mb-0">No hay turnos activos en la cola.</p>
+            ) : (
+              <Table hover responsive className="align-middle mb-0">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Persona</th>
+                    <th>Tipo</th>
+                    <th>Estado</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-        </Tarjeta>
-      </div>
+                </thead>
+                <tbody>
+                  {cola.map((turno) => (
+                    <tr key={turno.id}>
+                      <td>{turno.posicion}</td>
+                      <td>Turno {turno.id}</td>
+                      <td>{turno.tipo}</td>
+                      <td>{turno.estado}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            )}
+          </Tarjeta>
+        </Col>
+      </Row>
     </div>
   )
 }

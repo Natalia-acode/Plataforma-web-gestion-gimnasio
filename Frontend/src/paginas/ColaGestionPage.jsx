@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
+import { Button, Card, Col, Row, Table } from 'react-bootstrap'
 import { colaApi } from '../api/endpoints.js'
-import { Tarjeta, Mensaje, Cargando, Etiqueta } from '../componentes/comunes.jsx'
+import { Tarjeta, Mensaje, Cargando, Etiqueta, EncabezadoPagina } from '../componentes/comunes.jsx'
 
 export default function ColaGestionPage() {
   const [cola, setCola] = useState([])
@@ -57,39 +58,40 @@ export default function ColaGestionPage() {
 
   return (
     <div>
-      <div className="encabezado-pagina">
-        <div>
-          <h1>Gestión de la cola virtual</h1>
-          <p>Llama al siguiente y marca los turnos atendidos; los no presentados expiran solos.</p>
-        </div>
-        <button className="boton" onClick={llamarSiguiente} disabled={esperando.length === 0}>
+      <EncabezadoPagina
+        titulo="Gestión de la cola virtual"
+        subtitulo="Llama al siguiente y marca los turnos atendidos; los no presentados expiran solos."
+      >
+        <Button onClick={llamarSiguiente} disabled={esperando.length === 0}>
           Llamar al siguiente
-        </button>
-      </div>
+        </Button>
+      </EncabezadoPagina>
 
       <Mensaje tipo="error">{error}</Mensaje>
       <Mensaje tipo="exito">{exito}</Mensaje>
 
-      <div className="grid-3">
-        <div className="kpi">
-          <strong>{esperando.length}</strong>
-          <span>Personas esperando</span>
-        </div>
-        <div className="kpi">
-          <strong>{llamados.length}</strong>
-          <span>Turnos llamados</span>
-        </div>
-        <div className="kpi">
-          <strong>{cola.length}</strong>
-          <span>Total en cola</span>
-        </div>
-      </div>
+      <Row className="g-3 mb-4">
+        {[
+          { valor: esperando.length, etiqueta: 'Personas esperando' },
+          { valor: llamados.length, etiqueta: 'Turnos llamados' },
+          { valor: cola.length, etiqueta: 'Total en cola' },
+        ].map((kpi) => (
+          <Col md={4} key={kpi.etiqueta}>
+            <Card className="text-center shadow-sm h-100">
+              <Card.Body>
+                <div className="fs-2 fw-bold">{kpi.valor}</div>
+                <div className="text-secondary">{kpi.etiqueta}</div>
+              </Card.Body>
+            </Card>
+          </Col>
+        ))}
+      </Row>
 
       <Tarjeta titulo="Fila completa">
         {cola.length === 0 ? (
-          <p className="apagado">La cola está vacía.</p>
+          <p className="text-secondary mb-0">La cola está vacía.</p>
         ) : (
-          <table className="tabla">
+          <Table hover responsive className="align-middle mb-0">
             <thead>
               <tr>
                 <th>#</th>
@@ -110,17 +112,17 @@ export default function ColaGestionPage() {
                       {turno.estado}
                     </Etiqueta>
                   </td>
-                  <td>
+                  <td className="text-end">
                     {turno.estado === 'llamado' && (
-                      <button className="boton pequeno" onClick={() => marcarAtendido(turno)}>
+                      <Button size="sm" onClick={() => marcarAtendido(turno)}>
                         Marcar atendido
-                      </button>
+                      </Button>
                     )}
                   </td>
                 </tr>
               ))}
             </tbody>
-          </table>
+          </Table>
         )}
       </Tarjeta>
     </div>

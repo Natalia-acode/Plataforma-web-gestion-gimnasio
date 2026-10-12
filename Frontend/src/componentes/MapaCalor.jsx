@@ -7,7 +7,11 @@ const ETIQUETAS_DIA = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom']
 
 export default function MapaCalor({ celdas, horaDesde = 5, horaHasta = 22 }) {
   if (!celdas || celdas.length === 0) {
-    return <p className="apagado">Aún no hay datos históricos de afluencia. Se alimentará con los registros de ocupación.</p>
+    return (
+      <p className="text-secondary mb-0">
+        Aún no hay datos históricos de afluencia. Se alimentará con los registros de ocupación.
+      </p>
+    )
   }
 
   const maximo = Math.max(...celdas.map((c) => c.ocupacionPromedio), 1)
@@ -19,14 +23,14 @@ export default function MapaCalor({ celdas, horaDesde = 5, horaHasta = 22 }) {
 
   function color(valor) {
     if (!valor) {
-      return 'var(--celda-vacia)'
+      return 'var(--bs-secondary-bg)'
     }
     const intensidad = Math.min(1, valor / maximo)
-    return `rgba(16, 185, 129, ${0.15 + intensidad * 0.85})`
+    return `rgba(25, 135, 84, ${0.15 + intensidad * 0.85})`
   }
 
   return (
-    <div className="mapa-calor">
+    <div>
       <div className="mapa-calor-grid" style={{ gridTemplateColumns: `48px repeat(${horas.length}, 1fr)` }}>
         <div />
         {horas.map((hora) => (

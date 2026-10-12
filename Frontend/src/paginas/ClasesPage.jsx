@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useState } from 'react'
+import { Badge, Button, Card, Col, Form, Row, Table } from 'react-bootstrap'
 import { clasesApi } from '../api/endpoints.js'
 import {
   Tarjeta,
   Cargando,
   Mensaje,
   Etiqueta,
+  EncabezadoPagina,
   etiquetaEstado,
   nombreDia,
   proximosDias,
@@ -45,7 +47,8 @@ export default function ClasesPage() {
 
   const reservaDe = (claseId) =>
     misReservas.find(
-      (reserva) => reserva.claseId === claseId && reserva.fecha === fecha && reserva.estado !== 'cancelada',
+      (reserva) =>
+        reserva.claseId === claseId && reserva.fecha === fecha && reserva.estado !== 'cancelada',
     )
 
   async function reservar(clase) {
@@ -82,28 +85,27 @@ export default function ClasesPage() {
 
   return (
     <div>
-      <div className="encabezado-pagina">
-        <div>
-          <h1>Clases grupales</h1>
-          <p>Reserva tu cupo con anticipación; si se llena, entras automáticamente a la lista de espera.</p>
-        </div>
-      </div>
+      <EncabezadoPagina
+        titulo="Clases grupales"
+        subtitulo="Reserva tu cupo con anticipación; si se llena, entras automáticamente a la lista de espera."
+      />
 
       <Mensaje tipo="error">{error}</Mensaje>
       <Mensaje tipo="exito">{exito}</Mensaje>
 
-      <Tarjeta titulo="Elige el día">
-        <div className="fila-botones">
+      <Tarjeta titulo="Elige el día" className="mb-4">
+        <div className="d-flex flex-wrap align-items-end gap-2">
           {dias.slice(0, 7).map((dia) => (
-            <button
+            <Button
               key={dia}
-              className={`boton pequeno ${dia === fecha ? '' : 'secundario'}`}
+              size="sm"
+              variant={dia === fecha ? 'primary' : 'outline-secondary'}
               onClick={() => setFecha(dia)}
             >
               {nombreDia(dia)} {dia.slice(8)}
-            </button>
+            </Button>
           ))}
-          <input
+          <Form.Control
             type="date"
             style={{ width: 'auto' }}
             value={fecha}
@@ -114,62 +116,64 @@ export default function ClasesPage() {
         </div>
       </Tarjeta>
 
-      <div className="grid-3">
+      <Row className="g-4 mb-4">
         {clases.map((clase) => {
           const esSuDia = clase.diaSemana === diaClave
           const reserva = reservaDe(clase.id)
           return (
-            <Tarjeta
-              key={clase.id}
-              titulo={clase.nombre}
-              extra={
-                esSuDia ? (
-                  <Etiqueta color={clase.cuposDisponibles > 0 ? 'verde' : 'amarillo'}>
-                    {clase.cuposDisponibles > 0
-                      ? `${clase.cuposDisponibles} cupos`
-                      : 'lista de espera'}
-                  </Etiqueta>
-                ) : (
-                  <Etiqueta color="gris">no aplica este día</Etiqueta>
-                )
-              }
-            >
-              <p>
-                {clase.horaInicio.slice(0, 5)} – {clase.horaFin.slice(0, 5)} · {clase.zonaNombre}
-              </p>
-              <p className="apagado">Entrenador: {clase.entrenadorNombre}</p>
-              <p className="apagado">
-                {clase.diaSemana} · cupo máximo {clase.cupoMaximo}
-              </p>
-
-              {esCliente && esSuDia && (
-                <div className="fila-botones">
-                  {reserva ? (
-                    <>
-                      <Etiqueta color={etiquetaEstado(reserva.estado)}>
-                        {reserva.estado === 'en_espera'
-                          ? `en espera (#${reserva.posicionEspera})`
-                          : reserva.estado}
-                      </Etiqueta>
-                      <button className="boton pequeno peligro" onClick={() => cancelar(reserva)}>
-                        Cancelar reserva
-                      </button>
-                    </>
+            <Col md={6} lg={4} key={clase.id}>
+              <Card className="h-100 shadow-sm">
+                <Card.Header className="bg-white d-flex justify-content-between align-items-center">
+                  <span className="fw-semibold">{clase.nombre}</span>
+                  {esSuDia ? (
+                    <Badge bg={clase.cuposDisponibles > 0 ? 'success' : 'warning'} text={clase.cuposDisponibles > 0 ? undefined : 'dark'}>
+                      {clase.cuposDisponibles > 0
+                        ? `${clase.cuposDisponibles} cupos`
+                        : 'lista de espera'}
+                    </Badge>
                   ) : (
-                    <button className="boton pequeno" onClick={() => reservar(clase)}>
-                      Reservar para {fecha}
-                    </button>
+                    <Badge bg="secondary">no aplica este día</Badge>
                   )}
-                </div>
-              )}
-            </Tarjeta>
+                </Card.Header>
+                <Card.Body className="d-flex flex-column">
+                  <p className="mb-1">
+                    {clase.horaInicio.slice(0, 5)} – {clase.horaFin.slice(0, 5)} · {clase.zonaNombre}
+                  </p>
+                  <p className="text-secondary mb-1">Entrenador: {clase.entrenadorNombre}</p>
+                  <p className="text-secondary mb-3">
+                    {clase.diaSemana} · cupo máximo {clase.cupoMaximo}
+                  </p>
+
+                  {esCliente && esSuDia && (
+                    <div className="d-flex flex-wrap align-items-center gap-2 mt-auto">
+                      {reserva ? (
+                        <>
+                          <Etiqueta color={etiquetaEstado(reserva.estado)}>
+                            {reserva.estado === 'en_espera'
+                              ? `en espera (#${reserva.posicionEspera})`
+                              : reserva.estado}
+                          </Etiqueta>
+                          <Button size="sm" variant="danger" onClick={() => cancelar(reserva)}>
+                            Cancelar reserva
+                          </Button>
+                        </>
+                      ) : (
+                        <Button size="sm" onClick={() => reservar(clase)}>
+                          Reservar para {fecha}
+                        </Button>
+                      )}
+                    </div>
+                  )}
+                </Card.Body>
+              </Card>
+            </Col>
           )
         })}
-      </div>
+      </Row>
 
       {esCliente && misReservas.length > 0 && (
         <Tarjeta titulo="Mis reservas vigentes">
-          <table className="tabla">
+          <Table hover responsive className="align-middle mb-0">
             <thead>
               <tr>
                 <th>Clase</th>
@@ -194,7 +198,7 @@ export default function ClasesPage() {
                 </tr>
               ))}
             </tbody>
-          </table>
+          </Table>
         </Tarjeta>
       )}
     </div>
