@@ -14,15 +14,13 @@ spring:
   jpa:
     hibernate:
       # El esquema lo crea el script BD/ddl_gimnasio.sql (fuente de verdad).
-      # validate = arranca solo si las entidades coinciden con la base real.
       ddl-auto: none
     open-in-view: false
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.SQLServerDialect
-        # 'plan' es palabra reservada de T-SQL: Hibernate debe citar los
-        # identificadores para poder consultar la tabla plan sin ambigüedad.
-        globally_quoted_identifiers: true
+        "dialect": org.hibernate.dialect.SQLServerDialect
+        # 'plan' es palabra reservada de T-SQL: citar identificadores.
+        "globally_quoted_identifiers": true
 
   jackson:
     time-zone: America/Bogota
@@ -50,3 +48,40 @@ springdoc:
 logging:
   level:
     com.gimnasio: DEBUG
+
+# ============================================================
+# Perfiles
+# ============================================================
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+gimnasio:
+  jwt:
+    secret: ${JWT_SECRET:dev-clave-segura-solo-para-desarrollo-0123456789abcdef}
+  cors:
+    allowed-origins: http://localhost:5173
+
+logging:
+  level:
+    com.gimnasio: DEBUG
+    org.springframework.web: INFO
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+gimnasio:
+  jwt:
+    secret: ${JWT_SECRET:}
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:https://gimnasio.example.com}
+
+logging:
+  level:
+    com.gimnasio: INFO
+    org.springframework.web: WARN
