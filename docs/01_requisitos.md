@@ -69,7 +69,7 @@ Desarrollar un sistema web de gestión de gimnasio que otorgue al usuario **cont
 
 ## 5. Actores
 
-### 5.1 Actores primarios (humanos)
+### 5.1 Actores primarios
 
 | Actor | Descripción |
 |---|---|
