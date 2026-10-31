@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 500" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#475569"/>
+    </marker>
+  </defs>
+
+  <circle cx="170" cy="36" r="9" fill="#1e3a5f"/>
+  <rect x="80" y="58" width="180" height="40" rx="18" fill="#ffffff" stroke="#1e3a5f"/><text x="170" y="82" text-anchor="middle" font-size="11" fill="#22384d">Consulta horarios de la sede</text>
+  <rect x="80" y="128" width="180" height="40" rx="18" fill="#ffffff" stroke="#1e3a5f"/><text x="170" y="152" text-anchor="middle" font-size="11" fill="#22384d">Elige una clase grupal</text>
+  <path d="M170,178 L246,205 L170,232 L94,205 Z" fill="#fff8e6" stroke="#b7791f"/><text x="170" y="209" text-anchor="middle" font-size="10.5" fill="#6b4a12">¿Quedan plazas?</text>
+  <rect x="80" y="255" width="180" height="46" rx="18" fill="#ffffff" stroke="#1e3a5f"/><text x="170" y="273" text-anchor="middle" font-size="11" fill="#22384d">Crea la reserva y</text><text x="170" y="289" text-anchor="middle" font-size="11" fill="#22384d">descuenta el cupo</text>
+  <rect x="80" y="330" width="180" height="40" rx="18" fill="#ffffff" stroke="#1e3a5f"/><text x="170" y="354" text-anchor="middle" font-size="11" fill="#22384d">Confirma por notificación</text>
+  <circle cx="170" cy="410" r="10" fill="none" stroke="#1e3a5f" stroke-width="2"/><circle cx="170" cy="410" r="5" fill="#1e3a5f"/>
+
+  <path d="M480,177 L572,205 L480,233 L388,205 Z" fill="#fff8e6" stroke="#b7791f"/><text x="480" y="201" text-anchor="middle" font-size="10.5" fill="#6b4a12">¿Acepta entrar en</text><text x="480" y="215" text-anchor="middle" font-size="10.5" fill="#6b4a12">la lista de espera?</text>
+  <circle cx="712" cy="205" r="10" fill="none" stroke="#1e3a5f" stroke-width="2"/><circle cx="712" cy="205" r="5" fill="#1e3a5f"/>
+  <rect x="380" y="265" width="200" height="44" rx="18" fill="#ffffff" stroke="#1e3a5f"/><text x="480" y="283" text-anchor="middle" font-size="11" fill="#22384d">Registra el turno en</text><text x="480" y="299" text-anchor="middle" font-size="11" fill="#22384d">la lista de espera</text>
+  <path d="M480,332 L566,360 L480,388 L394,360 Z" fill="#fff8e6" stroke="#b7791f"/><text x="480" y="364" text-anchor="middle" font-size="10.5" fill="#6b4a12">¿Se libera una plaza?</text>
+  <rect x="700" y="336" width="200" height="44" rx="18" fill="#ffffff" stroke="#1e3a5f"/><text x="800" y="354" text-anchor="middle" font-size="11" fill="#22384d">Promueve al primero</text><text x="800" y="370" text-anchor="middle" font-size="11" fill="#22384d">y lo notifica</text>
+  <circle cx="800" cy="420" r="10" fill="none" stroke="#1e3a5f" stroke-width="2"/><circle cx="800" cy="420" r="5" fill="#1e3a5f"/>
+  <rect x="380" y="430" width="200" height="40" rx="18" fill="#ffffff" stroke="#1e3a5f"/><text x="480" y="454" text-anchor="middle" font-size="11" fill="#22384d">Mantiene la posición</text>
+
+  <g stroke="#475569" stroke-width="1.4" fill="none">
+    <path d="M170,45 V58" marker-end="url(#ar)"/>
+    <path d="M170,98 V128" marker-end="url(#ar)"/>
+    <path d="M170,168 V178" marker-end="url(#ar)"/>
+    <path d="M170,232 V255" marker-end="url(#ar)"/><text x="178" y="248" font-size="10.5" fill="#33475b" stroke="none">sí</text>
+    <path d="M170,301 V330" marker-end="url(#ar)"/>
+    <path d="M170,370 V400" marker-end="url(#ar)"/>
+    <path d="M246,205 H388" marker-end="url(#ar)"/><text x="300" y="197" font-size="10.5" fill="#33475b" stroke="none">no</text>
+    <path d="M572,205 H702" marker-end="url(#ar)"/><text x="610" y="197" font-size="10.5" fill="#33475b" stroke="none">no</text>
+    <path d="M480,233 V265" marker-end="url(#ar)"/><text x="488" y="254" font-size="10.5" fill="#33475b" stroke="none">sí</text>
+    <path d="M480,309 V332" marker-end="url(#ar)"/>
+    <path d="M566,360 H700" marker-end="url(#ar)"/><text x="610" y="352" font-size="10.5" fill="#33475b" stroke="none">sí</text>
+    <path d="M800,380 V410" marker-end="url(#ar)"/>
+    <path d="M480,388 V430" marker-end="url(#ar)"/><text x="488" y="414" font-size="10.5" fill="#33475b" stroke="none">no</text>
+    <path d="M380,450 H320 V360 H390" marker-end="url(#ar)"/>
+  </g>
+
+  <text x="80" y="492" font-size="10.5" fill="#33475b">La reserva puede cancelarse hasta 2 horas antes del inicio; después se registra como inasistencia y la plaza pasa al primero de la lista.</text>
+</svg>

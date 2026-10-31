@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 960 380" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <symbol id="actor" viewBox="0 0 24 42" overflow="visible">
+      <circle cx="12" cy="7" r="6" fill="none" stroke="#1e3a5f" stroke-width="2"/>
+      <path d="M12,13 v12 M2,19 h20 M12,25 l-7 15 M12,25 l7 15" fill="none" stroke="#1e3a5f" stroke-width="2"/>
+    </symbol>
+  </defs>
+
+  <rect x="250" y="24" width="560" height="270" rx="6" fill="#fbfdff" stroke="#1e3a5f" stroke-width="1.6"/>
+  <text x="266" y="44" font-size="12.5" font-weight="bold" fill="#1e3a5f">Módulo 5 · Sedes, zonas y catálogo</text>
+
+  <g font-size="12" fill="#22384d" text-anchor="middle">
+    <ellipse cx="530" cy="78" rx="190" ry="24" fill="#eef4fb" stroke="#1e3a5f"/><text x="530" y="82">CU-25 Gestionar sedes</text>
+    <ellipse cx="530" cy="140" rx="190" ry="24" fill="#eef4fb" stroke="#1e3a5f"/><text x="530" y="144">CU-26 Gestionar zonas de una sede</text>
+    <ellipse cx="530" cy="202" rx="190" ry="24" fill="#eef4fb" stroke="#1e3a5f"/><text x="530" y="206">CU-27 Configurar capacidad, umbrales y cola</text>
+    <ellipse cx="530" cy="264" rx="190" ry="24" fill="#eef4fb" stroke="#1e3a5f"/><text x="530" y="268">CU-28 Gestionar planes y precios</text>
+  </g>
+
+  <use xlink:href="#actor" href="#actor" x="48" y="130" width="24" height="42"/>
+  <text x="60" y="192" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#1e3a5f">Administrador</text>
+  <text x="60" y="207" text-anchor="middle" font-size="10" fill="#33475b">del gimnasio</text>
+
+  <g stroke="#475569" stroke-width="1.3" fill="none">
+    <path d="M84,152 L340,78"/>
+    <path d="M84,152 L340,140"/>
+    <path d="M84,152 L340,202"/>
+    <path d="M84,152 L340,264"/>
+  </g>
+
+  <text x="266" y="320" font-size="10.5" fill="#33475b">Los planes son globales y válidos en todas las sedes; la capacidad, los umbrales de alerta y la ventana de la cola se configuran por sede.</text>
+</svg>

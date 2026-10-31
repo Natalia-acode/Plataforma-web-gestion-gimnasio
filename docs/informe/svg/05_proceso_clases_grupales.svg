@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 410" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#475569"/>
+    </marker>
+  </defs>
+
+  <g font-size="11" fill="#1e3a5f" font-weight="bold">
+    <rect x="0" y="34" width="124" height="80" fill="#eef4fb" stroke="#c3d3e6"/><text x="12" y="78">Administrador</text>
+    <rect x="0" y="114" width="124" height="80" fill="#eef4fb" stroke="#c3d3e6"/><text x="12" y="158">Cliente</text>
+    <rect x="0" y="194" width="124" height="80" fill="#eef4fb" stroke="#c3d3e6"/><text x="12" y="238">Entrenador</text>
+    <rect x="0" y="274" width="124" height="80" fill="#eef4fb" stroke="#c3d3e6"/><text x="12" y="318">Sistema</text>
+  </g>
+  <line x1="124" y1="34" x2="950" y2="34" stroke="#c3d3e6"/>
+  <line x1="124" y1="114" x2="950" y2="114" stroke="#c3d3e6"/>
+  <line x1="124" y1="194" x2="950" y2="194" stroke="#c3d3e6"/>
+  <line x1="124" y1="274" x2="950" y2="274" stroke="#c3d3e6"/>
+  <line x1="124" y1="354" x2="950" y2="354" stroke="#c3d3e6"/>
+
+  <g font-size="10" fill="#22384d" text-anchor="middle">
+    <rect x="130" y="50" width="104" height="48" rx="6" fill="#ffffff" stroke="#1e3a5f"/><text x="182" y="66">Define agenda,</text><text x="182" y="80">zona y cupo</text><text x="182" y="94">por sede</text>
+
+    <rect x="240" y="130" width="104" height="48" rx="6" fill="#ffffff" stroke="#1e3a5f"/><text x="292" y="146">Consulta horarios</text><text x="292" y="160">de la sede</text>
+    <rect x="350" y="130" width="104" height="48" rx="6" fill="#ffffff" stroke="#1e3a5f"/><text x="402" y="150">Reserva</text><text x="402" y="164">una plaza</text>
+    <rect x="460" y="130" width="104" height="48" rx="6" fill="#ffffff" stroke="#1e3a5f"/><text x="512" y="146">Confirmación o</text><text x="512" y="160">entrada en</text><text x="512" y="174">lista de espera</text>
+    <rect x="570" y="130" width="104" height="48" rx="6" fill="#ffffff" stroke="#1e3a5f"/><text x="622" y="150">Asiste</text><text x="622" y="164">a la clase</text>
+
+    <rect x="570" y="210" width="104" height="48" rx="6" fill="#ffffff" stroke="#1e3a5f"/><text x="622" y="230">Pasa lista de</text><text x="622" y="244">asistencia</text>
+
+    <rect x="130" y="290" width="104" height="48" rx="6" fill="#ffffff" stroke="#1e3a5f"/><text x="182" y="310">Publica la agenda</text><text x="182" y="324">por sede</text>
+    <rect x="350" y="290" width="104" height="48" rx="6" fill="#ffffff" stroke="#1e3a5f"/><text x="402" y="306">Valida cupo</text><text x="402" y="320">y membresía</text><text x="402" y="334">de la sede</text>
+    <rect x="460" y="290" width="104" height="48" rx="6" fill="#ffffff" stroke="#1e3a5f"/><text x="512" y="310">Descuenta cupo</text><text x="512" y="324">y ordena la lista</text>
+    <rect x="570" y="290" width="104" height="48" rx="6" fill="#ffffff" stroke="#1e3a5f"/><text x="622" y="310">Registra la</text><text x="622" y="324">asistencia</text>
+    <rect x="680" y="290" width="104" height="48" rx="6" fill="#ffffff" stroke="#1e3a5f"/><text x="732" y="310">Informa ocupación</text><text x="732" y="324">de clases</text>
+  </g>
+
+  <g stroke="#475569" stroke-width="1.4" fill="none">
+    <path d="M182,98 V290" marker-end="url(#ar)"/>
+    <path d="M234,306 L284,178" marker-end="url(#ar)"/>
+    <path d="M344,154 H350" marker-end="url(#ar)"/>
+    <path d="M402,178 V290" marker-end="url(#ar)"/>
+    <path d="M454,314 H460" marker-end="url(#ar)"/>
+    <path d="M512,290 V178" marker-end="url(#ar)"/>
+    <path d="M564,154 H570" marker-end="url(#ar)"/>
+    <path d="M622,178 V210" marker-end="url(#ar)"/>
+    <path d="M622,258 V290" marker-end="url(#ar)"/>
+    <path d="M674,314 H680" marker-end="url(#ar)"/>
+  </g>
+
+  <text x="130" y="382" font-size="10.5" fill="#33475b">Las clases se programan por sede y zona; la reserva puede cancelarse hasta 2 horas antes y la lista de espera promociona automáticamente al primero.</text>
+</svg>

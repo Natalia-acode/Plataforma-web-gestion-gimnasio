@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 960 560" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#475569"/>
+    </marker>
+    <symbol id="actor" viewBox="0 0 24 42" overflow="visible">
+      <circle cx="12" cy="7" r="6" fill="none" stroke="#1e3a5f" stroke-width="2"/>
+      <path d="M12,13 v12 M2,19 h20 M12,25 l-7 15 M12,25 l7 15" fill="none" stroke="#1e3a5f" stroke-width="2"/>
+    </symbol>
+  </defs>
+
+  <g>
+    <rect x="300" y="18" width="620" height="118" rx="10" fill="#f7fafd" stroke="#1e3a5f" stroke-width="1.4"/>
+    <text x="316" y="38" font-size="12.5" font-weight="bold" fill="#1e3a5f">P1 · Afiliación y cobro al cliente</text>
+    <rect x="316" y="52" width="286" height="30" rx="15" fill="#ffffff" stroke="#7f9bbd"/><text x="459" y="71" text-anchor="middle" font-size="11.5" fill="#22384d">UCN-01 Afiliarse al gimnasio</text>
+    <rect x="616" y="52" width="286" height="30" rx="15" fill="#ffffff" stroke="#7f9bbd"/><text x="759" y="71" text-anchor="middle" font-size="11.5" fill="#22384d">UCN-02 Contratar una membresía</text>
+    <rect x="316" y="90" width="286" height="30" rx="15" fill="#ffffff" stroke="#7f9bbd"/><text x="459" y="109" text-anchor="middle" font-size="11.5" fill="#22384d">UCN-03 Cobrar la renovación</text>
+    <rect x="616" y="90" width="286" height="30" rx="15" fill="#ffffff" stroke="#7f9bbd"/><text x="759" y="109" text-anchor="middle" font-size="11.5" fill="#22384d">UCN-04 Cancelar la membresía</text>
+  </g>
+
+  <g>
+    <rect x="300" y="148" width="620" height="118" rx="10" fill="#f7fafd" stroke="#1e3a5f" stroke-width="1.4"/>
+    <text x="316" y="168" font-size="12.5" font-weight="bold" fill="#1e3a5f">P2 · Acceso y uso de la sede</text>
+    <rect x="316" y="182" width="286" height="30" rx="15" fill="#ffffff" stroke="#7f9bbd"/><text x="459" y="201" text-anchor="middle" font-size="11.5" fill="#22384d">UCN-05 Acceder a una sede</text>
+    <rect x="616" y="182" width="286" height="30" rx="15" fill="#ffffff" stroke="#7f9bbd"/><text x="759" y="201" text-anchor="middle" font-size="11.5" fill="#22384d">UCN-06 Conocer la ocupación</text>
+    <rect x="316" y="220" width="286" height="30" rx="15" fill="#ffffff" stroke="#7f9bbd"/><text x="459" y="239" text-anchor="middle" font-size="11.5" fill="#22384d">UCN-07 Registrar salida y cierre</text>
+    <rect x="616" y="220" width="286" height="30" rx="15" fill="#ffffff" stroke="#7f9bbd"/><text x="759" y="239" text-anchor="middle" font-size="11.5" fill="#22384d">UCN-08 Vender en mostrador</text>
+  </g>
+
+  <g>
+    <rect x="300" y="278" width="620" height="118" rx="10" fill="#f7fafd" stroke="#1e3a5f" stroke-width="1.4"/>
+    <text x="316" y="298" font-size="12.5" font-weight="bold" fill="#1e3a5f">P3 · Clases grupales</text>
+    <rect x="316" y="312" width="286" height="30" rx="15" fill="#ffffff" stroke="#7f9bbd"/><text x="459" y="331" text-anchor="middle" font-size="11.5" fill="#22384d">UCN-09 Programar clases grupales</text>
+    <rect x="616" y="312" width="286" height="30" rx="15" fill="#ffffff" stroke="#7f9bbd"/><text x="759" y="331" text-anchor="middle" font-size="11.5" fill="#22384d">UCN-10 Reservar plaza en clase</text>
+    <rect x="316" y="350" width="286" height="30" rx="15" fill="#ffffff" stroke="#7f9bbd"/><text x="459" y="369" text-anchor="middle" font-size="11.5" fill="#22384d">UCN-11 Controlar la asistencia</text>
+  </g>
+
+  <g>
+    <rect x="300" y="408" width="620" height="88" rx="10" fill="#f7fafd" stroke="#1e3a5f" stroke-width="1.4"/>
+    <text x="316" y="428" font-size="12.5" font-weight="bold" fill="#1e3a5f">P4 · Lista de espera de ingreso</text>
+    <rect x="316" y="442" width="286" height="30" rx="15" fill="#ffffff" stroke="#7f9bbd"/><text x="459" y="461" text-anchor="middle" font-size="11.5" fill="#22384d">UCN-12 Atender la lista de espera</text>
+  </g>
+
+  <use xlink:href="#actor" href="#actor" x="48" y="30" width="24" height="42"/>
+  <text x="60" y="92" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#1e3a5f">Visitante</text>
+  <use xlink:href="#actor" href="#actor" x="48" y="152" width="24" height="42"/>
+  <text x="60" y="214" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#1e3a5f">Cliente</text>
+  <use xlink:href="#actor" href="#actor" x="48" y="274" width="24" height="42"/>
+  <text x="60" y="336" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#1e3a5f">Empleado</text>
+  <use xlink:href="#actor" href="#actor" x="48" y="356" width="24" height="42"/>
+  <text x="60" y="418" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#1e3a5f">Entrenador</text>
+  <use xlink:href="#actor" href="#actor" x="48" y="440" width="24" height="42"/>
+  <text x="60" y="502" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#1e3a5f">Administrador</text>
+
+  <line x1="80" y1="52" x2="298" y2="60" stroke="#475569" stroke-width="1.4" marker-end="url(#ar)"/>
+  <line x1="80" y1="174" x2="298" y2="118" stroke="#475569" stroke-width="1.4" marker-end="url(#ar)"/>
+  <line x1="80" y1="174" x2="298" y2="205" stroke="#475569" stroke-width="1.4" marker-end="url(#ar)"/>
+  <line x1="80" y1="180" x2="298" y2="330" stroke="#475569" stroke-width="1.4" marker-end="url(#ar)"/>
+  <line x1="80" y1="186" x2="298" y2="440" stroke="#475569" stroke-width="1.4" marker-end="url(#ar)"/>
+  <line x1="80" y1="296" x2="298" y2="240" stroke="#475569" stroke-width="1.4" marker-end="url(#ar)"/>
+  <line x1="80" y1="302" x2="298" y2="452" stroke="#475569" stroke-width="1.4" marker-end="url(#ar)"/>
+  <line x1="80" y1="378" x2="298" y2="352" stroke="#475569" stroke-width="1.4" marker-end="url(#ar)"/>
+  <line x1="80" y1="462" x2="298" y2="300" stroke="#475569" stroke-width="1.4" marker-end="url(#ar)"/>
+  <line x1="80" y1="462" x2="298" y2="76" stroke="#475569" stroke-width="1.4" marker-end="url(#ar)"/>
+
+  <text x="300" y="530" font-size="11" fill="#33475b">El administrador supervisa los cuatro procesos; en este diagrama solo se trazan sus participaciones directas (afiliación y programación de clases).</text>
+</svg>

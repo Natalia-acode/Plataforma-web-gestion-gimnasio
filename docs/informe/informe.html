@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>GymFlex — Análisis de negocio y especificación de requisitos</title>
+<style>
+  @page { size: A4 portrait; margin: 16mm 15mm 16mm; }
+  * { box-sizing: border-box; }
+  body { font-family: "Segoe UI", Arial, sans-serif; font-size: 10pt; color: #1f2937; line-height: 1.45; margin: 0; }
+  h1 { font-size: 16pt; color: #1e3a5f; border-bottom: 2px solid #1e3a5f; padding-bottom: 4px; margin: 0 0 12px; page-break-before: always; }
+  h1.sin-salto { page-break-before: avoid; }
+  h2 { font-size: 12.5pt; color: #1e3a5f; margin: 18px 0 6px; }
+  h3 { font-size: 11pt; color: #2f5a86; margin: 14px 0 4px; }
+  p { margin: 4px 0; }
+  figure { page-break-inside: avoid; margin: 10px 0 16px; }
+  figure img { width: 100%; display: block; }
+  figcaption { font-size: 8.5pt; color: #475569; font-style: italic; margin-top: 3px; }
+  table { width: 100%; border-collapse: collapse; font-size: 8.8pt; margin: 8px 0; page-break-inside: auto; }
+  th, td { border: 1px solid #cbd5e1; padding: 4px 6px; vertical-align: top; text-align: left; }
+  th { background: #eef4fb; color: #1e3a5f; }
+  tr { page-break-inside: avoid; }
+  ol, ul { margin: 4px 0 4px 18px; padding: 0; }
+  li { margin: 1px 0; }
+  .cu { page-break-inside: avoid; border-left: 3px solid #1e3a5f; padding-left: 9px; margin: 9px 0; }
+  .cu h4 { margin: 0; font-size: 10.5pt; color: #1e3a5f; }
+  .meta { font-size: 8.6pt; color: #475569; margin: 2px 0; }
+  .nota { background: #f7fafd; border: 1px solid #c3d3e6; padding: 7px 9px; font-size: 9.2pt; margin: 8px 0; }
+  .portada { text-align: center; padding-top: 190px; page-break-after: always; }
+  .portada .marca { font-size: 30pt; color: #1e3a5f; font-weight: bold; letter-spacing: 1px; }
+  .portada .sub { font-size: 13pt; color: #2f5a86; margin-top: 6px; }
+  .portada .tipo { font-size: 11pt; color: #475569; margin-top: 60px; }
+  .portada .pie { font-size: 9.5pt; color: #64748b; margin-top: 120px; }
+  .indice td { border: none; padding: 2px 6px; font-size: 9.5pt; }
+</style>
+</head>
+<body>
+
+<div class="portada">
+  <div class="marca">GymFlex</div>
+  <div class="sub">Sistema de gestión de gimnasio multi-sede</div>
+  <div class="tipo">Análisis de negocio · Procesos y casos de uso de negocio<br>
+    Casos de uso del sistema · Diagramas de actividad · Diagrama de clases</div>
+  <div class="pie">Documento de análisis y especificación de requisitos<br>Modelo multi-sede · Roles: cliente, empleado, entrenador y administrador</div>
+</div>
+
+<h1 class="sin-salto">Índice</h1>
+<table class="indice">
+<tr><td style="width:60px"><b>1</b></td><td><b>Análisis de negocio</b> — contexto, actores, objetivos y alcance</td></tr>
+<tr><td><b>1.4</b></td><td>Procesos de negocio: afiliación y cobro · acceso y aforo · clases grupales · lista de espera</td></tr>
+<tr><td><b>1.5</b></td><td>Casos de uso de negocio (UCN-01 a UCN-12)</td></tr>
+<tr><td style="border-top:1px solid #cbd5e1"><b>2</b></td><td style="border-top:1px solid #cbd5e1"><b>Casos de uso del sistema</b> — 31 casos en 6 módulos, con su descripción</td></tr>
+<tr><td><b>3</b></td><td>Diagramas de actividad de los procesos clave</td></tr>
+<tr><td><b>4</b></td><td>Diagrama de clases del dominio</td></tr>
+<tr><td><b>5</b></td><td>Trazabilidad: del caso de uso de negocio al caso de uso del sistema</td></tr>
+</table>
+
+<h1>1 · Análisis de negocio</h1>
+
+<h2>1.1 El negocio</h2>
+<p>Un gimnasio con varias sedes necesita que el cliente pueda <b>afiliarse, pagar y cancelar sin depender del mostrador</b>, y que la dirección sepa <b>cuánta gente hay en cada sede</b> para repartir clases, equipos y personal. Hoy esas tres cosas se resuelven en persona o por teléfono, con estos resultados:</p>
+<ul>
+<li><b>Cobros que el cliente no puede gobernar.</b> La renovación se cobra sola y cancelar exige ir al gimnasio; el cliente no sabe cuándo ni cuánto le van a cobrar.</li>
+<li><b>Horas punta saturadas.</b> Nadie sabe cuántas personas hay en cada sede, así que todos coinciden en las mismas franjas y las salas se llenan mientras otras quedan vacías.</li>
+<li><b>Colas sin orden.</b> Cuando una sede está llena, la gente espera de pie sin saber si va a alcanzar el ingreso, y recepción no tiene ninguna herramienta para organizarlo.</li>
+</ul>
+
+<h2>1.2 Diagrama de contexto</h2>
+<p>El sistema gestiona las sedes por dentro (zonas, clases, aforo y personal adscrito) y se relaciona con dos sistemas externos: la pasarela de pago y el servicio de mensajería. La tarjeta nunca entra en el sistema; solo su token.</p>
+<figure>
+  <img src="svg/01_contexto.svg" alt="Diagrama de contexto">
+  <figcaption>Figura 1 · Diagrama de contexto de GymFlex: cinco actores humanos, dos sistemas externos y el alcance funcional del sistema.</figcaption>
+</figure>
+
+<h2>1.3 Actores del negocio</h2>
+<table>
+<tr><th style="width:130px">Actor</th><th>Qué hace en el negocio</th><th style="width:190px">Qué recibe del sistema</th></tr>
+<tr><td><b>Visitante</b></td><td>Compara planes y sedes antes de decidir; se registra eligiendo el tipo de cuenta.</td><td>Catálogo de planes, ocupación en vivo y su cuenta.</td></tr>
+<tr><td><b>Cliente</b></td><td>Paga una membresía que es válida en todas las sedes, entrena y reserva clases.</td><td>Suscripción, pagos, facturas, aforo, reservas y turnos de cola.</td></tr>
+<tr><td><b>Empleado</b></td><td>Atiende en mostrador en <b>su sede</b>: accesos, ventas presenciales y cola de ingreso.</td><td>Ficha del cliente, cola de la sede y registro del cobro.</td></tr>
+<tr><td><b>Entrenador</b></td><td>Da clases en <b>su sede</b> y controla quién asistió.</td><td>Su horario y la lista de inscritos.</td></tr>
+<tr><td><b>Administrador del gimnasio</b></td><td>Responde por el negocio (planes, precios, sedes, zonas, clases, reportes) y por la administración de la plataforma (cuentas, roles, aprobaciones y parámetros). Es un <b>único rol</b>: en una cadena de sedes propias ambas funciones las ejerce la misma persona.</td><td>Toda la configuración y los reportes, por sede y globales.</td></tr>
+<tr><td><b>Pasarela de pago</b> <i>(externo)</i></td><td>Tokeniza la tarjeta y ejecuta los cobros.</td><td>Orden de cobro; devuelve aprobado o rechazado.</td></tr>
+<tr><td><b>Correo y SMS</b> <i>(externo)</i></td><td>Entrega avisos al cliente.</td><td>Recordatorios, confirmaciones y enlaces temporales.</td></tr>
+</table>
+
+<h2>1.4 Objetivos y alcance</h2>
+<table>
+<tr><th style="width:56px">ID</th><th>Objetivo del negocio</th></tr>
+<tr><td>OB-1</td><td>Que el cliente contrate, cambie, cancele y controle la renovación de su membresía sin pisar el gimnasio.</td></tr>
+<tr><td>OB-2</td><td>Que cada cobro automático esté autorizado por el cliente y anunciado con antelación.</td></tr>
+<tr><td>OB-3</td><td>Repartir la demanda: ocupación en vivo por sede y estadística de afluencia para elegir hora.</td></tr>
+<tr><td>OB-4</td><td>Eliminar la espera de pie con una cola virtual con posición, tiempo estimado y aviso.</td></tr>
+<tr><td>OB-5</td><td>Dar a la dirección visibilidad por sede: ingresos, ocupación y asistencia a clases.</td></tr>
+</table>
+<div class="nota"><b>Incluido:</b> cuentas y roles con aprobación, membresías y pagos, check-in y aforo por sede y zona, clases y reservas, cola virtual, sedes y zonas, reportes. <b>Fuera de esta versión:</b> rutinas y nutrición, tienda e inventario, control de torniquetes o sensores, app móvil nativa, y franquicias con dueños distintos (las sedes de este modelo son todas del mismo titular).</div>
+
+<h2>1.5 Procesos de negocio</h2>
+<p>Cuatro procesos cubren el ciclo completo del cliente. Cada diagrama está organizado en carriles: quién hace qué, en orden, de izquierda a derecha.</p>
+
+<h3>P1 · Afiliación y cobro</h3>
+<p>Empieza cuando alguien decide entrenar y termina cuando el gimnasio le cobra cada mes. El punto delicado es el cobro recurrente: solo se cobra si el cliente lo autorizó al contratar, y siempre se avisa antes.</p>
+<figure>
+  <img src="svg/03_proceso_afiliacion_cobro.svg" alt="Proceso de afiliación y cobro">
+  <figcaption>Figura 2 · P1 Afiliación y cobro. Casos de uso de negocio: UCN-01 a UCN-04.</figcaption>
+</figure>
+
+<h3>P2 · Acceso y uso de la sede</h3>
+<p>El cliente llega, se identifica y queda registrado en el aforo de esa sede. La misma membresía vale para todas las sedes, así que el control importante no es «de qué sede es» sino <b>si tiene derecho a entrar ahora</b> y si queda sitio.</p>
+<figure>
+  <img src="svg/04_proceso_acceso_aforo.svg" alt="Proceso de acceso y aforo">
+  <figcaption>Figura 3 · P2 Acceso y uso de la sede. Casos de uso de negocio: UCN-05 a UCN-08.</figcaption>
+</figure>
+
+<h3>P3 · Clases grupales</h3>
+<p>El administrador arma la agenda de cada sede, el cliente reserva, y el entrenador pasa lista. Si la clase está llena, la lista de espera decide quién entra cuando alguien falta.</p>
+<figure>
+  <img src="svg/05_proceso_clases_grupales.svg" alt="Proceso de clases grupales">
+  <figcaption>Figura 4 · P3 Clases grupales. Casos de uso de negocio: UCN-09 a UCN-11.</figcaption>
+</figure>
+
+<h3>P4 · Lista de espera de ingreso</h3>
+<p>Cuando la sede está llena, el cliente no espera de pie: pide turno, ve su posición y le avisan cuando toca. Si no aparece en la ventana concedida, pasa al siguiente.</p>
+<figure>
+  <img src="svg/06_proceso_cola_espera.svg" alt="Proceso de lista de espera">
+  <figcaption>Figura 5 · P4 Lista de espera de ingreso. Casos de uso de negocio: UCN-12.</figcaption>
+</figure>
+
+<h2>1.6 Casos de uso de negocio</h2>
+<p>Aquí el sistema todavía es una caja negra: lo que importa es qué necesita resolver cada participante del negocio, no qué pantalla usa.</p>
+<figure>
+  <img src="svg/02_casos_uso_negocio.svg" alt="Casos de uso de negocio">
+  <figcaption>Figura 6 · Casos de uso de negocio agrupados en los cuatro procesos.</figcaption>
+</figure>
+<table>
+<tr><th style="width:62px">ID</th><th>Caso de uso de negocio</th><th style="width:230px">Quién lo inicia</th><th>Resultado que espera el negocio</th></tr>
+<tr><td>UCN-01</td><td>Afiliarse al gimnasio</td><td>Visitante</td><td>Una cuenta abierta con el tipo de cliente elegido.</td></tr>
+<tr><td>UCN-02</td><td>Contratar una membresía</td><td>Visitante / Cliente</td><td>Membresía activa para todas las sedes desde hoy.</td></tr>
+<tr><td>UCN-03</td><td>Cobrar la renovación</td><td>El propio negocio (ciclo mensual)</td><td>Ingreso cobrado sin llamadas ni visitas, con aviso previo.</td></tr>
+<tr><td>UCN-04</td><td>Cancelar la membresía</td><td>Cliente</td><td>Baja efectiva al fin del período pagado, sin cargos futuros.</td></tr>
+<tr><td>UCN-05</td><td>Acceder a una sede</td><td>Cliente</td><td>Entrada registrada y ocupación actualizada.</td></tr>
+<tr><td>UCN-06</td><td>Conocer la ocupación</td><td>Cliente / Visitante</td><td>Decisión de ir a otra hora u otra sede con datos reales.</td></tr>
+<tr><td>UCN-07</td><td>Registrar salida y cierre</td><td>Empleado / negocio</td><td>Aforo real al final de la jornada, sin clientes «dentro» fantasma.</td></tr>
+<tr><td>UCN-08</td><td>Vender en mostrador</td><td>Empleado</td><td>Alta y cobro presencial auditados con su responsable.</td></tr>
+<tr><td>UCN-09</td><td>Programar clases grupales</td><td>Administrador</td><td>Agenda por sede con sala, cupo y entrenador asignados.</td></tr>
+<tr><td>UCN-10</td><td>Reservar plaza en clase</td><td>Cliente</td><td>Cupo garantizado o posición en lista de espera.</td></tr>
+<tr><td>UCN-11</td><td>Controlar la asistencia</td><td>Entrenador</td><td>Aforo real de cada clase para ajustar horarios.</td></tr>
+<tr><td>UCN-12</td><td>Atender la lista de espera</td><td>Cliente / Empleado</td><td>Ingreso ordenado, sin aglomeración en la puerta.</td></tr>
+</table>
+
+<h1>2 · Casos de uso del sistema</h1>
+<p>Los doce casos de uso de negocio se abren en <b>31 casos de uso del sistema</b>, repartidos en seis módulos. La convención de las tablas: <b>Pre</b> = precondición, <b>Post</b> = postcondición, <b>EX</b> = excepción.</p>
+
+<h2>2.1 Diagramas por módulo</h2>
+<figure><img src="svg/07_uc_sistema_m1.svg" alt="Módulo 1"><figcaption>Figura 7 · Módulo 1, cuenta y seguridad (CU-01 a CU-05).</figcaption></figure>
+<figure><img src="svg/08_uc_sistema_m2.svg" alt="Módulo 2"><figcaption>Figura 8 · Módulo 2, membresías y pagos (CU-06 a CU-13).</figcaption></figure>
+<figure><img src="svg/09_uc_sistema_m3.svg" alt="Módulo 3"><figcaption>Figura 9 · Módulo 3, acceso, aforo y cola virtual (CU-14 a CU-19).</figcaption></figure>
+<figure><img src="svg/10_uc_sistema_m4.svg" alt="Módulo 4"><figcaption>Figura 10 · Módulo 4, clases grupales y reservas (CU-20 a CU-24).</figcaption></figure>
+<figure><img src="svg/11_uc_sistema_m5.svg" alt="Módulo 5"><figcaption>Figura 11 · Módulo 5, sedes, zonas y catálogo (CU-25 a CU-28).</figcaption></figure>
+<figure><img src="svg/12_uc_sistema_m6.svg" alt="Módulo 6"><figcaption>Figura 12 · Módulo 6, administración y reportes (CU-29 a CU-31).</figcaption></figure>
+
+<h2>2.2 Descripciones</h2>
+
+<h3>Módulo 1 · Cuenta y seguridad</h3>
+
+<div class="cu"><h4>CU-01 · Registrarse en la plataforma</h4>
+<p class="meta"><b>Actor:</b> Visitante · <b>Apoya:</b> Administrador · <b>Negocio:</b> UCN-01</p>
+<p><b>Pre:</b> el visitante no tiene cuenta. <b>Post:</b> cuenta creada, activa o pendiente según el rol elegido.</p>
+<ol><li>Completa nombre, apellidos, correo, teléfono, fecha de nacimiento, contraseña y el tipo de cuenta.</li>
+<li>Si elige <i>cliente</i>, la cuenta nace activa y entra directamente.</li>
+<li>Si elige <i>empleado</i>, <i>entrenador</i> o <i>administrador</i>, nace <b>pendiente</b> y el sistema avisa a los administradores (CU-05).</li>
+<li>Excepción de arranque: si todavía no existe ningún administrador activo, la cuenta se autoactiva para no dejar el sistema sin quien lo administre.</li></ol>
+<p class="meta"><b>EX-1</b> Correo ya registrado: se informa y no se crea nada. <b>EX-2</b> Rol no reconocido: se rechaza la solicitud.</p></div>
+
+<div class="cu"><h4>CU-02 · Iniciar sesión</h4>
+<p class="meta"><b>Actor:</b> Cliente, Empleado, Entrenador, Administrador · <b>Negocio:</b> UCN-01</p>
+<p><b>Pre:</b> cuenta activa. <b>Post:</b> sesión abierta y panel según el rol.</p>
+<ol><li>Introduce correo y contraseña; el sistema verifica las credenciales.</li>
+<li>Emite un token con el rol y la sede adscrita, si la tiene.</li>
+<li>Redirige: cliente → su membresía; empleado → recepción de su sede; entrenador → sus clases; administrador → reportes.</li></ol>
+<p class="meta"><b>EX-1</b> Cuenta pendiente o rechazada: se indica que un administrador debe aprobarla (CU-05). <b>EX-2</b> Cuenta suspendida: se dirige al cliente a recepción.</p></div>
+
+<div class="cu"><h4>CU-03 · Recuperar la contraseña</h4>
+<p class="meta"><b>Actor:</b> cualquier usuario · <b>Negocio:</b> UCN-01</p>
+<ol><li>Solicita el recupero con su correo; el sistema genera un enlace temporal de un solo uso.</li>
+<li>Abre el enlace, define una nueva contraseña y la sesión queda abierta.</li></ol>
+<p class="meta"><b>EX-1</b> Enlace caducado o ya usado: se pide uno nuevo. <b>EX-2</b> Correo inexistente: se responde igual para no revelar cuentas.</p></div>
+
+<div class="cu"><h4>CU-04 · Gestionar mi perfil</h4>
+<p class="meta"><b>Actor:</b> cualquier usuario autenticado · <b>Negocio:</b> UCN-01</p>
+<ol><li>Consulta sus datos, la sede a la que está adscrito (personal) y su suscripción vigente (cliente).</li>
+<li>Edita teléfono, apellidos y contraseña; el correo solo puede cambiarlo el administrador.</li></ol></div>
+
+<div class="cu"><h4>CU-05 · Aprobar o rechazar una solicitud de personal</h4>
+<p class="meta"><b>Actor:</b> Administrador · <b>Negocio:</b> UCN-01 · <b>Regla:</b> RN de aprobación</p>
+<p><b>Pre:</b> existe una cuenta de personal en estado pendiente. <b>Post:</b> cuenta activa o rechazada, con el solicitante notificado.</p>
+<ol><li>Abre la bandeja de solicitudes pendientes, ordenadas por fecha de registro.</li>
+<li>Revisa datos y rol pedido; puede cambiar el rol antes de aprobar.</li>
+<li>Aprueba (cuenta activa) o rechaza (cuenta rechazada, con motivo).</li></ol>
+<p class="meta"><b>EX-1</b> La cuenta ya fue resuelta: se bloquea la operación. <b>EX-2</b> No hay administrador activo: el registro se autoactivó, así que no hay bandeja.</p></div>
+
+<h3>Módulo 2 · Membresías y pagos</h3>
+
+<div class="cu"><h4>CU-06 · Consultar planes y sedes</h4>
+<p class="meta"><b>Actor:</b> Visitante, Cliente · <b>Negocio:</b> UCN-02</p>
+<ol><li>Consulta el catálogo: precio, duración, beneficios y sedes incluidas.</li>
+<li>Puede comparar con la ocupación actual de cada sede antes de decidir.</li></ol>
+<p class="meta">Es el único caso de uso del módulo abierto sin sesión.</p></div>
+
+<div class="cu"><h4>CU-07 · Contratar una membresía</h4>
+<p class="meta"><b>Actor:</b> Cliente · <b>Negocio:</b> UCN-02 · <b>Regla:</b> opt-in de renovación</p>
+<p><b>Pre:</b> cuenta activa y una sola suscripción por cliente. <b>Post:</b> suscripción activa válida en todas las sedes.</p>
+<ol><li>Elige plan y método de pago; el sistema registra la tarjeta en la pasarela y guarda solo el token.</li>
+<li>Decide si autoriza la renovación automática; viene <b>desactivada</b> por defecto.</li>
+<li>Antes de confirmar ve el importe y la fecha del próximo cobro.</li></ol>
+<p class="meta"><b>EX-1</b> Cargo rechazado: no se activa la suscripción. <b>EX-2</b> Ya tiene suscripción activa: se le ofrece cambiar de plan (CU-08).</p></div>
+
+<div class="cu"><h4>CU-08 · Cambiar de plan</h4>
+<p class="meta"><b>Actor:</b> Cliente · <b>Negocio:</b> UCN-02</p>
+<ol><li>Elige otro plan; el sistema calcula la diferencia y la nueva fecha de renovación.</li>
+<li>Confirma el cargo o el saldo a favor y el cambio queda aplicado al período siguiente.</li></ol></div>
+
+<div class="cu"><h4>CU-09 · Cancelar la suscripción</h4>
+<p class="meta"><b>Actor:</b> Cliente · <b>Negocio:</b> UCN-04 · <b>Prioridad:</b> crítica</p>
+<p><b>Post:</b> no se volverá a cobrar nada y el acceso se conserva hasta la fecha ya pagada.</p>
+<ol><li>Abre la cancelación desde su perfil, sin llamadas ni visitas.</li>
+<li>El sistema muestra hasta qué día conserva el acceso y confirma sin coste.</li></ol>
+<p class="meta"><b>EX-1</b> Intento de cancelar una suscripción ya vencida: se informa que no hay nada que cancelar.</p></div>
+
+<div class="cu"><h4>CU-10 · Gestionar mis métodos de pago</h4>
+<p class="meta"><b>Actor:</b> Cliente · <b>Negocio:</b> UCN-03</p>
+<ol><li>Añade, cambia o elimina tarjetas tokenizadas.</li>
+<li>El sistema nunca muestra el número completo ni lo almacena.</li></ol>
+<p class="meta"><b>EX-1</b> Elimina la única tarjeta con renovación activa: debe elegir otro método o desactivar la renovación.</p></div>
+
+<div class="cu"><h4>CU-11 · Consultar pagos y facturas</h4>
+<p class="meta"><b>Actor:</b> Cliente · <b>Negocio:</b> UCN-03</p>
+<ol><li>Revisa el historial con importe, concepto, fecha y estado de cada cargo.</li>
+<li>Descarga la factura de cualquiera de ellos.</li></ol></div>
+
+<div class="cu"><h4>CU-12 · Cobrar la renovación automática</h4>
+<p class="meta"><b>Actor:</b> Planificador (automático), Pasarela · <b>Negocio:</b> UCN-03 · <b>Prioridad:</b> crítica</p>
+<p><b>Pre:</b> suscripción con renovación autorizada. <b>Post:</b> cobro registrado y prorrogado, o suscripción suspendida.</p>
+<ol><li>Envía el recordatorio a 7 días y a 1 día del cobro, con enlace para cancelar.</li>
+<li>Ordena el cargo con el token guardado.</li>
+<li>Si se rechaza, reintenta al día, a los 3 y a los 7 días; agotados, suspende la membresía.</li></ol></div>
+
+<div class="cu"><h4>CU-13 · Vender una membresía presencial</h4>
+<p class="meta"><b>Actor:</b> Empleado · <b>Negocio:</b> UCN-08</p>
+<ol><li>Atiende al cliente en mostrador y elige el plan.</li>
+<li>Registra el pago en efectivo o envía el enlace de pago; si el cliente no existe, crea su cuenta.</li>
+<li>La suscripción nace activa y queda auditada con el empleado responsable.</li></ol>
+<p class="meta"><b>EX-1</b> El usuario que vende no es empleado ni administrador: la operación se rechaza.</p></div>
+
+<h3>Módulo 3 · Acceso, aforo y cola virtual</h3>
+
+<div class="cu"><h4>CU-14 · Hacer check-in con QR</h4>
+<p class="meta"><b>Actor:</b> Cliente · <b>Negocio:</b> UCN-05 · <b>Regla:</b> RN-05, RN-06</p>
+<ol><li>Presenta su código QR en la sede; el sistema valida la membresía.</li>
+<li>Si queda capacidad, registra la entrada, suma ocupación y anota la zona.</li>
+<li>Si la sede está llena, ofrece el turno en la cola virtual (CU-18).</li></ol>
+<p class="meta"><b>EX-1</b> Membresía vencida, suspendida o cancelada fuera de período: acceso denegado con el motivo.</p></div>
+
+<div class="cu"><h4>CU-15 · Registrar acceso manual</h4>
+<p class="meta"><b>Actor:</b> Empleado · <b>Negocio:</b> UCN-05, UCN-07</p>
+<ol><li>Busca al cliente por nombre o correo y registra la entrada o la salida.</li>
+<li>El aforo de la sede se recalcula al instante.</li></ol>
+<p class="meta"><b>EX-1</b> Cliente sin membresía vigente: el empleado confirma la excepción y queda registrada con su nombre.</p></div>
+
+<div class="cu"><h4>CU-16 · Consultar ocupación en tiempo real</h4>
+<p class="meta"><b>Actor:</b> Visitante, Cliente, Empleado · <b>Negocio:</b> UCN-06</p>
+<ol><li>Muestra la ocupación actual de cada sede frente a su capacidad máxima, y por zonas.</li>
+<li>Se refresca con retardo máximo de 30 segundos.</li></ol></div>
+
+<div class="cu"><h4>CU-17 · Consultar mapa de afluencia</h4>
+<p class="meta"><b>Actor:</b> Cliente · <b>Negocio:</b> UCN-06</p>
+<ol><li>Presenta por día de la semana y franja horaria cuánta gente suele haber en cada sede.</li>
+<li>El cliente elige la hora menos cargada antes de salir de casa.</li></ol></div>
+
+<div class="cu"><h4>CU-18 · Solicitar turno en la cola virtual</h4>
+<p class="meta"><b>Actor:</b> Cliente · <b>Negocio:</b> UCN-12 · <b>Regla:</b> RN-08</p>
+<ol><li>Pide turno para ingresar a una sede o para una clase llena.</li>
+<li>Recibe posición, tiempo estimado y aviso cuando se acerca su turno, con ventana de 10 minutos.</li>
+<li>Si no se presenta, pierde la posición y la cola avanza.</li></ol></div>
+
+<div class="cu"><h4>CU-19 · Gestionar la cola de la sede</h4>
+<p class="meta"><b>Actor:</b> Empleado · <b>Negocio:</b> UCN-12</p>
+<ol><li>Vé la cola de su sede y llame al siguiente turno.</li>
+<li>Marque atendido (genera el check-in) o expirado, y el sistema avanza la cola.</li></ol>
+<p class="meta"><b>EX-1</b> El empleado intenta gestionar la cola de otra sede: acceso restringido a su sede.</p></div>
+
+<h3>Módulo 4 · Clases grupales y reservas</h3>
+
+<div class="cu"><h4>CU-20 · Consultar horarios por sede</h4>
+<p class="meta"><b>Actor:</b> Visitante, Cliente · <b>Negocio:</b> UCN-10</p>
+<ol><li>Filtra por sede, día y disciplina; ve plazas libres y entrenador asignado.</li></ol></div>
+
+<div class="cu"><h4>CU-21 · Reservar plaza en una clase</h4>
+<p class="meta"><b>Actor:</b> Cliente · <b>Negocio:</b> UCN-10 · <b>Regla:</b> RN-09</p>
+<ol><li>Reserva; el sistema valida membresía vigente y cupo disponible.</li>
+<li>Si está llena, ofrece la lista de espera y guarda la posición.</li>
+<li>Cuando alguien cancela, promociona al primero y lo notifica.</li></ol></div>
+
+<div class="cu"><h4>CU-22 · Cancelar mi reserva</h4>
+<p class="meta"><b>Actor:</b> Cliente · <b>Negocio:</b> UCN-10 · <b>Regla:</b> RN-07</p>
+<ol><li>Cancela hasta 2 horas antes del inicio y la plaza pasa al primero de la lista.</li></ol>
+<p class="meta"><b>EX-1</b> Cancelación fuera de plazo: se registra como inasistencia.</p></div>
+
+<div class="cu"><h4>CU-23 · Pasar lista de asistencia</h4>
+<p class="meta"><b>Actor:</b> Entrenador · <b>Negocio:</b> UCN-11</p>
+<ol><li>Abre la clase de su sede y marca asistencia o inasistencia de cada inscrito.</li>
+<li>El sistema libera la plaza de los ausentes para la lista de espera.</li></ol></div>
+
+<div class="cu"><h4>CU-24 · Programar clases y horarios</h4>
+<p class="meta"><b>Actor:</b> Administrador · <b>Negocio:</b> UCN-09</p>
+<ol><li>Crea o edita la clase: nombre, disciplina, sede, zona, entrenador, días, hora, duración y cupo.</li>
+<li>Desactiva una clase y los inscritos son notificados con la devolución de su plaza.</li></ol>
+<p class="meta"><b>EX-1</b> La zona o el entrenador ya tienen otra actividad en esa franja: el sistema bloquea el solape. <b>EX-2</b> El entrenador asignado no es de esa sede: se rechaza.</p></div>
+
+<h3>Módulo 5 · Sedes, zonas y catálogo</h3>
+
+<div class="cu"><h4>CU-25 · Gestionar sedes</h4>
+<p class="meta"><b>Actor:</b> Administrador · <b>Negocio:</b> UCN-05, UCN-06</p>
+<ol><li>Alta, edita y desactiva sedes con dirección, horario y capacidad máxima.</li>
+<li>Una sede desactivada deja de admitir check-in y clases, pero conserva su histórico para los reportes.</li></ol>
+<p class="meta"><b>EX-1</b> Desactivar la última sede operativa: se bloquea.</p></div>
+
+<div class="cu"><h4>CU-26 · Gestionar zonas de una sede</h4>
+<p class="meta"><b>Actor:</b> Administrador · <b>Negocio:</b> UCN-06</p>
+<ol><li>Define las zonas de cada sede (sala, peso libre, cardio, ciclo) con su tope de personas.</li>
+<li>Las zonas alimentan el aforo detallado y la asignación de clases.</li></ol></div>
+
+<div class="cu"><h4>CU-27 · Configurar capacidad, umbrales y cola</h4>
+<p class="meta"><b>Actor:</b> Administrador · <b>Negocio:</b> UCN-06, UCN-12</p>
+<ol><li>Ajusta por sede la capacidad máxima, el umbral de aviso y la ventana de presentación de la cola.</li>
+<li>Los cambios se reflejan de inmediato en el aforo público y en la cola.</li></ol></div>
+
+<div class="cu"><h4>CU-28 · Gestionar planes y precios</h4>
+<p class="meta"><b>Actor:</b> Administrador · <b>Negocio:</b> UCN-02</p>
+<ol><li>Crea y edita planes globales: precio, duración, beneficios y sedes incluidas.</li>
+<li>Al subir el precio, los suscriptores vigentes son notificados y conservan su precio hasta la renovación.</li></ol></div>
+
+<h3>Módulo 6 · Administración y reportes</h3>
+
+<div class="cu"><h4>CU-29 · Gestionar usuarios y roles</h4>
+<p class="meta"><b>Actor:</b> Administrador · <b>Negocio:</b> UCN-01</p>
+<ol><li>Lista y filtra usuarios por rol, estado y sede.</li>
+<li>Edita datos, suspende o reactiva cuentas y cambia roles.</li></ol>
+<p class="meta"><b>EX-1</b> Quitarse el propio rol o suspenderse: bloqueado. <b>EX-2</b> Retirar el rol al último administrador activo: bloqueado, para no dejar el sistema sin administración.</p></div>
+
+<div class="cu"><h4>CU-30 · Adscribir personal a una sede</h4>
+<p class="meta"><b>Actor:</b> Administrador · <b>Negocio:</b> UCN-05, UCN-09</p>
+<ol><li>Asigna a cada empleado y entrenador su sede de trabajo.</li>
+<li>El traspaso de una sede a otra se hace efectivo en la fecha indicada y no borra su histórico.</li></ol>
+<p class="meta"><b>EX-1</b> El personal tiene clases activas en la sede anterior: se exige reubicarlas antes del traspaso.</p></div>
+
+<div class="cu"><h4>CU-31 · Consultar reportes por sede y globales</h4>
+<p class="meta"><b>Actor:</b> Administrador · <b>Negocio:</b> UCN-06, UCN-11</p>
+<ol><li>Consulta ocupación por hora, día y zona; ingresos por plan y período; membresías activas y bajas.</li>
+<li>Compara sedes entre sí y exporta el resultado.</li></ol></div>
+
+<h1>3 · Diagramas de actividad</h1>
+<p>Los cinco flujos que más se discuten con el negocio: quién decide, qué pasa cuando algo falla y dónde se corta el proceso.</p>
+
+<figure><img src="svg/13_actividad_registro.svg" alt="Actividad registro"><figcaption>Figura 13 · Registro con aprobación de personal y modo arranque.</figcaption></figure>
+<figure><img src="svg/14_actividad_checkin_cola.svg" alt="Actividad check-in"><figcaption>Figura 14 · Check-in con validación de membresía, aforo de la sede y desvío a la cola virtual.</figcaption></figure>
+<figure><img src="svg/15_actividad_reserva_clase.svg" alt="Actividad reserva"><figcaption>Figura 15 · Reserva de clase con lista de espera y promoción automática.</figcaption></figure>
+<figure><img src="svg/16_actividad_renovacion.svg" alt="Actividad renovación"><figcaption>Figura 16 · Renovación automática: recordatorios, cobro, reintentos y suspensión.</figcaption></figure>
+<figure><img src="svg/17_actividad_venta_presencial.svg" alt="Actividad venta presencial"><figcaption>Figura 17 · Venta presencial en mostrador por un empleado.</figcaption></figure>
+
+<h1>4 · Diagrama de clases</h1>
+<p>Catorce clases del dominio, sin detalles de implementación, agrupadas en cuatro bloques: la estructura del gimnasio, las personas, el dinero y el día a día. Los cuatro roles heredan de <b>Usuario</b> (triángulo hueco); las asociaciones se leen así:</p>
+<table>
+<tr><th style="width:210px">Relación</th><th>Lectura</th></tr>
+<tr><td>Sede 1 — * Zona</td><td>Cada sede divide su espacio en zonas con tope propio.</td></tr>
+<tr><td>Sede 1 — * Usuario</td><td>El personal está adscrito a una sede; el cliente no.</td></tr>
+<tr><td>Zona 1 — * Clase grupal</td><td>Una clase se da en una zona de una sede.</td></tr>
+<tr><td>Clase 1 — * Reserva</td><td>Una clase admite tantas reservas como cupo y lista de espera.</td></tr>
+<tr><td>Cliente 1 — * Reserva</td><td>Cada reserva pertenece al cliente que la hizo.</td></tr>
+<tr><td>Cliente 1 — 0..1 Suscripción</td><td>Un cliente no puede tener dos suscripciones activas a la vez.</td></tr>
+<tr><td>Plan 1 — * Suscripción</td><td>El plan define precio y duración de cada suscripción.</td></tr>
+<tr><td>Suscripción 1 — * Pago</td><td>Cada renovación genera un pago; el primero es el de alta.</td></tr>
+<tr><td>Cliente 1 — * Check-in</td><td>Las entradas y salidas del cliente en cualquier sede.</td></tr>
+<tr><td>Cliente 1 — * Turno de cola</td><td>Los turnos que ha pedido, con su sede y resultado.</td></tr>
+</table>
+<figure><img src="svg/18_clases.svg" alt="Diagrama de clases"><figcaption>Figura 18 · Diagrama de clases del dominio.</figcaption></figure>
+
+<h1>5 · Trazabilidad negocio → sistema</h1>
+<p>Cada necesidad del negocio queda cubierta por casos de uso del sistema; la columna derecha permite comprobar que no sobra ni falta ninguno.</p>
+<table>
+<tr><th style="width:64px">Negocio</th><th>Caso de uso del sistema que lo resuelve</th><th style="width:150px">Rol principal</th></tr>
+<tr><td>UCN-01</td><td>CU-01, CU-02, CU-03, CU-04, CU-05, CU-29</td><td>Visitante, Administrador</td></tr>
+<tr><td>UCN-02</td><td>CU-06, CU-07, CU-08, CU-28</td><td>Cliente, Administrador</td></tr>
+<tr><td>UCN-03</td><td>CU-10, CU-11, CU-12</td><td>Cliente, Planificador</td></tr>
+<tr><td>UCN-04</td><td>CU-09</td><td>Cliente</td></tr>
+<tr><td>UCN-05</td><td>CU-14, CU-15, CU-25</td><td>Cliente, Empleado</td></tr>
+<tr><td>UCN-06</td><td>CU-16, CU-17, CU-26, CU-27, CU-31</td><td>Cliente, Administrador</td></tr>
+<tr><td>UCN-07</td><td>CU-15, CU-12</td><td>Empleado</td></tr>
+<tr><td>UCN-08</td><td>CU-13</td><td>Empleado</td></tr>
+<tr><td>UCN-09</td><td>CU-24, CU-30</td><td>Administrador</td></tr>
+<tr><td>UCN-10</td><td>CU-20, CU-21, CU-22</td><td>Cliente</td></tr>
+<tr><td>UCN-11</td><td>CU-23, CU-31</td><td>Entrenador</td></tr>
+<tr><td>UCN-12</td><td>CU-18, CU-19</td><td>Cliente, Empleado</td></tr>
+</table>
+
+</body>
+</html>

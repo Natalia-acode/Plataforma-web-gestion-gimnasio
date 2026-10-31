@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#475569"/>
+    </marker>
+  </defs>
+
+  <circle cx="170" cy="36" r="9" fill="#1e3a5f"/>
+  <text x="170" y="20" text-anchor="middle" font-size="10.5" fill="#33475b">dispara el planificador</text>
+  <rect x="80" y="58" width="180" height="40" rx="18" fill="#ffffff" stroke="#1e3a5f"/><text x="170" y="82" text-anchor="middle" font-size="11" fill="#22384d">Llega la fecha de renovación</text>
+  <path d="M170,107 L256,135 L170,163 L84,135 Z" fill="#fff8e6" stroke="#b7791f"/><text x="170" y="131" text-anchor="middle" font-size="10.5" fill="#6b4a12">¿Renovación opt-in</text><text x="170" y="145" text-anchor="middle" font-size="10.5" fill="#6b4a12">activa?</text>
+  <rect x="420" y="110" width="200" height="48" rx="18" fill="#ffffff" stroke="#1e3a5f"/><text x="520" y="130" text-anchor="middle" font-size="11" fill="#22384d">No cobra y avisa del</text><text x="520" y="146" text-anchor="middle" font-size="11" fill="#22384d">vencimiento próximo</text>
+  <circle cx="520" cy="210" r="10" fill="none" stroke="#1e3a5f" stroke-width="2"/><circle cx="520" cy="210" r="5" fill="#1e3a5f"/>
+  <rect x="80" y="190" width="180" height="44" rx="18" fill="#ffffff" stroke="#1e3a5f"/><text x="170" y="208" text-anchor="middle" font-size="11" fill="#22384d">Envía recordatorio</text><text x="170" y="224" text-anchor="middle" font-size="11" fill="#22384d">a 7 y a 1 día</text>
+  <rect x="80" y="262" width="180" height="44" rx="18" fill="#ffffff" stroke="#1e3a5f"/><text x="170" y="280" text-anchor="middle" font-size="11" fill="#22384d">Ordena el cargo a la</text><text x="170" y="296" text-anchor="middle" font-size="11" fill="#22384d">pasarela con el token</text>
+  <path d="M170,322 L250,350 L170,378 L90,350 Z" fill="#fff8e6" stroke="#b7791f"/><text x="170" y="354" text-anchor="middle" font-size="10.5" fill="#6b4a12">¿Cargo aprobado?</text>
+  <rect x="80" y="405" width="180" height="48" rx="18" fill="#ffffff" stroke="#1e3a5f"/><text x="170" y="425" text-anchor="middle" font-size="11" fill="#22384d">Registra el pago, prorroga</text><text x="170" y="441" text-anchor="middle" font-size="11" fill="#22384d">y emite factura</text>
+  <circle cx="170" cy="500" r="10" fill="none" stroke="#1e3a5f" stroke-width="2"/><circle cx="170" cy="500" r="5" fill="#1e3a5f"/>
+  <path d="M480,322 L572,350 L480,378 L388,350 Z" fill="#fff8e6" stroke="#b7791f"/><text x="480" y="346" text-anchor="middle" font-size="10.5" fill="#6b4a12">¿Reintentos</text><text x="480" y="360" text-anchor="middle" font-size="10.5" fill="#6b4a12">agotados?</text>
+  <rect x="380" y="410" width="200" height="44" rx="18" fill="#ffffff" stroke="#1e3a5f"/><text x="480" y="428" text-anchor="middle" font-size="11" fill="#22384d">Reintenta al día, a los</text><text x="480" y="444" text-anchor="middle" font-size="11" fill="#22384d">3 y a los 7 días</text>
+  <rect x="700" y="330" width="200" height="44" rx="18" fill="#ffffff" stroke="#1e3a5f"/><text x="800" y="348" text-anchor="middle" font-size="11" fill="#22384d">Suspende la suscripción</text><text x="800" y="364" text-anchor="middle" font-size="11" fill="#22384d">y notifica al cliente</text>
+  <circle cx="800" cy="420" r="10" fill="none" stroke="#1e3a5f" stroke-width="2"/><circle cx="800" cy="420" r="5" fill="#1e3a5f"/>
+
+  <g stroke="#475569" stroke-width="1.4" fill="none">
+    <path d="M170,45 V58" marker-end="url(#ar)"/>
+    <path d="M170,98 V107" marker-end="url(#ar)"/>
+    <path d="M256,135 H420" marker-end="url(#ar)"/><text x="320" y="127" font-size="10.5" fill="#33475b" stroke="none">no</text>
+    <path d="M520,158 V200" marker-end="url(#ar)"/>
+    <path d="M170,163 V190" marker-end="url(#ar)"/><text x="178" y="181" font-size="10.5" fill="#33475b" stroke="none">sí</text>
+    <path d="M170,234 V262" marker-end="url(#ar)"/>
+    <path d="M170,306 V322" marker-end="url(#ar)"/>
+    <path d="M170,378 V405" marker-end="url(#ar)"/><text x="178" y="396" font-size="10.5" fill="#33475b" stroke="none">sí</text>
+    <path d="M170,453 V490" marker-end="url(#ar)"/>
+    <path d="M250,350 H388" marker-end="url(#ar)"/><text x="300" y="342" font-size="10.5" fill="#33475b" stroke="none">no</text>
+    <path d="M480,378 V410" marker-end="url(#ar)"/><text x="488" y="398" font-size="10.5" fill="#33475b" stroke="none">no</text>
+    <path d="M380,432 H320 V284 H260" marker-end="url(#ar)"/>
+    <path d="M572,350 H700" marker-end="url(#ar)"/><text x="610" y="342" font-size="10.5" fill="#33475b" stroke="none">sí</text>
+    <path d="M800,374 V410" marker-end="url(#ar)"/>
+  </g>
+
+  <text x="80" y="540" font-size="10.5" fill="#33475b">Nunca se cobra sin una suscripción con renovación autorizada; agotados los tres reintentos la membresía queda suspendida hasta regularizar el pago.</text>
+</svg>

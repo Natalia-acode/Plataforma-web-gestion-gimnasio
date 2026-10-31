@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#475569"/>
+    </marker>
+  </defs>
+
+  <circle cx="170" cy="36" r="9" fill="#1e3a5f"/>
+  <rect x="80" y="58" width="180" height="40" rx="18" fill="#ffffff" stroke="#1e3a5f"/><text x="170" y="82" text-anchor="middle" font-size="11" fill="#22384d">Escanea el QR en la sede</text>
+  <rect x="80" y="128" width="180" height="40" rx="18" fill="#ffffff" stroke="#1e3a5f"/><text x="170" y="152" text-anchor="middle" font-size="11" fill="#22384d">Valida membresía y sede</text>
+  <path d="M170,178 L246,205 L170,232 L94,205 Z" fill="#fff8e6" stroke="#b7791f"/><text x="170" y="209" text-anchor="middle" font-size="10.5" fill="#6b4a12">¿Membresía vigente?</text>
+  <rect x="430" y="180" width="200" height="48" rx="18" fill="#ffffff" stroke="#1e3a5f"/><text x="530" y="200" text-anchor="middle" font-size="11" fill="#22384d">Deniega el acceso</text><text x="530" y="216" text-anchor="middle" font-size="11" fill="#22384d">y notifica el motivo</text>
+  <circle cx="530" cy="280" r="10" fill="none" stroke="#1e3a5f" stroke-width="2"/><circle cx="530" cy="280" r="5" fill="#1e3a5f"/>
+  <rect x="80" y="255" width="180" height="44" rx="18" fill="#ffffff" stroke="#1e3a5f"/><text x="170" y="273" text-anchor="middle" font-size="11" fill="#22384d">Consulta el aforo</text><text x="170" y="289" text-anchor="middle" font-size="11" fill="#22384d">de la sede</text>
+  <path d="M170,323 L240,350 L170,377 L100,350 Z" fill="#fff8e6" stroke="#b7791f"/><text x="170" y="354" text-anchor="middle" font-size="10.5" fill="#6b4a12">¿Aforo completo?</text>
+  <rect x="80" y="400" width="180" height="50" rx="18" fill="#ffffff" stroke="#1e3a5f"/><text x="170" y="420" text-anchor="middle" font-size="11" fill="#22384d">Registra el check-in</text><text x="170" y="436" text-anchor="middle" font-size="11" fill="#22384d">y suma ocupación</text>
+  <circle cx="170" cy="500" r="10" fill="none" stroke="#1e3a5f" stroke-width="2"/><circle cx="170" cy="500" r="5" fill="#1e3a5f"/>
+  <rect x="430" y="324" width="210" height="52" rx="18" fill="#ffffff" stroke="#1e3a5f"/><text x="535" y="346" text-anchor="middle" font-size="11" fill="#22384d">Ofrece turno en la cola</text><text x="535" y="362" text-anchor="middle" font-size="11" fill="#22384d">virtual de la sede</text>
+  <path d="M535,398 L611,425 L535,452 L459,425 Z" fill="#fff8e6" stroke="#b7791f"/><text x="535" y="429" text-anchor="middle" font-size="10.5" fill="#6b4a12">¿Acepta el turno?</text>
+  <rect x="700" y="400" width="200" height="50" rx="18" fill="#ffffff" stroke="#1e3a5f"/><text x="800" y="420" text-anchor="middle" font-size="11" fill="#22384d">Asigna posición y</text><text x="800" y="436" text-anchor="middle" font-size="11" fill="#22384d">estima la espera</text>
+  <circle cx="800" cy="500" r="10" fill="none" stroke="#1e3a5f" stroke-width="2"/><circle cx="800" cy="500" r="5" fill="#1e3a5f"/>
+  <circle cx="535" cy="500" r="10" fill="none" stroke="#1e3a5f" stroke-width="2"/><circle cx="535" cy="500" r="5" fill="#1e3a5f"/>
+
+  <g stroke="#475569" stroke-width="1.4" fill="none">
+    <path d="M170,45 V58" marker-end="url(#ar)"/>
+    <path d="M170,98 V128" marker-end="url(#ar)"/>
+    <path d="M170,168 V178" marker-end="url(#ar)"/>
+    <path d="M246,205 H430" marker-end="url(#ar)"/><text x="320" y="197" font-size="10.5" fill="#33475b" stroke="none">no</text>
+    <path d="M530,228 V270" marker-end="url(#ar)"/>
+    <path d="M170,232 V255" marker-end="url(#ar)"/><text x="178" y="248" font-size="10.5" fill="#33475b" stroke="none">sí</text>
+    <path d="M170,299 V323" marker-end="url(#ar)"/>
+    <path d="M170,377 V400" marker-end="url(#ar)"/><text x="178" y="393" font-size="10.5" fill="#33475b" stroke="none">no</text>
+    <path d="M170,450 V490" marker-end="url(#ar)"/>
+    <path d="M240,350 H430" marker-end="url(#ar)"/><text x="320" y="342" font-size="10.5" fill="#33475b" stroke="none">sí</text>
+    <path d="M535,376 V398" marker-end="url(#ar)"/>
+    <path d="M611,425 H700" marker-end="url(#ar)"/><text x="640" y="417" font-size="10.5" fill="#33475b" stroke="none">sí</text>
+    <path d="M800,450 V490" marker-end="url(#ar)"/>
+    <path d="M535,452 V490" marker-end="url(#ar)"/><text x="543" y="476" font-size="10.5" fill="#33475b" stroke="none">no</text>
+  </g>
+
+  <text x="80" y="546" font-size="10.5" fill="#33475b">El check-in solo se registra si la membresía está activa y queda capacidad en la sede; si no, el cliente puede quedarse en la cola virtual.</text>
+</svg>

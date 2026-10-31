@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 330" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#475569"/>
+    </marker>
+  </defs>
+
+  <g font-size="11" fill="#1e3a5f" font-weight="bold">
+    <rect x="0" y="34" width="124" height="80" fill="#eef4fb" stroke="#c3d3e6"/><text x="12" y="78">Cliente</text>
+    <rect x="0" y="114" width="124" height="80" fill="#eef4fb" stroke="#c3d3e6"/><text x="12" y="158">Empleado</text>
+    <rect x="0" y="194" width="124" height="80" fill="#eef4fb" stroke="#c3d3e6"/><text x="12" y="238">Sistema</text>
+  </g>
+  <line x1="124" y1="34" x2="950" y2="34" stroke="#c3d3e6"/>
+  <line x1="124" y1="114" x2="950" y2="114" stroke="#c3d3e6"/>
+  <line x1="124" y1="194" x2="950" y2="194" stroke="#c3d3e6"/>
+  <line x1="124" y1="274" x2="950" y2="274" stroke="#c3d3e6"/>
+
+  <g font-size="10" fill="#22384d" text-anchor="middle">
+    <rect x="130" y="50" width="104" height="48" rx="6" fill="#ffffff" stroke="#1e3a5f"/><text x="182" y="70">Ve el aforo</text><text x="182" y="84">de la sede lleno</text>
+    <rect x="240" y="50" width="104" height="48" rx="6" fill="#ffffff" stroke="#1e3a5f"/><text x="292" y="66">Pide turno en la</text><text x="292" y="80">cola virtual de</text><text x="292" y="94">la sede</text>
+    <rect x="570" y="50" width="104" height="48" rx="6" fill="#ffffff" stroke="#1e3a5f"/><text x="622" y="70">Recibe el aviso</text><text x="622" y="84">y se presenta</text>
+
+    <rect x="460" y="130" width="104" height="48" rx="6" fill="#ffffff" stroke="#1e3a5f"/><text x="512" y="150">Llama al siguiente</text><text x="512" y="164">turno en pantalla</text>
+    <rect x="680" y="130" width="104" height="48" rx="6" fill="#ffffff" stroke="#1e3a5f"/><text x="732" y="150">Marca</text><text x="732" y="164">atendido</text>
+
+    <rect x="350" y="210" width="104" height="48" rx="6" fill="#ffffff" stroke="#1e3a5f"/><text x="402" y="226">Asigna posición y</text><text x="402" y="240">estima la espera</text><text x="402" y="254">de la sede</text>
+    <rect x="460" y="210" width="104" height="48" rx="6" fill="#ffffff" stroke="#1e3a5f"/><text x="512" y="230">Publica la cola</text><text x="512" y="244">en tiempo real</text>
+    <rect x="570" y="210" width="104" height="48" rx="6" fill="#ffffff" stroke="#1e3a5f"/><text x="622" y="230">Abre ventana de</text><text x="622" y="244">10 minutos</text>
+    <rect x="790" y="210" width="104" height="48" rx="6" fill="#ffffff" stroke="#1e3a5f"/><text x="842" y="226">Expira el turno</text><text x="842" y="240">si no llega y</text><text x="842" y="254">avanza la cola</text>
+  </g>
+
+  <g stroke="#475569" stroke-width="1.4" fill="none">
+    <path d="M234,74 H240" marker-end="url(#ar)"/>
+    <path d="M292,98 L402,210" marker-end="url(#ar)"/>
+    <path d="M454,234 H460" marker-end="url(#ar)"/>
+    <path d="M512,210 V178" marker-end="url(#ar)"/>
+    <path d="M564,154 L604,210" marker-end="url(#ar)"/>
+    <path d="M640,210 V98" marker-end="url(#ar)"/>
+    <path d="M674,74 L732,130" marker-end="url(#ar)"/>
+    <path d="M784,154 L842,210" marker-end="url(#ar)"/>
+  </g>
+
+  <text x="130" y="302" font-size="10.5" fill="#33475b">Si el cliente no se presenta dentro de la ventana otorgada, pierde la posición y el sistema llama al siguiente de la cola.</text>
+</svg>

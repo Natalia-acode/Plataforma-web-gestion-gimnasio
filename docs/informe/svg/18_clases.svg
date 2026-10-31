@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="gen" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto">
+      <path d="M0,1 L11,6 L0,11 Z" fill="#ffffff" stroke="#1e3a5f" stroke-width="1.4"/>
+    </marker>
+  </defs>
+
+  <g>
+    <rect x="80" y="40" width="180" height="26" fill="#1e3a5f"/><text x="170" y="58" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#ffffff">Sede</text>
+    <rect x="80" y="66" width="180" height="40" fill="#ffffff" stroke="#1e3a5f"/><text x="90" y="82" font-size="10" fill="#22384d">nombre · dirección</text><text x="90" y="98" font-size="10" fill="#22384d">capacidad máxima</text>
+
+    <rect x="80" y="150" width="180" height="26" fill="#1e3a5f"/><text x="170" y="168" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#ffffff">Zona</text>
+    <rect x="80" y="176" width="180" height="40" fill="#ffffff" stroke="#1e3a5f"/><text x="90" y="192" font-size="10" fill="#22384d">nombre · tope</text><text x="90" y="208" font-size="10" fill="#22384d">de la sede</text>
+
+    <rect x="80" y="260" width="180" height="26" fill="#1e3a5f"/><text x="170" y="278" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#ffffff">Clase grupal</text>
+    <rect x="80" y="286" width="180" height="40" fill="#ffffff" stroke="#1e3a5f"/><text x="90" y="302" font-size="10" fill="#22384d">día y hora · cupo</text><text x="90" y="318" font-size="10" fill="#22384d">zona de la sede</text>
+
+    <rect x="80" y="370" width="180" height="26" fill="#1e3a5f"/><text x="170" y="388" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#ffffff">Reserva</text>
+    <rect x="80" y="396" width="180" height="40" fill="#ffffff" stroke="#1e3a5f"/><text x="90" y="412" font-size="10" fill="#22384d">estado · fecha</text><text x="90" y="428" font-size="10" fill="#22384d">asistencia</text>
+  </g>
+
+  <g>
+    <rect x="390" y="40" width="180" height="26" fill="#1e3a5f"/><text x="480" y="58" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#ffffff">Usuario</text>
+    <rect x="390" y="66" width="180" height="40" fill="#ffffff" stroke="#1e3a5f"/><text x="400" y="82" font-size="10" fill="#22384d">correo · contraseña</text><text x="400" y="98" font-size="10" fill="#22384d">rol · estado</text>
+
+    <rect x="390" y="150" width="180" height="26" fill="#2f5a86"/><text x="480" y="168" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#ffffff">Cliente</text>
+    <rect x="390" y="176" width="180" height="40" fill="#ffffff" stroke="#1e3a5f"/><text x="400" y="192" font-size="10" fill="#22384d">suscripción vigente</text><text x="400" y="208" font-size="10" fill="#22384d">acceso a todas las sedes</text>
+
+    <rect x="390" y="260" width="180" height="26" fill="#2f5a86"/><text x="480" y="278" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#ffffff">Empleado</text>
+    <rect x="390" y="286" width="180" height="40" fill="#ffffff" stroke="#1e3a5f"/><text x="400" y="302" font-size="10" fill="#22384d">sede adscrita</text><text x="400" y="318" font-size="10" fill="#22384d">accesos y cola</text>
+
+    <rect x="390" y="370" width="180" height="26" fill="#2f5a86"/><text x="480" y="388" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#ffffff">Entrenador</text>
+    <rect x="390" y="396" width="180" height="40" fill="#ffffff" stroke="#1e3a5f"/><text x="400" y="412" font-size="10" fill="#22384d">sede adscrita</text><text x="400" y="428" font-size="10" fill="#22384d">horario de clases</text>
+
+    <rect x="390" y="480" width="180" height="26" fill="#2f5a86"/><text x="480" y="498" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#ffffff">Administrador</text>
+    <rect x="390" y="506" width="180" height="40" fill="#ffffff" stroke="#1e3a5f"/><text x="400" y="522" font-size="10" fill="#22384d">ve todas las sedes</text><text x="400" y="538" font-size="10" fill="#22384d">aprueba cuentas</text>
+  </g>
+
+  <g>
+    <rect x="700" y="40" width="190" height="26" fill="#1e3a5f"/><text x="795" y="58" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#ffffff">Plan</text>
+    <rect x="700" y="66" width="190" height="40" fill="#ffffff" stroke="#1e3a5f"/><text x="710" y="82" font-size="10" fill="#22384d">precio · duración</text><text x="710" y="98" font-size="10" fill="#22384d">válido en todas las sedes</text>
+
+    <rect x="700" y="150" width="190" height="26" fill="#1e3a5f"/><text x="795" y="168" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#ffffff">Suscripción</text>
+    <rect x="700" y="176" width="190" height="40" fill="#ffffff" stroke="#1e3a5f"/><text x="710" y="192" font-size="10" fill="#22384d">estado · vencimiento</text><text x="710" y="208" font-size="10" fill="#22384d">renovación opt-in</text>
+
+    <rect x="700" y="260" width="190" height="26" fill="#1e3a5f"/><text x="795" y="278" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#ffffff">Pago</text>
+    <rect x="700" y="286" width="190" height="40" fill="#ffffff" stroke="#1e3a5f"/><text x="710" y="302" font-size="10" fill="#22384d">monto · fecha</text><text x="710" y="318" font-size="10" fill="#22384d">medio y resultado</text>
+
+    <rect x="700" y="370" width="190" height="26" fill="#1e3a5f"/><text x="795" y="388" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#ffffff">Check-in</text>
+    <rect x="700" y="396" width="190" height="40" fill="#ffffff" stroke="#1e3a5f"/><text x="710" y="412" font-size="10" fill="#22384d">entrada · salida</text><text x="710" y="428" font-size="10" fill="#22384d">sede y zona</text>
+
+    <rect x="700" y="480" width="190" height="26" fill="#1e3a5f"/><text x="795" y="498" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#ffffff">Turno de cola</text>
+    <rect x="700" y="506" width="190" height="40" fill="#ffffff" stroke="#1e3a5f"/><text x="710" y="522" font-size="10" fill="#22384d">posición · estado</text><text x="710" y="538" font-size="10" fill="#22384d">sede y ventana</text>
+  </g>
+
+  <g stroke="#475569" stroke-width="1.4" fill="none">
+    <path d="M170,106 V150"/>
+    <path d="M170,216 V260"/>
+    <path d="M170,326 V370"/>
+    <path d="M170,40 V20 H480 V40"/>
+    <path d="M370,70 V513"/>
+    <path d="M370,70 H386" marker-end="url(#gen)"/>
+    <path d="M370,183 H390"/>
+    <path d="M370,293 H390"/>
+    <path d="M370,403 H390"/>
+    <path d="M370,513 H390"/>
+    <path d="M570,180 H700"/>
+    <path d="M795,106 V150"/>
+    <path d="M795,216 V260"/>
+    <path d="M570,195 H660 V403 H700"/>
+    <path d="M570,207 H640 V513 H700"/>
+    <path d="M260,400 H320 V195 H390"/>
+  </g>
+
+  <g font-size="9.5" fill="#64748b">
+    <text x="176" y="122">1</text><text x="176" y="146">*</text>
+    <text x="176" y="232">1</text><text x="176" y="256">*</text>
+    <text x="176" y="342">1</text><text x="176" y="366">*</text>
+    <text x="176" y="34">1</text><text x="466" y="34">*</text><text x="300" y="14" fill="#33475b">adscrito a</text>
+    <text x="578" y="174">1</text><text x="682" y="174">0..1</text>
+    <text x="802" y="122">1</text><text x="802" y="146">*</text>
+    <text x="802" y="232">1</text><text x="802" y="256">*</text>
+  </g>
+
+  <text x="80" y="576" font-size="10.5" fill="#33475b">Cuatro grupos: la estructura del gimnasio (sede, zona, clase, reserva), las personas (usuario y sus cuatro roles), el dinero (plan, suscripción, pago) y el día a día (check-in y turno de cola).</text>
+  <text x="80" y="594" font-size="10.5" fill="#33475b">El triángulo hueco indica herencia (los cuatro roles son tipos de usuario). Las líneas rectas son asociaciones; donde no se indica lo contrario son 1 — *.</text>
+</svg>
