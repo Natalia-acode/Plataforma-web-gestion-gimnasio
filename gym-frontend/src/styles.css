@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&display=swap');
+:root{--ink:#121A26;--ink2:#1D2838;--paper:#E9ECF0;--surface:#fff;--line:#D3D8DF;--muted:#566173;--accent:#2347F5;
+--low:#17835A;--mid:#B07800;--high:#C42A41;--r:6px;color-scheme:light}
+*{box-sizing:border-box;margin:0}
+body{font:16px/1.55 'Barlow',system-ui,sans-serif;background:var(--paper);color:var(--ink)}
+h1,h2,h3,.brand,.aforo-num b,.stat b,.price{font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-weight:600;letter-spacing:.01em;line-height:1.05}
+h1{font-size:clamp(2rem,4vw,2.8rem);margin-bottom:1.2rem}h2{font-size:1.7rem;margin:2rem 0 .8rem}h3{font-size:1.35rem}
+a{color:inherit}:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.brand{font-size:1.7rem;text-decoration:none}
+.btn{display:inline-block;background:var(--accent);color:#fff;border:1px solid var(--accent);border-radius:var(--r);padding:.55rem 1.1rem;font:600 1rem 'Barlow',sans-serif;cursor:pointer;text-decoration:none}
+.btn:hover{filter:brightness(1.1)}.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn.ghost{background:transparent;color:inherit;border-color:currentColor}.btn.danger{background:var(--high);border-color:var(--high)}.btn.sm{padding:.25rem .65rem;font-size:.9rem}
+/* Sitio público */
+header.site{display:flex;justify-content:space-between;align-items:center;padding:1rem clamp(1rem,4vw,3rem);background:var(--ink);color:#fff}
+header.site nav{display:flex;gap:1.4rem;align-items:center}header.site nav a:not(.btn){text-decoration:none}header.site nav a.active{border-bottom:2px solid #fff}
+.public-main,main{min-width:0}
+header.site+main{padding:clamp(1rem,4vw,3rem);max-width:1100px;margin:auto}
+.hero{display:grid;grid-template-columns:1.1fr 1fr;gap:3rem;align-items:center;padding:2rem 0 1rem}
+.hero p.lead{font-size:1.2rem;color:var(--muted);margin:0 0 1.5rem;max-width:46ch}.row{display:flex;gap:.8rem;flex-wrap:wrap;align-items:center}
+/* Aforo: el dato central del producto */
+.aforo{background:var(--surface);border:1px solid var(--line);border-left:10px solid var(--low);border-radius:var(--r);padding:1.4rem 1.6rem}
+.aforo.medio{border-left-color:var(--mid)}.aforo.alto{border-left-color:var(--high)}
+.aforo-num{display:flex;align-items:baseline;gap:.8rem;flex-wrap:wrap}.aforo-num b{font-size:clamp(4rem,10vw,6.5rem);color:var(--low)}
+.aforo.medio b{color:var(--mid)}.aforo.alto b{color:var(--high)}.aforo-num span{color:var(--muted)}
+.bar{height:14px;background:var(--paper);border-radius:99px;overflow:hidden;margin:.6rem 0 .9rem}.bar i{display:block;height:100%;background:var(--low);transition:width .6s}
+.aforo.medio .bar i{background:var(--mid)}.aforo.alto .bar i{background:var(--high)}
+/* Contenido */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1rem}
+.plan,.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:1.2rem}
+.plan{display:flex;flex-direction:column;gap:.6rem;align-items:flex-start}.plan p:nth-of-type(2){flex:1;color:var(--muted)}
+.price{font-size:2.2rem}.price small{font:400 1rem 'Barlow',sans-serif;color:var(--muted)}
+.panel{margin-bottom:1rem}.panel h3{margin-bottom:.6rem}.muted{color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin-bottom:1rem}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:.9rem 1rem}.stat b{display:block;font-size:2.1rem}.stat span{color:var(--muted)}
+/* Formularios y tablas */
+form.form{display:grid;gap:.8rem;max-width:460px}form.inline{display:flex;gap:.8rem;align-items:flex-end;flex-wrap:wrap}
+.field{display:grid;gap:.25rem;font-weight:500}
+input,select,textarea{font:inherit;padding:.5rem .65rem;border:1px solid #98A2B3;border-radius:var(--r);background:#fff;color:var(--ink);min-width:0}
+.check{display:flex;gap:.6rem;align-items:flex-start;font-weight:400}.check input{margin-top:.3rem}
+.scroll{overflow-x:auto}table{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--line)}
+th,td{padding:.55rem .8rem;text-align:left;border-bottom:1px solid var(--line);vertical-align:middle}th{font-weight:600;background:#F6F7F9}
+.empty{color:var(--muted);padding:.8rem 0}
+.notice{padding:.6rem .9rem;border-radius:var(--r);margin:.6rem 0;border:1px solid}
+.notice.ok{background:#E5F5EE;border-color:var(--low);color:#0F5A3D}.notice.err{background:#FCE9EC;border-color:var(--high);color:#8E1E2F}
+.tag{display:inline-block;padding:.05rem .55rem;border-radius:99px;background:var(--paper);font-size:.9rem}
+.tag.activa,.tag.aprobado,.tag.confirmada,.tag.activo,.tag.asistio{background:#E5F5EE;color:#0F5A3D}
+.tag.rechazado,.tag.cancelada,.tag.suspendido,.tag.no_asistio{background:#FCE9EC;color:#8E1E2F}
+.tag.pendiente{background:#FDF3DE;color:#7A4F01}
+.turno{font-family:'Barlow Condensed',sans-serif;font-size:5rem;font-weight:700;line-height:1}
+.llamado{border-left:10px solid var(--accent)}
+.heat{width:auto}.heat th,.heat td{padding:.3rem .45rem;font-size:.85rem;text-align:center}
+.heat td{min-width:2.1rem;background:color-mix(in srgb,var(--accent) calc(var(--v)*100%),var(--surface))}
+/* Panel interno */
+.shell{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
+.shell aside{background:var(--ink);color:#fff;padding:1.2rem;display:flex;flex-direction:column;gap:1.4rem;position:sticky;top:0;height:100vh}
+.shell aside nav{display:flex;flex-direction:column;gap:.2rem;flex:1}
+.shell aside nav a{text-decoration:none;padding:.5rem .7rem;border-radius:var(--r)}.shell aside nav a:hover{background:var(--ink2)}
+.shell aside nav a.active{background:var(--accent)}
+.who{display:grid;gap:.2rem}.who span{color:#A9B4C4;text-transform:capitalize;margin-bottom:.5rem}
+.page{padding:clamp(1rem,3vw,2.2rem);max-width:1000px}
+@media (max-width:800px){
+ .hero{grid-template-columns:1fr}
+ .shell{grid-template-columns:1fr}.shell aside{position:static;height:auto;flex-direction:row;flex-wrap:wrap;align-items:center}
+ .shell aside nav{flex-direction:row;overflow-x:auto;flex:1 1 100%;order:3}.who{display:flex;gap:.6rem;align-items:center;margin-left:auto}.who span{margin:0}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}

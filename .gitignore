@@ -28,3 +28,17 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+### Maven ###
+target/
+
+### Node / frontend ###
+node_modules/
+dist/
+*.local
+
+### Entorno local ###
+.env
+.env.*
+!.env.example
+*.log
