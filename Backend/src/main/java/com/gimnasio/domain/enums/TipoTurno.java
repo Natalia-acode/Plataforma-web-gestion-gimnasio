@@ -16,7 +16,7 @@ public enum TipoTurno {
 
     public static TipoTurno desdeValor(String valor) {
         for (TipoTurno tipo : values()) {
-            if (tipo.valor.equals(valor)) {
+            if (tipo.valor.equalsIgnoreCase(valor)) {
                 return tipo;
             }
         }

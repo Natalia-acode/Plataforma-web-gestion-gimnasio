@@ -2,6 +2,8 @@ package com.gimnasio.domain.enums;
 
 public enum EstadoUsuario {
     ACTIVO("activo"),
+    PENDIENTE("pendiente"),
+    RECHAZADO("rechazado"),
     SUSPENDIDO("suspendido");
 
     private final String valor;
@@ -16,7 +18,7 @@ public enum EstadoUsuario {
 
     public static EstadoUsuario desdeValor(String valor) {
         for (EstadoUsuario estado : values()) {
-            if (estado.valor.equals(valor)) {
+            if (estado.valor.equalsIgnoreCase(valor)) {
                 return estado;
             }
         }

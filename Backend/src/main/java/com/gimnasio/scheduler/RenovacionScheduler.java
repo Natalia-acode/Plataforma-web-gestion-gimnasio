@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * Procesos programados de suscripciones (CU-12):
- *  - 05:00 diario: recordatorios de vencimiento y ejecución de cobros de renovación.
+ *  - 05:00 diario: recordatorios de vencimiento y ejecucion de cobros de renovacion.
  */
 @Component
 public class RenovacionScheduler {

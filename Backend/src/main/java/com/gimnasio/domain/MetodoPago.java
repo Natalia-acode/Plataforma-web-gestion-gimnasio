@@ -3,8 +3,6 @@ package com.gimnasio.domain;
 import com.gimnasio.domain.enums.TipoMetodoPago;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,7 +28,6 @@ public class MetodoPago {
     @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario usuario;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private TipoMetodoPago tipo;
 

@@ -16,7 +16,7 @@ public enum TipoMetodoPago {
 
     public static TipoMetodoPago desdeValor(String valor) {
         for (TipoMetodoPago tipo : values()) {
-            if (tipo.valor.equals(valor)) {
+            if (tipo.valor.equalsIgnoreCase(valor)) {
                 return tipo;
             }
         }

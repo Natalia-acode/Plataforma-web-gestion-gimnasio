@@ -3,8 +3,6 @@ package com.gimnasio.domain;
 import com.gimnasio.domain.enums.EstadoSuscripcion;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -39,15 +37,14 @@ public class Suscripcion {
     @Column(name = "fecha_fin", nullable = false)
     private LocalDate fechaFin;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private EstadoSuscripcion estado;
 
-    /** RN-01: la renovación automática es opt-in (por defecto desactivada). */
+    /** RN-01: la renovacion automatica es opt-in (por defecto desactivada). */
     @Column(name = "renovacion_automatica", nullable = false, columnDefinition = "bit")
     private boolean renovacionAutomatica = false;
 
-    /** RN-04: reintentos de cobro de renovación ya utilizados (+1 / +3 / +7 días). */
+    /** RN-04: reintentos de cobro de renovacion ya utilizados (+1 / +3 / +7 días). */
     @Column(name = "intentos_cobro", nullable = false)
     private Integer intentosCobro = 0;
 

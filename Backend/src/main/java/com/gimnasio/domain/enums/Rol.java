@@ -18,7 +18,7 @@ public enum Rol {
 
     public static Rol desdeValor(String valor) {
         for (Rol rol : values()) {
-            if (rol.valor.equals(valor)) {
+            if (rol.valor.equalsIgnoreCase(valor)) {
                 return rol;
             }
         }

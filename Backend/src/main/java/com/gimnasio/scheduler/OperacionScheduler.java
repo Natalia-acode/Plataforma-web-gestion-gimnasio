@@ -9,9 +9,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 /**
- * Procesos programados de operación diaria:
- *  - cada minuto: expiración de turnos de cola no atendidos (RN-08);
- *  - cada hora: snapshot de ocupación para el mapa de calor (CU-16);
+ * Procesos programados de operacion diaria:
+ *  - cada minuto: expiracion de turnos de cola no atendidos (RN-08);
+ *  - cada hora: snapshot de ocupacion para el mapa de calor (CU-16);
  *  - 23:30: cierre de registros de check-in olvidados (RN-11).
  */
 @Component

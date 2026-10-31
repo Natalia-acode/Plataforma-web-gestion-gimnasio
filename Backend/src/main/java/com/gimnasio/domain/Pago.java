@@ -4,8 +4,6 @@ import com.gimnasio.domain.enums.EstadoPago;
 import com.gimnasio.domain.enums.TipoPago;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -42,11 +40,9 @@ public class Pago {
     @Column(name = "fecha_pago", nullable = false, columnDefinition = "datetime2(0)")
     private LocalDateTime fechaPago;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private TipoPago tipo;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private EstadoPago estado;
 

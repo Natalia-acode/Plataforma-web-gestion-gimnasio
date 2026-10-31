@@ -1,6 +1,6 @@
 package com.gimnasio.dto;
 
-/** Configuración vigente del sistema (CU-17). */
+/** Configuracion vigente del sistema (CU-17). */
 public record ConfiguracionResponse(
         Long id,
         int capacidadMaxima,

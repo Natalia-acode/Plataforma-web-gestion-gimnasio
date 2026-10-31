@@ -3,8 +3,6 @@ package com.gimnasio.domain;
 import com.gimnasio.domain.enums.MetodoCheckIn;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,7 +13,7 @@ import jakarta.persistence.Table;
 
 import java.time.LocalDateTime;
 
-/** Entradas y salidas (CU-13, CU-14). Base del cálculo de aforo RN-11. */
+/** Entradas y salidas (CU-13, CU-14). Base del calculo de aforo RN-11. */
 @Entity
 @Table(name = "check_in")
 public class CheckIn {
@@ -41,7 +39,6 @@ public class CheckIn {
     @Column(name = "fecha_hora_salida", columnDefinition = "datetime2(0)")
     private LocalDateTime fechaHoraSalida;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 10)
     private MetodoCheckIn metodo;
 

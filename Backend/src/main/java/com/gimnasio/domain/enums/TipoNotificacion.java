@@ -21,7 +21,7 @@ public enum TipoNotificacion {
 
     public static TipoNotificacion desdeValor(String valor) {
         for (TipoNotificacion tipo : values()) {
-            if (tipo.valor.equals(valor)) {
+            if (tipo.valor.equalsIgnoreCase(valor)) {
                 return tipo;
             }
         }

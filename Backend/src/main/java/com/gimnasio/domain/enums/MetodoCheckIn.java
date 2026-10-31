@@ -16,7 +16,7 @@ public enum MetodoCheckIn {
 
     public static MetodoCheckIn desdeValor(String valor) {
         for (MetodoCheckIn metodo : values()) {
-            if (metodo.valor.equals(valor)) {
+            if (metodo.valor.equalsIgnoreCase(valor)) {
                 return metodo;
             }
         }

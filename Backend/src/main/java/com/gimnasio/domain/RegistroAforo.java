@@ -9,7 +9,7 @@ import jakarta.persistence.Table;
 
 import java.time.LocalDate;
 
-/** Analítica horaria de ocupación; alimenta el mapa de calor (CU-16). */
+/** Analitica horaria de ocupacion; alimenta el mapa de calor (CU-16). */
 @Entity
 @Table(name = "registro_aforo")
 public class RegistroAforo {

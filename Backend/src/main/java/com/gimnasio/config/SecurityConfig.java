@@ -42,7 +42,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(autorizacion -> autorizacion
                         // Público: autenticación, catálogo de planes y documentación
                         .requestMatchers("/api/auth/login", "/api/auth/registro",
-                                "/api/auth/recuperar-contrasena").permitAll()
+                                "/api/auth/recuperar-contrasena", "/api/auth/arranque").permitAll()
                         .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/planes/**").permitAll()
                         .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/aforo/ocupacion").permitAll()
                         .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/clases").permitAll()

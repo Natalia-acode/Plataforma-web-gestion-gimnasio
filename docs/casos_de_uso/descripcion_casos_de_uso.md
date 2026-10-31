@@ -48,27 +48,34 @@ Este documento describe los 30 casos de uso del sistema. Los diagramas correspon
 
 | Campo | Detalle |
 |---|---|
-| **Actor(es)** | Visitante · Servicio de Notificaciones (secundario) |
-| **Objetivo** | Crear una cuenta de cliente para acceder a los servicios del gimnasio. |
+| **Actor(es)** | Visitante · Administrador (aprueba solicitudes) · Servicio de Notificaciones (secundario) |
+| **Objetivo** | Crear una cuenta propia: de cliente (activa al instante) o de personal (sujeta a aprobación). |
 | **Precondiciones** | El visitante no tiene cuenta con el correo ingresado. |
-| **Postcondiciones** | Cuenta creada con rol *Cliente* y estado *activo*; correo de bienvenida enviado. |
-| **RF** | RF-01 · **RN**: — |
+| **Postcondiciones** | Cuenta de cliente creada con rol *Cliente*, estado *activo* y sesión iniciada. Cuenta de personal creada con estado *pendiente* y aviso enviado a los administradores; el personal nuevo solo queda *activo* al registrarse mientras no exista un administrador (arranque del sistema). |
+| **RF** | RF-01, RF-31 · **RN**: RN-12 |
 
 **Flujo Normal**
 1. El visitante accede a *Crear cuenta*.
-2. Ingresa nombre, apellidos, correo, teléfono, fecha de nacimiento y contraseña.
+2. Ingresa nombre, apellidos, correo, teléfono, fecha de nacimiento, contraseña y el tipo de cuenta (cliente por defecto; recepcionista, entrenador o administrador).
 3. Acepta los términos y condiciones y la política de datos.
-4. El sistema valida formato de datos y unicidad del correo.
-5. El sistema crea la cuenta (contraseña almacenada con hash) y envía correo de bienvenida.
-6. El sistema confirma el registro y ofrece consultar planes (CU-05) para contratar (CU-06).
+4. El sistema valida formato de datos, unicidad del correo y que el rol solicitado exista.
+5. El sistema crea la cuenta (contraseña almacenada con hash):
+   - Rol *Cliente*: estado *activo*, envía correo de bienvenida y devuelve token de sesión.
+   - Rol de personal con un administrador ya activo: estado *pendiente*, notifica a los administradores y **no** entrega token.
+   - Rol de personal sin ningún administrador activo (arranque): estado *activo* y entrega token, porque no hay quien revise la solicitud.
+6. El sistema confirma el registro: *Cliente* ofrece consultar planes (CU-05) para contratar (CU-06); el personal informa que queda a la espera de aprobación (CU-26).
 
 **Flujos Alternativos**
 - **FA-1** El visitante no acepta los términos: no puede continuar; se le informa que la aceptación es obligatoria.
+- **FA-2** El visitante solicita un rol de personal: la cuenta nace *pendiente*; un administrador la aprueba (pasa a *activa* y puede iniciar sesión, CU-02) o la rechaza (pasa a *rechazada*) en la bandeja de CU-26.
+- **FA-3** El primer administrador del sistema se crea por este caso de uso en modo arranque (no existe cuenta de administrador activa); no se siembra ninguna cuenta desde la base de datos.
 
 **Excepciones**
 - **EX-1** El correo ya está registrado: se informa y se ofrecen las opciones *Iniciar sesión* (CU-02) o *Recuperar contraseña* (CU-03).
 - **EX-2** Datos con formato inválido: se resaltan los campos con error y no se crea la cuenta.
 - **EX-3** Falla el envío del correo de bienvenida: la cuenta se crea igualmente; el envío se reintenta de forma asíncrona.
+- **EX-4** El rol solicitado no existe: se rechaza la solicitud con *400 Datos inválidos* y no se crea la cuenta.
+- **EX-5** Una cuenta *pendiente* intenta iniciar sesión: se le impide y se le indica que espere la aprobación (CU-02).
 
 ---
 
@@ -93,6 +100,8 @@ Este documento describe los 30 casos de uso del sistema. Los diagramas correspon
 **Excepciones**
 - **EX-1** Credenciales incorrectas: mensaje genérico de error. Tras 5 intentos fallidos, la cuenta se bloquea temporalmente por 15 minutos.
 - **EX-2** Cuenta suspendida: se impide el acceso y se indica contactar a recepción.
+- **EX-3** Cuenta de personal *pendiente* (CU-01): se impide el acceso y se indica que un administrador debe aprobar la solicitud (CU-26).
+- **EX-4** Cuenta de personal *rechazada*: se impide el acceso y se indica contactar a la administración.
 
 ---
 
@@ -646,20 +655,25 @@ Este documento describe los 30 casos de uso del sistema. Los diagramas correspon
 | Campo | Detalle |
 |---|---|
 | **Actor(es)** | Administrador |
-| **Objetivo** | Administrar las cuentas del sistema y sus permisos. |
+| **Objetivo** | Administrar las cuentas del sistema, aprobar las solicitudes de personal y definir sus permisos. |
 | **Precondiciones** | Sesión de administrador. |
-| **Postcondiciones** | Usuarios y roles actualizados; acciones auditadas. |
-| **RF** | RF-31 · **RN**: — |
+| **Postcondiciones** | Usuarios, roles y solicitudes actualizados; acciones auditadas; solicitantes notificados. |
+| **RF** | RF-31 · **RN**: RN-12 |
 
 **Flujo Normal**
 1. El administrador busca o lista usuarios con filtros por rol y estado.
-2. Puede: crear usuarios de staff (recepcionista, entrenador, administrador), editar datos, suspender/reactivar cuentas y asignar roles.
-3. Suspender una cuenta bloquea el acceso al sistema y el check-in.
-4. Cada acción queda auditada (fecha, hora, responsable).
+2. Revisa la bandeja de *Solicitudes de personal*: cuentas nacidas del registro público (CU-01) en estado *pendiente*, ordenadas por fecha de registro.
+3. Aprueba una solicitud (pasa a *activa* y puede iniciar sesión) o la rechaza (pasa a *rechazada*); en ambos casos el solicitante recibe notificación.
+4. Puede: crear usuarios de staff directamente (recepcionista, entrenador, administrador — nacen *activos*), editar datos, suspender/reactivar cuentas y asignar roles.
+5. Suspender una cuenta bloquea el acceso al sistema y el check-in.
+6. Cada acción queda auditada (fecha, hora, responsable).
 
 **Excepciones**
 - **EX-1** El administrador intenta quitarse su propio rol o suspender su cuenta: se bloquea.
 - **EX-2** Quitar el rol al último administrador existente: se bloquea para no perder la administración.
+- **EX-3** Aprobar o rechazar una cuenta que no está *pendiente*: se rechaza la operación.
+- **EX-4** Suspender una cuenta *pendiente* o *rechazada*: se rechaza la operación; use *Aprobar* o *Reactivar*.
+- **EX-5** No hay solicitudes pendientes: la bandeja se muestra vacía.
 
 ---
 

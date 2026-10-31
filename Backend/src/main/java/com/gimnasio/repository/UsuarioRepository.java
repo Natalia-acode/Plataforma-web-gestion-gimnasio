@@ -17,4 +17,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     List<Usuario> findByRol(Rol rol);
 
     List<Usuario> findByRolAndEstado(Rol rol, EstadoUsuario estado);
+
+    Optional<Usuario> findByPasswordResetToken(String passwordResetToken);
+
+    List<Usuario> findByEstadoOrderByFechaRegistroAsc(EstadoUsuario estado);
 }

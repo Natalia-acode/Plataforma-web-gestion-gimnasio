@@ -9,7 +9,7 @@ import jakarta.persistence.Table;
 
 import java.time.LocalTime;
 
-/** Parámetros del sistema (CU-17). Tabla de fila única. */
+/** Parametros del sistema (CU-17). Tabla de fila unica. */
 @Entity
 @Table(name = "configuracion")
 public class Configuracion {
@@ -22,11 +22,11 @@ public class Configuracion {
     @Column(name = "capacidad_maxima", nullable = false)
     private Integer capacidadMaxima;
 
-    /** % de ocupación para el semáforo amarillo. */
+    /** % de ocupacion para el semaforo amarillo. */
     @Column(name = "umbral_medio", nullable = false, columnDefinition = "tinyint")
     private byte umbralMedio;
 
-    /** % de ocupación para el semáforo rojo. */
+    /** % de ocupacion para el semaforo rojo. */
     @Column(name = "umbral_alto", nullable = false, columnDefinition = "tinyint")
     private byte umbralAlto;
 
@@ -34,11 +34,11 @@ public class Configuracion {
     @Column(name = "ventana_turno_min", nullable = false)
     private Integer ventanaTurnoMin;
 
-    /** Estimación de espera por persona delante (CU-23). */
+    /** Estimacion de espera por persona delante (CU-23). */
     @Column(name = "tiempo_rotacion_min", nullable = false)
     private Integer tiempoRotacionMin;
 
-    /** RN-04: número de reintentos de cobro antes de vencer la suscripción. */
+    /** RN-04: numero de reintentos de cobro antes de vencer la suscripcion. */
     @Column(name = "reintentos_cobro", nullable = false)
     private Integer reintentosCobro;
 

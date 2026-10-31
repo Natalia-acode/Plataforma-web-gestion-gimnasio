@@ -3,8 +3,6 @@ package com.gimnasio.domain;
 import com.gimnasio.domain.enums.EstadoReserva;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -35,15 +33,14 @@ public class ReservaClase {
     @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario usuario;
 
-    /** Fecha de la sesión reservada. */
+    /** Fecha de la sesion reservada. */
     @Column(nullable = false)
     private LocalDate fecha;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private EstadoReserva estado;
 
-    /** Posición cuando estado = en_espera (RN-09). */
+    /** Posicion cuando estado = en_espera (RN-09). */
     @Column(name = "posicion_espera", columnDefinition = "smallint")
     private Integer posicionEspera;
 

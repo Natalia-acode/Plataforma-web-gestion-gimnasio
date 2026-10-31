@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Profile;
 import jakarta.annotation.PostConstruct;
 
 /**
- * Valida la configuración de seguridad al arrancar la aplicación.
+ * Valida la configuración de seguridad al arrancar la aplicacion.
  * En perfil prod rechaza el uso de secretos por defecto de JWT.
  */
 @Configuration

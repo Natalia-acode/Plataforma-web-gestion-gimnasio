@@ -5,6 +5,7 @@ import com.gimnasio.dto.CancelarSuscripcionRequest;
 import com.gimnasio.dto.ContratarSuscripcionRequest;
 import com.gimnasio.dto.RenovacionRequest;
 import com.gimnasio.dto.SuscripcionResponse;
+import com.gimnasio.dto.VentaPresencialRequest;
 import com.gimnasio.security.AuthenticatedUser;
 import com.gimnasio.service.SuscripcionService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -40,6 +41,14 @@ public class SuscripcionController {
     public SuscripcionResponse contratar(@AuthenticationPrincipal AuthenticatedUser principal,
                                          @Valid @RequestBody ContratarSuscripcionRequest solicitud) {
         return SuscripcionResponse.desde(suscripcionService.contratar(principal.getId(), solicitud));
+    }
+
+    @PostMapping("/presencial")
+    @ResponseStatus(HttpStatus.CREATED)
+    public SuscripcionResponse venderPresencial(@AuthenticationPrincipal AuthenticatedUser principal,
+                                               @Valid @RequestBody VentaPresencialRequest solicitud) {
+        return SuscripcionResponse.desde(
+                suscripcionService.venderPresencial(principal.getId(), solicitud));
     }
 
     @GetMapping("/mis")

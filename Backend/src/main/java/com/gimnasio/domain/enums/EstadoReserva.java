@@ -19,7 +19,7 @@ public enum EstadoReserva {
 
     public static EstadoReserva desdeValor(String valor) {
         for (EstadoReserva estado : values()) {
-            if (estado.valor.equals(valor)) {
+            if (estado.valor.equalsIgnoreCase(valor)) {
                 return estado;
             }
         }

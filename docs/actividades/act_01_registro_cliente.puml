@@ -1,5 +1,5 @@
 @startuml ACT-01_Registro_de_Cliente
-title Actividad — Registro de Cliente (CU-01)
+title Actividad — Registro de cuenta (CU-01)
 
 |Visitante|
 start
@@ -9,23 +9,38 @@ start
 |Sistema|
 repeat
   |Visitante|
-  :Completar formulario (nombre, correo,\nteléfono, contraseña);
+  :Completar formulario (nombre, apellidos,\ncorreo, teléfono, contraseña) y elegir\nel tipo de cuenta;
   |Sistema|
-  :Validar formato y unicidad del correo;
+  :Validar formato, unicidad del correo\ny existencia del rol solicitado;
 repeat while (¿Errores de validación?) is (sí) not (no)
 
-:Crear cuenta con rol Cliente\ny estado activo;
-
-|Servicio de Notificaciones|
-:Enviar correo de bienvenida;
-
-|Sistema|
-:Confirmar registro y ofrecer\nconsultar planes (CU-05);
+if (¿Tipo de cuenta?) then (cliente)
+  :Crear cuenta con rol Cliente\ny estado activo;
+  |Servicio de Notificaciones|
+  :Enviar correo de bienvenida;
+  |Sistema|
+  :Iniciar sesión y ofrecer consultar\nplanes (CU-05);
+else (personal)
+  if (¿Hay algún administrador activo?) then (no: arranque, RN-12)
+    :Crear cuenta con el rol solicitado\ny estado activo;
+    |Sistema|
+    :Iniciar sesión con token;
+  else (sí)
+    :Crear cuenta con el rol solicitado\ny estado pendiente;
+    :Notificar a los administradores;
+    |Administrador|
+    :Aprobar (estado activo) o rechazar\n(estado rechazado) — CU-26;
+    |Sistema|
+    :Notificar al solicitante;
+  endif
+endif
 stop
 
 legend right
   Si el correo ya está registrado, el sistema
   ofrece iniciar sesión (CU-02) o recuperar
   contraseña (CU-03).
+  Una cuenta pendiente o rechazada no puede
+  iniciar sesión (CU-02, EX-3 y EX-4).
 endlegend
 @enduml

@@ -7,6 +7,6 @@ import java.util.Optional;
 
 public interface ConfiguracionRepository extends JpaRepository<Configuracion, Long> {
 
-    /** La tabla configuración es de fila única (CU-17). */
+    /** La tabla configuración es de fila unica (CU-17). */
     Optional<Configuracion> findFirstByOrderByIdAsc();
 }

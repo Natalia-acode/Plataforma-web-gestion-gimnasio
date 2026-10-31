@@ -87,12 +87,74 @@
         }
       }
     },
+    "/api/usuarios/{id}/rechazar": {
+      "put": {
+        "tags": [
+          "Usuarios"
+        ],
+        "operationId": "rechazar",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsuarioResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/usuarios/{id}/reactivar": {
       "put": {
         "tags": [
           "Usuarios"
         ],
         "operationId": "reactivar",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsuarioResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/usuarios/{id}/aprobar": {
+      "put": {
+        "tags": [
+          "Usuarios"
+        ],
+        "operationId": "aprobar",
         "parameters": [
           {
             "name": "id",
@@ -947,7 +1009,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/LoginResponse"
+                  "$ref": "#/components/schemas/RegistroResponse"
                 }
               }
             }
@@ -1055,6 +1117,29 @@
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/UsuarioResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/usuarios/solicitudes": {
+      "get": {
+        "tags": [
+          "Usuarios"
+        ],
+        "operationId": "solicitudes",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UsuarioResponse"
+                  }
                 }
               }
             }
@@ -1568,6 +1653,26 @@
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/UsuarioResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/arranque": {
+      "get": {
+        "tags": [
+          "Autenticación"
+        ],
+        "operationId": "arranque",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArranqueResponse"
                 }
               }
             }
@@ -2365,6 +2470,11 @@
           },
           "fechaNacimiento": {
             "type": "string"
+          },
+          "rol": {
+            "type": "string",
+            "maxLength": 20,
+            "minLength": 0
           }
         },
         "required": [
@@ -2374,9 +2484,12 @@
           "nombre"
         ]
       },
-      "LoginResponse": {
+      "RegistroResponse": {
         "type": "object",
         "properties": {
+          "pendienteDeAprobacion": {
+            "type": "boolean"
+          },
           "token": {
             "type": "string"
           },
@@ -2413,6 +2526,17 @@
           "contrasena",
           "email"
         ]
+      },
+      "LoginResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string"
+          },
+          "usuario": {
+            "$ref": "#/components/schemas/UsuarioResponse"
+          }
+        }
       },
       "NotificacionResponse": {
         "type": "object",
@@ -2517,6 +2641,20 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/PagoResponse"
+            }
+          }
+        }
+      },
+      "ArranqueResponse": {
+        "type": "object",
+        "properties": {
+          "faltaAdministrador": {
+            "type": "boolean"
+          },
+          "rolesDisponibles": {
+            "type": "array",
+            "items": {
+              "type": "string"
             }
           }
         }

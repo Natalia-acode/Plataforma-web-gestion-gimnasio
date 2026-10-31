@@ -18,7 +18,7 @@ public enum TipoZona {
 
     public static TipoZona desdeValor(String valor) {
         for (TipoZona tipo : values()) {
-            if (tipo.valor.equals(valor)) {
+            if (tipo.valor.equalsIgnoreCase(valor)) {
                 return tipo;
             }
         }

@@ -19,7 +19,7 @@ public enum EstadoTurno {
 
     public static EstadoTurno desdeValor(String valor) {
         for (EstadoTurno estado : values()) {
-            if (estado.valor.equals(valor)) {
+            if (estado.valor.equalsIgnoreCase(valor)) {
                 return estado;
             }
         }

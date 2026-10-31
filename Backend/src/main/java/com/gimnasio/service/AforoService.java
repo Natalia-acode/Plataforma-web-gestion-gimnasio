@@ -2,6 +2,7 @@ package com.gimnasio.service;
 
 import com.gimnasio.domain.Configuracion;
 import com.gimnasio.domain.RegistroAforo;
+import com.gimnasio.domain.Zona;
 import com.gimnasio.domain.enums.DiaSemana;
 import com.gimnasio.domain.enums.NivelAforo;
 import com.gimnasio.dto.AfluenciaResponse;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-/** CU-15 consulta de ocupación en vivo, CU-16 mapa de calor de afluencia. */
+/** CU-15 consulta de ocupacion en vivo, CU-16 mapa de calor de afluencia. */
 @Service
 public class AforoService {
 
@@ -35,7 +36,7 @@ public class AforoService {
         this.configuracionService = configuracionService;
     }
 
-    /** Semáforo en tiempo real: verde/amarillo/rojo según umbrales configurados. */
+    /** Semaforo en tiempo real: verde/amarillo/rojo según umbrales configurados. */
     public AforoResponse ocupacionActual() {
         Configuracion configuracion = configuracionService.obtener();
         int dentro = (int) checkInService.personasDentro();
@@ -55,6 +56,30 @@ public class AforoService {
             recomendacion = "Baja ocupación: excelente momento para entrenar.";
         }
         return new AforoResponse(dentro, capacidad, porcentaje, nivel.name(), recomendacion);
+    }
+
+    /** CU-15: aforo general por zona/resumen operativo para la vista y panel de recepción. */
+    public java.util.Map<String, Integer> ocupacionPorZona() {
+        int dentro = (int) checkInService.personasDentro();
+        int capacidad = configuracionService.obtener().getCapacidadMaxima();
+        int restante = Math.max(0, capacidad - dentro);
+        java.util.Map<String, Integer> resultado = new java.util.LinkedHashMap<>();
+        resultado.put("general", dentro);
+        resultado.put("capacidad_total", capacidad);
+        resultado.put("disponibles", restante);
+        return resultado;
+    }
+
+    /** CU-15: aforo por zona (resumen operativo del gimnasio cuando se usan zonas). */
+    public java.util.Map<String, Integer> ocupacionPorZona(List<Zona> zonas) {
+        int dentro = (int) checkInService.personasDentro();
+        int capacidad = zonas.stream().mapToInt(Zona::getCapacidadMaxima).sum();
+        int restante = Math.max(0, capacidad - dentro);
+        java.util.Map<String, Integer> resultado = new java.util.LinkedHashMap<>();
+        resultado.put("general", dentro);
+        resultado.put("capacidad_total", capacidad);
+        resultado.put("disponibles", restante);
+        return resultado;
     }
 
     /** CU-16: mapa de calor desde la vista vw_afluencia_por_hora. */
@@ -82,7 +107,7 @@ public class AforoService {
 
     /**
      * Snapshot horario para el mapa de calor (proceso programado).
-     * Promedio y máximo de las lecturas de ocupación registradas durante la hora.
+     * Promedio y maximo de las lecturas de ocupacion registradas durante la hora.
      */
     @Transactional
     public void generarSnapshotAforo() {
@@ -104,7 +129,8 @@ public class AforoService {
                 .orElseGet(RegistroAforo::new);
         registro.setFecha(fecha);
         registro.setHora(hora);
-        // Promedio simple entre la ocupación al inicio y al final de la ventana.
+
+        // Promedio simple entre la ocupacion al inicio y al final de la ventana.
         registro.setOcupacionPromedio(Math.max(0, ocupacionActual));
         registro.setOcupacionMaxima(Math.max(ocupacionMaxima, ocupacionActual));
         registro.setTotalIngresos(totalIngresos);

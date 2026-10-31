@@ -1,10 +1,14 @@
 package com.gimnasio.web;
 
 import com.gimnasio.domain.Usuario;
+import com.gimnasio.dto.ArranqueResponse;
 import com.gimnasio.dto.LoginRequest;
 import com.gimnasio.dto.LoginResponse;
+import com.gimnasio.dto.PerfilRequest;
 import com.gimnasio.dto.RecuperarContrasenaRequest;
 import com.gimnasio.dto.RegistroRequest;
+import com.gimnasio.dto.RegistroResponse;
+import com.gimnasio.dto.RestablecerContrasenaRequest;
 import com.gimnasio.dto.StaffRequest;
 import com.gimnasio.dto.UsuarioResponse;
 import com.gimnasio.security.AuthenticatedUser;
@@ -16,6 +20,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -35,8 +40,13 @@ public class AuthController {
 
     @PostMapping("/registro")
     @ResponseStatus(HttpStatus.CREATED)
-    public LoginResponse registro(@Valid @RequestBody RegistroRequest solicitud) {
-        return authService.registrarCliente(solicitud);
+    public RegistroResponse registro(@Valid @RequestBody RegistroRequest solicitud) {
+        return authService.registrar(solicitud);
+    }
+
+    @GetMapping("/arranque")
+    public ArranqueResponse arranque() {
+        return authService.estadoArranque();
     }
 
     @PostMapping("/login")
@@ -50,6 +60,12 @@ public class AuthController {
         authService.recuperarContrasena(solicitud.email());
     }
 
+    @PostMapping("/restablecer-contrasena")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void restablecerContrasena(@Valid @RequestBody RestablecerContrasenaRequest solicitud) {
+        authService.restablecerContrasena(solicitud);
+    }
+
     @PostMapping("/staff")
     @PreAuthorize("hasRole('ADMINISTRADOR')")
     @ResponseStatus(HttpStatus.CREATED)
@@ -61,5 +77,12 @@ public class AuthController {
     @GetMapping("/perfil")
     public UsuarioResponse perfil(@AuthenticationPrincipal AuthenticatedUser principal) {
         return UsuarioResponse.desde(principal.getUsuario());
+    }
+
+    @PutMapping("/perfil")
+    public UsuarioResponse actualizarPerfil(@AuthenticationPrincipal AuthenticatedUser principal,
+                                           @Valid @RequestBody PerfilRequest solicitud) {
+        Usuario usuario = authService.actualizarPerfil(principal.getId(), solicitud);
+        return UsuarioResponse.desde(usuario);
     }
 }

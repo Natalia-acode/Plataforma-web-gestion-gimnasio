@@ -4,8 +4,6 @@ import com.gimnasio.domain.enums.EstadoUsuario;
 import com.gimnasio.domain.enums.Rol;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -42,16 +40,20 @@ public class Usuario {
     @Column(name = "fecha_nacimiento")
     private LocalDate fechaNacimiento;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private Rol rol;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private EstadoUsuario estado = EstadoUsuario.ACTIVO;
 
     @Column(name = "fecha_registro", nullable = false, columnDefinition = "datetime2(0)")
     private LocalDateTime fechaRegistro;
+
+    @Column(name = "password_reset_token", length = 255)
+    private String passwordResetToken;
+
+    @Column(name = "password_reset_expira", columnDefinition = "datetime2(0)")
+    private LocalDateTime passwordResetExpira;
 
     @PrePersist
     void prePersist() {
@@ -142,5 +144,21 @@ public class Usuario {
 
     public void setFechaRegistro(LocalDateTime fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
+    }
+
+    public String getPasswordResetToken() {
+        return passwordResetToken;
+    }
+
+    public void setPasswordResetToken(String passwordResetToken) {
+        this.passwordResetToken = passwordResetToken;
+    }
+
+    public LocalDateTime getPasswordResetExpira() {
+        return passwordResetExpira;
+    }
+
+    public void setPasswordResetExpira(LocalDateTime passwordResetExpira) {
+        this.passwordResetExpira = passwordResetExpira;
     }
 }

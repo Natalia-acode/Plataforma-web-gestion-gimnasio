@@ -3,8 +3,6 @@ package com.gimnasio.domain;
 import com.gimnasio.domain.enums.TipoZona;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,7 +21,6 @@ public class Zona {
     @Column(nullable = false, length = 60)
     private String nombre;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private TipoZona tipo;
 

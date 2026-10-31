@@ -9,6 +9,7 @@ import com.gimnasio.domain.enums.TipoNotificacion;
 import com.gimnasio.domain.enums.TipoPago;
 import com.gimnasio.dto.ContratarSuscripcionRequest;
 import com.gimnasio.dto.ResultadoCobro;
+import com.gimnasio.dto.VentaPresencialRequest;
 import com.gimnasio.exception.BusinessException;
 import com.gimnasio.exception.NotFoundException;
 import com.gimnasio.repository.MetodoPagoRepository;
@@ -107,6 +108,35 @@ public class SuscripcionService {
                 String.format("Su plan %s está activo hasta el %s. Renovación automática: %s.",
                         plan.getNombre(), suscripcion.getFechaFin(),
                         solicitud.renovacionAutomatica() ? "activada" : "desactivada"));
+        return suscripcion;
+    }
+
+    /** CU-30: venta presencial en recepción. */
+    @Transactional
+    public Suscripcion venderPresencial(Long recepcionistaId, VentaPresencialRequest solicitud) {
+        Usuario recepcionista = usuarioRepository.findById(recepcionistaId)
+                .orElseThrow(() -> new NotFoundException("Usuario no encontrado: " + recepcionistaId));
+        if (recepcionista.getRol() != com.gimnasio.domain.enums.Rol.RECEPCIONISTA
+                && recepcionista.getRol() != com.gimnasio.domain.enums.Rol.ADMINISTRADOR) {
+            throw new BusinessException("Solo la recepción o administración pueden vender membresías presenciales");
+        }
+
+        ContratarSuscripcionRequest alta = new ContratarSuscripcionRequest(
+                solicitud.idPlan(),
+                solicitud.idMetodo(),
+                solicitud.renovacionAutomatica()
+        );
+
+        Suscripcion suscripcion = contratar(solicitud.idUsuario(), alta);
+        if (solicitud.observacion() != null && !solicitud.observacion().isBlank()) {
+            notificacionService.enviar(suscripcion.getUsuario(), TipoNotificacion.CANCELACION,
+                    "Venta presencial registrada por recepción: " + solicitud.observacion());
+        }
+        if (solicitud.pagoEfectivo()) {
+            notificacionService.enviar(suscripcion.getUsuario(), TipoNotificacion.RESULTADO_COBRO,
+                    String.format("Venta presencial registrada: pago en efectivo para %s. Debe confirmarse en caja.",
+                            suscripcion.getPlan().getNombre()));
+        }
         return suscripcion;
     }
 

@@ -16,8 +16,8 @@ public class OpenApiConfig {
         final String esquema = "bearerAuth";
         return new OpenAPI()
                 .info(new Info()
-                        .title("API — Sistema de Gestión de Gimnasio")
-                        .description("API REST del sistema de gestión de gimnasio. "
+                        .title("API — Sistema de Gestion de Gimnasio")
+                        .description("API REST del sistema de gestion de gimnasio. "
                                 + "Autenticación JWT (Spring Security); convención /api/{recurso} con JSON.")
                         .version("0.1.0"))
                 .addSecurityItem(new SecurityRequirement().addList(esquema))

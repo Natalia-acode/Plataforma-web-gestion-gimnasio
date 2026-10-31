@@ -18,7 +18,7 @@ public enum EstadoSuscripcion {
 
     public static EstadoSuscripcion desdeValor(String valor) {
         for (EstadoSuscripcion estado : values()) {
-            if (estado.valor.equals(valor)) {
+            if (estado.valor.equalsIgnoreCase(valor)) {
                 return estado;
             }
         }

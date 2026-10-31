@@ -17,9 +17,13 @@ public interface RegistroAforoRepository extends JpaRepository<RegistroAforo, Lo
 
     boolean existsByFechaAndHora(LocalDate fecha, byte hora);
 
-    /** vw_afluencia_por_hora: promedios por día de la semana (0=lunes) y hora (CU-16). */
+    /** Promedios históricos agrupados por día de la semana (0=lunes) y hora (CU-16). */
     @Query(value = "SELECT dia_semana, hora, ocupacion_promedio, ocupacion_maxima " +
-                   "FROM vw_afluencia_por_hora WHERE hora BETWEEN :horaDesde AND :horaHasta " +
+                   "FROM (SELECT DATEDIFF(day, CONVERT(date, '19000101'), fecha) % 7 AS dia_semana, " +
+                   "hora, AVG(CAST(ocupacion_promedio AS decimal(10,2))) AS ocupacion_promedio, " +
+                   "MAX(ocupacion_maxima) AS ocupacion_maxima " +
+                   "FROM registro_aforo WHERE hora BETWEEN :horaDesde AND :horaHasta " +
+                   "GROUP BY DATEDIFF(day, CONVERT(date, '19000101'), fecha) % 7, hora) afluencia " +
                    "ORDER BY dia_semana, hora", nativeQuery = true)
     List<AfluenciaHoraProjection> afluenciaPorHora(@Param("horaDesde") int horaDesde,
                                                    @Param("horaHasta") int horaHasta);

@@ -379,6 +379,8 @@ package "enumeraciones" {
 
   enum EstadoUsuario {
     ACTIVO
+    PENDIENTE
+    RECHAZADO
     SUSPENDIDO
   }
 

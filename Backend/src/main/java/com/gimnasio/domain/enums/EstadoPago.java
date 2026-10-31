@@ -18,7 +18,7 @@ public enum EstadoPago {
 
     public static EstadoPago desdeValor(String valor) {
         for (EstadoPago estado : values()) {
-            if (estado.valor.equals(valor)) {
+            if (estado.valor.equalsIgnoreCase(valor)) {
                 return estado;
             }
         }

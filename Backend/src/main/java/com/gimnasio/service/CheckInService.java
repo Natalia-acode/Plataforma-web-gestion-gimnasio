@@ -4,6 +4,7 @@ import com.gimnasio.domain.CheckIn;
 import com.gimnasio.domain.Suscripcion;
 import com.gimnasio.domain.Usuario;
 import com.gimnasio.domain.enums.EstadoSuscripcion;
+import com.gimnasio.domain.enums.EstadoUsuario;
 import com.gimnasio.domain.enums.MetodoCheckIn;
 import com.gimnasio.exception.BusinessException;
 import com.gimnasio.exception.NotFoundException;
@@ -36,8 +37,9 @@ public class CheckInService {
     public void validarAcceso(Long usuarioId) {
         Usuario usuario = usuarioRepository.findById(usuarioId)
                 .orElseThrow(() -> new NotFoundException("Usuario no encontrado: " + usuarioId));
-        if (usuario.getEstado() == com.gimnasio.domain.enums.EstadoUsuario.SUSPENDIDO) {
-            throw new BusinessException("La cuenta está suspendida");
+        if (usuario.getEstado() != EstadoUsuario.ACTIVO) {
+            throw new BusinessException("La cuenta no está activa (" + usuario.getEstado().getValor()
+                    + "); contacte a recepción");
         }
         Suscripcion suscripcion = suscripcionRepository
                 .findFirstByUsuarioIdAndEstado(usuarioId, EstadoSuscripcion.ACTIVA)

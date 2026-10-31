@@ -4,8 +4,6 @@ import com.gimnasio.domain.enums.EstadoTurno;
 import com.gimnasio.domain.enums.TipoTurno;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -31,7 +29,6 @@ public class TurnoCola {
     @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario usuario;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 10)
     private TipoTurno tipo;
 
@@ -41,7 +38,6 @@ public class TurnoCola {
     @Column(nullable = false)
     private Integer posicion;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private EstadoTurno estado;
 

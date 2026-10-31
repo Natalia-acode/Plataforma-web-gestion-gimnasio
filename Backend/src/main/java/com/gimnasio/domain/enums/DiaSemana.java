@@ -27,7 +27,7 @@ public enum DiaSemana {
 
     public static DiaSemana desdeValor(String valor) {
         for (DiaSemana dia : values()) {
-            if (dia.valor.equals(valor)) {
+            if (dia.valor.equalsIgnoreCase(valor)) {
                 return dia;
             }
         }

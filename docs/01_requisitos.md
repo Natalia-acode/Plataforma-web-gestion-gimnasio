@@ -95,7 +95,7 @@ Desarrollar un sistema web de gestión de gimnasio que otorgue al usuario **cont
 
 | ID | Requisito | Prioridad | CU |
 |---|---|---|---|
-| RF-01 | El sistema debe permitir el registro de visitantes como clientes con nombre, correo, teléfono y contraseña. | Alta | CU-01 |
+| RF-01 | El sistema debe permitir el registro de visitantes con el rol que elijan (cliente, recepcionista, entrenador o administrador), con nombre, apellidos, correo, teléfono y contraseña. La cuenta de cliente se activa al registrarse; la de personal queda pendiente de aprobación (RN-12). | Alta | CU-01 |
 | RF-02 | El sistema debe autenticar usuarios mediante correo y contraseña, gestionando sesiones seguras. | Alta | CU-02 |
 | RF-03 | El sistema debe permitir recuperar la contraseña mediante enlace temporal enviado al correo. | Media | CU-03 |
 | RF-04 | El cliente debe poder consultar y editar sus datos personales. | Media | CU-04 |
@@ -150,7 +150,7 @@ Desarrollar un sistema web de gestión de gimnasio que otorgue al usuario **cont
 
 | ID | Requisito | Prioridad | CU |
 |---|---|---|---|
-| RF-31 | El administrador debe poder crear, editar, suspender y reactivar usuarios, y asignar roles. | Alta | CU-26 |
+| RF-31 | El administrador debe poder crear, editar, suspender y reactivar usuarios, aprobar o rechazar las solicitudes de personal del registro público, y asignar roles. | Alta | CU-26 |
 | RF-32 | El administrador debe poder gestionar el catálogo de planes (crear, modificar precio/duración, activar o desactivar). | Alta | CU-27 |
 | RF-33 | El administrador debe poder gestionar zonas y salas con sus capacidades máximas. | Media | CU-28 |
 | RF-34 | El administrador debe poder consultar reportes de ocupación (por hora, día y zona), ingresos (por plan, período) y membresías activas. | Alta | CU-29 |
@@ -190,6 +190,7 @@ Desarrollar un sistema web de gestión de gimnasio que otorgue al usuario **cont
 | RN-09 | La lista de espera de una clase promueve automáticamente al primer inscrito cuando alguien cancela, notificándolo de inmediato. |
 | RN-10 | Un cliente no puede tener más de una suscripción activa simultánea. |
 | RN-11 | La ocupación se calcula como check-ins activos (entrada sin salida registrada); el cierre de jornada registra la salida automática de los rezagados. |
+| RN-12 | Una cuenta de personal creada por el registro público no puede operar hasta que un administrador la apruebe. Excepción de arranque: mientras no exista un administrador *activo*, la cuenta solicitada se autoactiva, porque no hay quien la revise y el sistema quedaría sin administración. |
 
 ---
 

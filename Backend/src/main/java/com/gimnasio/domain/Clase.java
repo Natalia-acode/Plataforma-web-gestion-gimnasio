@@ -3,8 +3,6 @@ package com.gimnasio.domain;
 import com.gimnasio.domain.enums.DiaSemana;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -36,7 +34,6 @@ public class Clase {
     @Column(nullable = false, length = 80)
     private String nombre;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "dia_semana", nullable = false, length = 10)
     private DiaSemana diaSemana;
 

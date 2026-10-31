@@ -41,6 +41,21 @@ public class UsuarioController {
         return UsuarioResponse.desde(usuarioService.obtener(id));
     }
 
+    @GetMapping("/solicitudes")
+    public List<UsuarioResponse> solicitudes() {
+        return usuarioService.listarSolicitudes().stream().map(UsuarioResponse::desde).toList();
+    }
+
+    @PutMapping("/{id}/aprobar")
+    public UsuarioResponse aprobar(@PathVariable Long id) {
+        return UsuarioResponse.desde(usuarioService.aprobar(id));
+    }
+
+    @PutMapping("/{id}/rechazar")
+    public UsuarioResponse rechazar(@PathVariable Long id) {
+        return UsuarioResponse.desde(usuarioService.rechazar(id));
+    }
+
     @PutMapping("/{id}/suspender")
     public UsuarioResponse suspender(@AuthenticationPrincipal AuthenticatedUser principal,
                                      @PathVariable Long id) {
